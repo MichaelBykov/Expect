@@ -1,18 +1,20 @@
-// ===--- Expect ------------------------------------------------- C++ ---=== //
+// ===--- Expect Common.h ---------------------------------------- C++ ---=== //
 //                                                                            //
 // © 2022, Michael Bykov                                                      //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 //                                                                            //
-// The root header of the Expect unit testing library.                        //
+// A common set of macros defined for Expect.                                 //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 
 #pragma once
 
-#include "Expect Common.h"
+#define START_NAMESPACE_EXPECT \
+  namespace Expect {
 
-#include "Global/Environment.h"
-#include "Test/Test.h"
-#include "Suite/Suite.h"
-#include "Suite/Setup.h"
+#define END_NAMESPACE_EXPECT \
+  }
+
+#define NAMESPACE_EXPECT \
+  ::Expect::

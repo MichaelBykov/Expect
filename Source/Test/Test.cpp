@@ -1,18 +1,25 @@
-// ===--- Expect ------------------------------------------------- C++ ---=== //
+// ===--- Test.cpp ----------------------------------------------- C++ ---=== //
 //                                                                            //
 // © 2022, Michael Bykov                                                      //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 //                                                                            //
-// The root header of the Expect unit testing library.                        //
+// Implementation of the unit test case interface.                            //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 
-#pragma once
+#include <Test/Test.h>
 
-#include "Expect Common.h"
+NAMESPACE_EXPECT Test::Add::Add(
+  std::vector<Test> *tests      ,
+  const char        *name       ,
+  const char        *description
+) {
+  Test test { name, description, nullptr, false };
+  tests->push_back(test);
+  this->test = &tests->at(tests->size() - 1);
+}
 
-#include "Global/Environment.h"
-#include "Test/Test.h"
-#include "Suite/Suite.h"
-#include "Suite/Setup.h"
+void NAMESPACE_EXPECT Test::Add::operator, (void (*body)(Environment &)) {
+  test->test = body;
+}

@@ -1,18 +1,24 @@
-// ===--- Expect ------------------------------------------------- C++ ---=== //
+// ===--- Environment.h ------------------------------------------ C++ ---=== //
 //                                                                            //
 // © 2022, Michael Bykov                                                      //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 //                                                                            //
-// The root header of the Expect unit testing library.                        //
+// The interface for the global test environment.                             //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 
 #pragma once
+#include <Expect Common.h>
 
-#include "Expect Common.h"
+START_NAMESPACE_EXPECT
 
-#include "Global/Environment.h"
-#include "Test/Test.h"
-#include "Suite/Suite.h"
-#include "Suite/Setup.h"
+
+
+struct Environment {
+  
+};
+
+
+
+END_NAMESPACE_EXPECT

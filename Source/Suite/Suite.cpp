@@ -1,18 +1,23 @@
-// ===--- Expect ------------------------------------------------- C++ ---=== //
+// ===--- Suite.cpp ---------------------------------------------- C++ ---=== //
 //                                                                            //
 // © 2022, Michael Bykov                                                      //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 //                                                                            //
-// The root header of the Expect unit testing library.                        //
+// Implementation of the test suite interface.                                //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 
-#pragma once
+#include <Suite/Suite.h>
 
-#include "Expect Common.h"
+std::vector<NAMESPACE_EXPECT Suite *> &NAMESPACE_EXPECT suites() {
+  static std::vector<NAMESPACE_EXPECT Suite *> suites = { };
+  return suites;
+}
 
-#include "Global/Environment.h"
-#include "Test/Test.h"
-#include "Suite/Suite.h"
-#include "Suite/Setup.h"
+NAMESPACE_EXPECT Suite::Suite(
+  const char *name ,
+  Suite      *suite
+) : name(name) {
+  suites().push_back(suite);
+}
