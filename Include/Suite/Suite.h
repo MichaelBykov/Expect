@@ -75,5 +75,5 @@ END_NAMESPACE_EXPECT
   }; \
   static TestSuite##name testSuite##name = { }; \
   } END_NAMESPACE_EXPECT \
-  Expect::Suites::TestSuite##name::TestSuite##name() : \
-    NAMESPACE_EXPECT Suite(#name, &Expect::Suites::testSuite##name)
+  NAMESPACE_EXPECT Suites::TestSuite##name::TestSuite##name() : \
+    NAMESPACE_EXPECT Suite(#name, &NAMESPACE_EXPECT Suites::testSuite##name)

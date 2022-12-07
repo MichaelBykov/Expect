@@ -16,3 +16,6 @@
 #include "Test/Test.h"
 #include "Suite/Suite.h"
 #include "Suite/Setup.h"
+#include "Driver/TestState.h"
+#include "Driver/Driver.h"
+#include "Driver/CommandLineDriver.h"

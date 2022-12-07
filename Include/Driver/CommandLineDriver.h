@@ -1,27 +1,30 @@
-// ===--- Test.cpp ----------------------------------------------- C++ ---=== //
+// ===--- CommandLineDriver.h ------------------------------------ C++ ---=== //
 //                                                                            //
 // © 2022, Michael Bykov                                                      //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 //                                                                            //
-// Implementation of the unit test case interface.                            //
+// The test driver used when launching tests form the command line.           //
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 
-#include <Test/Test.h>
+#pragma once
+#include <Expect Common.h>
 
-NAMESPACE_EXPECT Test::Add::Add(
-  std::vector<Test> *tests      ,
-  const char        *name       ,
-  const char        *description
-) {
-  Test test { name, description, nullptr, false };
-  tests->push_back(test);
-  this->test = &tests->at(tests->size() - 1);
-}
+START_NAMESPACE_EXPECT
 
-void NAMESPACE_EXPECT Test::Add::operator, (
-  std::function<void(Environment &)> body
-) {
-  test->test = body;
-}
+
+
+int runCommandLineTests(
+  int   argc  ,
+  char *argv[]
+);
+
+
+
+END_NAMESPACE_EXPECT
+
+
+
+#define RUN_COMMAND_LINE_TESTS(argc, argv) \
+  NAMESPACE_EXPECT runCommandLineTests(argc, argv)

@@ -10,6 +10,6 @@
 
 #include <Expect>
 
-int main(int argCount, char *args[]) {
-  
+int main(int argc, char *argv[]) {
+  return RUN_COMMAND_LINE_TESTS(argc, argv);
 }

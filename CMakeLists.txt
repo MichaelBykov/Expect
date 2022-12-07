@@ -11,6 +11,9 @@ add_library(Expect
   Source/Expect.cpp
   Source/Test/Test.cpp
   Source/Suite/Suite.cpp
+  Source/Driver/TestState.cpp
+  Source/Driver/Driver.cpp
+  Source/Driver/CommandLineDriver.cpp
 )
 
 add_library(AutoExpect

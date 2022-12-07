@@ -41,7 +41,7 @@ struct Test {
     /// Add a test driver to the unit test case.
     /// \param[in] body
     ///   The body of the unit test case driver.
-    void operator, (void (*body)(Environment &));
+    void operator, (std::function<void(Environment &)> body);
   };
   
   /// The name of the unit test.

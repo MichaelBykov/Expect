@@ -17,4 +17,4 @@
   }
 
 #define NAMESPACE_EXPECT \
-  ::Expect::
+  Expect::
