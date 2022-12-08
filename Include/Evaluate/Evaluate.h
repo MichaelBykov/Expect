@@ -69,10 +69,12 @@ struct Evaluate {
       environment.failures.push_back(Failure {
         messagePrefix().append(expression.failMessage())
       });
+      expression.cleanup();
       environment.success = false;
       if (stopOnFailure || environment.stopOnFailure)
         throw TestFailedException();
-    }
+    } else
+      expression.cleanup();
   }
 };
 

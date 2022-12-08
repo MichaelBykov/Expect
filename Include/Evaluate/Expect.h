@@ -29,6 +29,31 @@ struct Expect {
   }
 };
 
+/// The start of exception expectation builder.
+template<typename T>
+struct ExpectException {
+  /// The name of the exception type.
+  const char *exception;
+  
+  /// Create an exception expectation builder through the exception type name.
+  /// \param[in] exception
+  ///   The name of the exception type to expect.
+  ExpectException<T>(
+    const char *exception
+  ) : exception(exception) { }
+  
+  /// Load an expression from which to expect an exception.
+  /// \param[in] other
+  ///   The expression for which to build expectations.
+  /// \returns
+  ///   An expectation builder for the given expression.
+  Expressions::ExceptionValue<T> operator << (
+    std::function<void()> expression
+  ) {
+    return Expressions::ExceptionValue<T> { exception, expression };
+  }
+};
+
 
 
 END_NAMESPACE_EXPECT
@@ -56,3 +81,26 @@ END_NAMESPACE_EXPECT
 #define ASSERT \
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, true), \
     NAMESPACE_EXPECT Expect() <<
+
+
+
+/// Define an assertion expression for an exception.
+/// \param exception
+///   The type of exception to expect.
+/// \remarks
+///   The exception expression should be enclosed in curly braces.
+///   For example, `EXPECT_EXCEPTION(int) { throw 3 };`
+#define EXPECT_EXCEPTION(exception) \
+  NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
+    NAMESPACE_EXPECT ExpectException<exception>(#exception) << [&]() -> void
+
+/// Define an assertion expression for an exception that aborts upon failure.
+/// \param exception
+///   The type of exception to expect.
+/// \remarks
+///   The exception expression should be enclosed in curly braces.
+///   For example, `ASSERT_EXCEPTION(int) { throw 3 };`
+#define ASSERT_EXCEPTION(exception) \
+  NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, true), \
+    NAMESPACE_EXPECT ExpectException<exception>(#exception) << [&]() -> void
+  
