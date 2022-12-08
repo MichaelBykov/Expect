@@ -82,4 +82,4 @@ END_NAMESPACE_EXPECT
 /// \sa SUITE(name)
 #define TEST(name, description) \
   NAMESPACE_EXPECT Test::Add(&tests, #name, description), \
-    [&](Environment &__environment) -> void
+    [=](NAMESPACE_EXPECT Environment &__environment) -> void

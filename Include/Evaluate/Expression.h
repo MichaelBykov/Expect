@@ -35,6 +35,9 @@ struct Equal : Expression {
   /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Create a new equal expression.
+  Equal(T lhs, T rhs) : lhs(lhs), rhs(rhs) { }
+  
   /// Evaluate the expression with the set values.
   bool evaluate();
   
@@ -52,6 +55,9 @@ struct NotEqual : Expression {
   T lhs;
   /// The value of the right-hand-side of the comparison.
   T rhs;
+  
+  /// Create a new not-equal expression.
+  NotEqual(T lhs, T rhs) : lhs(lhs), rhs(rhs) { }
   
   /// Evaluate the expression with the set values.
   bool evaluate();
@@ -72,6 +78,9 @@ struct InclusiveRange : Expression {
   T value;
   /// The upper-bound of the range.
   T rhs;
+  
+  /// Create a new range expression.
+  InclusiveRange(T lhs, T value, T rhs) : lhs(lhs), value(value), rhs(rhs) { }
   
   /// Evaluate the expression with the set values.
   bool evaluate();
@@ -100,6 +109,11 @@ struct Range : Expression {
   /// (upper bound inclusive or exclusive).
   bool rhsIncluded;
   
+  /// Create a new range expression.
+  Range(T lhs, bool lhsIncluded, T value, T rhs, bool rhsIncluded) :
+    lhs(lhs), lhsIncluded(lhsIncluded), value(value),
+    rhs(rhs), rhsIncluded(rhsIncluded) { }
+  
   /// Evaluate the expression with the set values.
   bool evaluate();
   
@@ -127,6 +141,9 @@ struct ExclusiveRange : Expression {
   /// The upper-bound of the range.
   T rhs;
   
+  /// Create a new range expression.
+  ExclusiveRange(T lhs, T value, T rhs) : lhs(lhs), value(value), rhs(rhs) { }
+  
   /// Evaluate the expression with the set values.
   bool evaluate();
   
@@ -145,6 +162,9 @@ struct Less : Expression {
   T lhs;
   /// The value of the right-hand-side of the comparison.
   T rhs;
+  
+  /// Create a new less-than expression.
+  Less(T lhs, T rhs) : lhs(lhs), rhs(rhs) { }
   
   /// Evaluate the expression with the set values.
   bool evaluate();
@@ -186,6 +206,9 @@ struct LessEqual : Expression {
   /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Create a new less-than-or-equal-to expression.
+  LessEqual(T lhs, T rhs) : lhs(lhs), rhs(rhs) { }
+  
   /// Evaluate the expression with the set values.
   bool evaluate();
   
@@ -225,6 +248,9 @@ struct Greater : Expression {
   T lhs;
   /// The value of the right-hand-side of the comparison.
   T rhs;
+  
+  /// Create a new greater-than expression.
+  Greater(T lhs, T rhs) : lhs(lhs), rhs(rhs) { }
   
   /// Evaluate the expression with the set values.
   bool evaluate();
@@ -266,6 +292,9 @@ struct GreaterEqual : Expression {
   /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Create a new greater-than-or-equal-to expression.
+  GreaterEqual(T lhs, T rhs) : lhs(lhs), rhs(rhs) { }
+  
   /// Evaluate the expression with the set values.
   bool evaluate();
   
@@ -303,6 +332,9 @@ template<typename T>
 struct Value : Expression {
   /// The value to test for truthiness.
   T value;
+  
+  /// Create a new value expression.
+  Value(T value) : value(value) { }
   
   /// Evaluate the expression with the set values.
   bool evaluate();

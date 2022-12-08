@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(Expect VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 11)
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 include(CTest)
 enable_testing()
@@ -9,8 +11,11 @@ include_directories(Include)
 
 add_library(Expect
   Source/Expect.cpp
+  Source/Global/toString.cpp
   Source/Test/Test.cpp
   Source/Suite/Suite.cpp
+  Source/Evaluate/Expression.cpp
+  Source/Evaluate/Evaluate.cpp
   Source/Driver/TestState.cpp
   Source/Driver/Driver.cpp
   Source/Driver/CommandLineDriver.cpp

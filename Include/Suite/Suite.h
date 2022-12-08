@@ -17,6 +17,8 @@ START_NAMESPACE_EXPECT
 
 
 
+struct Teardown;
+
 /// A testing suite.
 struct Suite {
   /// A list of all tests in the test suite.
@@ -26,7 +28,7 @@ struct Suite {
   std::function<void()> setup = nullptr;
   
   /// The test suite teardown function
-  std::function<void()> teardown = nullptr;
+  Teardown *teardown = nullptr;
   
   /// The name of the test suite.
   const char *name;
@@ -69,11 +71,11 @@ END_NAMESPACE_EXPECT
 ///   }
 ///   ```
 #define SUITE(name) \
-  START_NAMESPACE_EXPECT namespace Suites { \
+  namespace ExpectSuites { \
   struct TestSuite##name : NAMESPACE_EXPECT Suite { \
     TestSuite##name(); \
   }; \
   static TestSuite##name testSuite##name = { }; \
-  } END_NAMESPACE_EXPECT \
-  NAMESPACE_EXPECT Suites::TestSuite##name::TestSuite##name() : \
-    NAMESPACE_EXPECT Suite(#name, &NAMESPACE_EXPECT Suites::testSuite##name)
+  } \
+  ExpectSuites::TestSuite##name::TestSuite##name() : \
+    NAMESPACE_EXPECT Suite(#name, &ExpectSuites::testSuite##name)

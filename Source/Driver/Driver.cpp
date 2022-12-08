@@ -10,6 +10,8 @@
 
 #include <Driver/Driver.h>
 #include <Suite/Suite.h>
+#include <Suite/Setup.h>
+#include <Evaluate/Evaluate.h>
 #include <stddef.h>
 
 NAMESPACE_EXPECT Report::Report(
@@ -66,9 +68,9 @@ NAMESPACE_EXPECT Report NAMESPACE_EXPECT runTests(
             RunningTest _state(*suite, test, index, count);
             state(_state);
           }
-          // try {
+          try {
             test.test(environment);
-          // } catch (TestFailed) { }
+          } catch (TestFailedException) { }
           if (environment.success) {
             if (state != nullptr) {
               TestSuccess _state(test);
@@ -88,8 +90,10 @@ NAMESPACE_EXPECT Report NAMESPACE_EXPECT runTests(
       totalSuccessful += successful;
       
       // Teardown the suite
-      if (suite->teardown != nullptr)
-        suite->teardown();
+      if (suite->teardown != nullptr) {
+        suite->teardown->teardown();
+        suite->teardown->cleanup();
+      }
       
       // Report
       if (state != nullptr) {
@@ -99,5 +103,5 @@ NAMESPACE_EXPECT Report NAMESPACE_EXPECT runTests(
     }
   }
   
-  return Report(totalCount, totalSuccessful);
+  return Report(totalSuccessful, totalCount);
 }

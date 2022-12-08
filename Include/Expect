@@ -10,12 +10,20 @@
 
 #pragma once
 
+#if defined(__clang__)
+// Clang has a problem with the expression builder macros
+#pragma clang diagnostic ignored "-Woverloaded-shift-op-parentheses"
+#endif
+
 #include "Expect Common.h"
 
 #include "Global/Environment.h"
 #include "Test/Test.h"
 #include "Suite/Suite.h"
 #include "Suite/Setup.h"
+#include "Evaluate/Expression.h"
+#include "Evaluate/Expect.h"
+#include "Evaluate/Evaluate.h"
 #include "Driver/TestState.h"
 #include "Driver/Driver.h"
 #include "Driver/CommandLineDriver.h"

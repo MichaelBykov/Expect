@@ -25,7 +25,7 @@ struct Expect {
   ///   An expectation builder for the given value.
   template<typename T>
   Expressions::Value<T> operator << (T other) {
-    return other;
+    return { other };
   }
 };
 
@@ -43,8 +43,8 @@ END_NAMESPACE_EXPECT
 ///   boolean.
 ///   For example, `EXPECT isTrue()` or `EXPECT !someValue`.
 #define EXPECT \
-  ::Testing::Evaluate(__environment, __FILE__, __LINE__, false), \
-    ::Testing::Expect() <<
+  NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
+    NAMESPACE_EXPECT Expect() <<
 
 /// Define an assertion expression that aborts upon failure.
 /// \remarks
@@ -54,5 +54,5 @@ END_NAMESPACE_EXPECT
 ///   evaluates to a boolean.
 ///   For example, `ASSERT isTrue()` or `ASSERT !someValue`.
 #define ASSERT \
-  ::Testing::Evaluate(__environment, __FILE__, __LINE__, true), \
-    ::Testing::Expect() <<
+  NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, true), \
+    NAMESPACE_EXPECT Expect() <<
