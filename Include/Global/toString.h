@@ -78,6 +78,7 @@ END_NAMESPACE_EXPECT
 
 
 
+// Implement the standard types
 TEST_STRINGIFY(char     , value);
 TEST_STRINGIFY(short    , value);
 TEST_STRINGIFY(int      , value);

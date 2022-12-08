@@ -18,19 +18,27 @@ namespace Expressions {
 
 
 
+/// An expression that can be evaluated for validity.
 struct Expression {
+  /// Evaluate the expression with the set values.
   virtual bool evaluate() = 0;
+  
+  /// The message to report if the evaluation failed.
   virtual std::string failMessage() = 0;
 };
 
 /// Expect that two values are exactly equal.
 template<typename T>
 struct Equal : Expression {
+  /// The value of the left-hand-side of the comparison.
   T lhs;
+  /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(lhs).append(" is not equal to ")
       .append(toString(rhs)).append(".");
@@ -40,11 +48,15 @@ struct Equal : Expression {
 /// Expect that two values are exactly not equal.
 template<typename T>
 struct NotEqual : Expression {
+  /// The value of the left-hand-side of the comparison.
   T lhs;
+  /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(lhs).append(" is equal to ")
       .append(toString(rhs)).append(".");
@@ -54,12 +66,17 @@ struct NotEqual : Expression {
 /// Expect that a value is in an inclusive range.
 template<typename T>
 struct InclusiveRange : Expression {
+  /// The lower-bound of the range.
   T lhs;
+  /// The value to check for being within the range.
   T value;
+  /// The upper-bound of the range.
   T rhs;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(value).append(" is not within the range of ")
       .append(toString(lhs)).append(", ")
@@ -70,14 +87,23 @@ struct InclusiveRange : Expression {
 /// Expect that a value is in a range.
 template<typename T>
 struct Range : Expression {
+  /// The lower-bound of the range.
   T lhs;
+  /// Whether or not the lower bound is included within the range
+  /// (lower bound inclusive or exclusive).
   bool lhsIncluded;
+  /// The value to check for being within the range.
   T value;
+  /// The upper-bound of the range.
   T rhs;
+  /// Whether or not the upper bound is included within the range
+  /// (upper bound inclusive or exclusive).
   bool rhsIncluded;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(value).append(" is not within the range of ")
       .append(toString(lhs)).append(", ")
@@ -94,12 +120,17 @@ struct Range : Expression {
 /// Expect that a value is in an exclusive range.
 template<typename T>
 struct ExclusiveRange : Expression {
+  /// The lower-bound of the range.
   T lhs;
+  /// The value to check for being within the range.
   T value;
+  /// The upper-bound of the range.
   T rhs;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(value).append(" is not within the range of ")
       .append(toString(lhs)).append(", ")
@@ -110,11 +141,15 @@ struct ExclusiveRange : Expression {
 /// Expect that one value is exactly less than another value.
 template<typename T>
 struct Less : Expression {
+  /// The value of the left-hand-side of the comparison.
   T lhs;
+  /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(lhs).append(" is not less than ")
       .append(toString(rhs)).append(".");
@@ -146,11 +181,15 @@ struct Less : Expression {
 /// Expect that one value is exactly less than or equal to another value.
 template<typename T>
 struct LessEqual : Expression {
+  /// The value of the left-hand-side of the comparison.
   T lhs;
+  /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(lhs).append(" is not less than or equal to ")
       .append(toString(rhs)).append(".");
@@ -182,11 +221,15 @@ struct LessEqual : Expression {
 /// Expect that one value is exactly greater than another value.
 template<typename T>
 struct Greater : Expression {
+  /// The value of the left-hand-side of the comparison.
   T lhs;
+  /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(lhs).append(" is not greater than ")
       .append(toString(rhs)).append(".");
@@ -218,11 +261,15 @@ struct Greater : Expression {
 /// Expect that one value is exactly greater than or equal to another value.
 template<typename T>
 struct GreaterEqual : Expression {
+  /// The value of the left-hand-side of the comparison.
   T lhs;
+  /// The value of the right-hand-side of the comparison.
   T rhs;
   
+  /// Evaluate the expression with the set values.
   bool evaluate();
   
+  /// The message to report if the evaluation failed.
   std::string failMessage() {
     return toString(lhs).append(" is not greater than or equal to ")
       .append(toString(rhs)).append(".");
@@ -253,6 +300,7 @@ struct GreaterEqual : Expression {
 
 
 
+// Implement all of the default comparisons
 template<typename T>
 bool Equal<T>::evaluate() {
   return lhs == rhs;
@@ -375,6 +423,7 @@ END_NAMESPACE_EXPECT
 
 
 
+// Implement custom comparison of C strings
 TEST_CUSTOM_COMPARE(char *, Equal);
 TEST_CUSTOM_COMPARE(char *, NotEqual);
 TEST_CUSTOM_COMPARE(char *, Less);
