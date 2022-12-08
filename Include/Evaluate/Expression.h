@@ -20,6 +20,9 @@ namespace Expressions {
 
 /// An expression that can be evaluated for validity.
 struct Expression {
+  /// An optional message carried by the expression.
+  const char *message = nullptr;
+  
   /// Evaluate the expression with the set values.
   virtual bool evaluate() = 0;
   
@@ -49,6 +52,12 @@ struct Equal : Expression {
     return toString(lhs).append(" is not equal to ")
       .append(toString(rhs)).append(".");
   }
+  
+  /// Load a message into the expression.
+  Equal<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
 };
 
 /// Expect that two values are exactly not equal.
@@ -70,6 +79,12 @@ struct NotEqual : Expression {
     return toString(lhs).append(" is equal to ")
       .append(toString(rhs)).append(".");
   }
+  
+  /// Load a message into the expression.
+  NotEqual<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
 };
 
 /// Expect that a value is in an inclusive range.
@@ -94,6 +109,12 @@ struct InclusiveRange : Expression {
       .append(toString(lhs)).append(", ")
       .append(toString(rhs)).append(" (inclusive).");
   }
+  
+  /// Load a message into the expression.
+  InclusiveRange<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
 };
 
 /// Expect that a value is in a range.
@@ -132,6 +153,12 @@ struct Range : Expression {
       )
       .append(").");
   }
+  
+  /// Load a message into the expression.
+  Range<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
 };
 
 /// Expect that a value is in an exclusive range.
@@ -156,6 +183,12 @@ struct ExclusiveRange : Expression {
       .append(toString(lhs)).append(", ")
       .append(toString(rhs)).append(" (exclusive).");
   }
+  
+  /// Load a message into the expression.
+  ExclusiveRange<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
 };
 
 /// Expect that one value is exactly less than another value.
@@ -177,6 +210,12 @@ struct Less : Expression {
     return toString(lhs).append(" is not less than ")
       .append(toString(rhs)).append(".");
   }
+  
+  /// Load a message into the expression.
+  Less<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
   
   
   
@@ -221,6 +260,12 @@ struct LessEqual : Expression {
       .append(toString(rhs)).append(".");
   }
   
+  /// Load a message into the expression.
+  LessEqual<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
+  
   
   
   /// Expect that the loaded value is exactly within an inclusive, exclusive
@@ -263,6 +308,12 @@ struct Greater : Expression {
     return toString(lhs).append(" is not greater than ")
       .append(toString(rhs)).append(".");
   }
+  
+  /// Load a message into the expression.
+  Greater<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
   
   
   
@@ -307,6 +358,12 @@ struct GreaterEqual : Expression {
       .append(toString(rhs)).append(".");
   }
   
+  /// Load a message into the expression.
+  GreaterEqual<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
+  
   
   
   /// Expect that the loaded value is exactly within an inclusive, exclusive
@@ -346,6 +403,12 @@ struct Value : Expression {
   std::string failMessage() {
     return "Result evaluated to false.";
   }
+  
+  /// Load a message into the expression.
+  Value<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
   
   
   
@@ -453,6 +516,12 @@ struct ExceptionValue : Expression {
   void cleanup() {
     delete value;
   }
+  
+  /// Load a message into the expression.
+  ExceptionValue<T> operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
 };
 
 

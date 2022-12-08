@@ -35,11 +35,12 @@ SUITE(Tests) {
   int loopCount = 10;
   
   TEST(foo, "Example test.") {
-    EXPECT SHARED someValue == 3;
+    EXPECT SHARED someValue == 4 | "Something's fishy here...";
     for (int i = 0; i < loopCount; i++)
       EXPECT SHARED foo.bar->x == 21;
     EXPECT *SHARED z == 1964;
     
-    EXPECT_EXCEPTION(int) { throw 3; };
+    EXPECT_EXCEPTION(int) { throw ""; } | "Shouldn't be a string.";
+    EXPECT false | "A fail message";
   };
 }

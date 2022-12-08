@@ -66,9 +66,10 @@ struct Evaluate {
   void operator, (Expression expression) {
     if (!expression.evaluate()) {
       // Failure
-      environment.failures.push_back(Failure {
-        messagePrefix().append(expression.failMessage())
-      });
+      std::string message = messagePrefix().append(expression.failMessage());
+      if (expression.message != nullptr)
+        message = message.append(" ").append(expression.message);
+      environment.failures.push_back(Failure { message });
       expression.cleanup();
       environment.success = false;
       if (stopOnFailure || environment.stopOnFailure)
