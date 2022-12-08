@@ -298,9 +298,87 @@ struct GreaterEqual : Expression {
   }
 };
 
+/// Expect that a value is true.
+template<typename T>
+struct Value : Expression {
+  /// The value to test for truthiness.
+  T value;
+  
+  /// Evaluate the expression with the set values.
+  bool evaluate();
+  
+  /// The message to report if the evaluation failed.
+  std::string failMessage() {
+    return "Result evaluated to false.";
+  }
+  
+  
+  
+  /// Expect that the loaded value is exactly equal to another value.
+  /// \param[in] other
+  ///   The value to compare the loaded value to.
+  /// \returns
+  ///   An equality expectation.
+  Equal<T> operator ==(T other) {
+    return { value, other };
+  }
+  
+  /// Expect that the loaded value is exactly not equal to another value.
+  /// \param[in] other
+  ///   The value to compare the loaded value to.
+  /// \returns
+  ///   A non-equality expectation.
+  NotEqual<T> operator !=(T other) {
+    return { value, other };
+  }
+  
+  /// Expect that the loaded value is exactly less than another value.
+  /// \param[in] other
+  ///   The value to compare the loaded value to.
+  /// \returns
+  ///   A comparison expectation.
+  Less<T> operator <(T other) {
+    return { value, other };
+  }
+  
+  /// Expect that the loaded value is exactly less than or equal to another
+  /// value.
+  /// \param[in] other
+  ///   The value to compare the loaded value to.
+  /// \returns
+  ///   A comparison expectation.
+  LessEqual<T> operator <=(T other) {
+    return { value, other };
+  }
+  
+  /// Expect that the loaded value is exactly greater than another value.
+  /// \param[in] other
+  ///   The value to compare the loaded value to.
+  /// \returns
+  ///   A comparison expectation.
+  Greater<T> operator >(T other) {
+    return { value, other };
+  }
+  
+  /// Expect that the loaded value is exactly greater than or equal to another
+  /// value.
+  /// \param[in] other
+  ///   The value to compare the loaded value to.
+  /// \returns
+  ///   A comparison expectation.
+  GreaterEqual<T> operator >=(T other) {
+    return { value, other };
+  }
+};
+
 
 
 // Implement all of the default comparisons
+template<typename T>
+bool Value<T>::evaluate() {
+  return value;
+}
+
 template<typename T>
 bool Equal<T>::evaluate() {
   return lhs == rhs;
@@ -372,11 +450,15 @@ END_NAMESPACE_EXPECT
 /// \param comparison
 ///   The comparison type to define.
 ///   Should be one of the following options:
-///   `Equal`, `NotEqual`, `Less`, `LessEqual`, `Greater`, `GreaterEqual`,
-///   `Range`, `InclusiveRange`, `ExclusiveRange`.
+///   `Value`, `Equal`, `NotEqual`, `Less`, `LessEqual`, `Greater`,
+///    `GreaterEqual`, `Range`, `InclusiveRange`, `ExclusiveRange`.
 /// \remarks
 ///   Example usage:
 ///   ```
+///   TEST_CUSTOM_COMPARE(int, Value) {
+///     return value != 0;
+///   }
+///   
 ///   TEST_CUSTOM_COMPARE(int, Equal) {
 ///     return lhs == rhs;
 ///   }
@@ -397,6 +479,7 @@ END_NAMESPACE_EXPECT
 ///   }
 ///   ```
 ///   
+///   For the `Value` comparison, there is one member to compare, `value`.
 ///   For the `Equal`, `NotEqual`, `Less`, `LessEqual`, `Greater`, and
 ///   `GreaterEqual` comparisons, there are two members to compare, `lhs` and
 ///   `rhs`.
@@ -415,7 +498,7 @@ END_NAMESPACE_EXPECT
 ///   
 ///   If you are using a custom comparison of a type in more than one file, make
 ///   sure to define the specialization in a shared header, for example,
-///   `TEST_CUSTOM_COMPARE(int, Equal);` for the first specialization in the
+///   `TEST_CUSTOM_COMPARE(int, Value);` for the first specialization in the
 ///   above example, to avoid duplicate code errors when compiling.
 #define TEST_CUSTOM_COMPARE(type, comparison) \
   template<> \

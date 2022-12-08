@@ -16,78 +16,6 @@ START_NAMESPACE_EXPECT
 
 
 
-/// An expectation builder for a single value.
-template<typename T>
-struct ExpectCase {
-  /// The value for which to build expectations.
-  T value;
-  
-  /// Set expectations for a value.
-  /// \param[in] value
-  ///   The value for which to set expectations.
-  ExpectCase<T>(T value) : value(value) { }
-  
-  
-  
-  /// Expect that the loaded value is exactly equal to another value.
-  /// \param[in] other
-  ///   The value to compare the loaded value to.
-  /// \returns
-  ///   An equality expectation.
-  Expressions::Equal<T> operator ==(T other) {
-    return { value, other };
-  }
-  
-  /// Expect that the loaded value is exactly not equal to another value.
-  /// \param[in] other
-  ///   The value to compare the loaded value to.
-  /// \returns
-  ///   A non-equality expectation.
-  Expressions::NotEqual<T> operator !=(T other) {
-    return { value, other };
-  }
-  
-  /// Expect that the loaded value is exactly less than another value.
-  /// \param[in] other
-  ///   The value to compare the loaded value to.
-  /// \returns
-  ///   A comparison expectation.
-  Expressions::Less<T> operator <(T other) {
-    return { value, other };
-  }
-  
-  /// Expect that the loaded value is exactly less than or equal to another
-  /// value.
-  /// \param[in] other
-  ///   The value to compare the loaded value to.
-  /// \returns
-  ///   A comparison expectation.
-  Expressions::LessEqual<T> operator <=(T other) {
-    return { value, other };
-  }
-  
-  /// Expect that the loaded value is exactly greater than another value.
-  /// \param[in] other
-  ///   The value to compare the loaded value to.
-  /// \returns
-  ///   A comparison expectation.
-  Expressions::Greater<T> operator >(T other) {
-    return { value, other };
-  }
-  
-  /// Expect that the loaded value is exactly greater than or equal to another
-  /// value.
-  /// \param[in] other
-  ///   The value to compare the loaded value to.
-  /// \returns
-  ///   A comparison expectation.
-  Expressions::GreaterEqual<T> operator >=(T other) {
-    return { value, other };
-  }
-};
-
-
-
 /// The start of an expectation builder.
 struct Expect {
   /// Load a value for which to build expectations.
@@ -96,7 +24,7 @@ struct Expect {
   /// \returns
   ///   An expectation builder for the given value.
   template<typename T>
-  ExpectCase<T> operator << (T other) {
+  Expressions::Value<T> operator << (T other) {
     return other;
   }
 };
