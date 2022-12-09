@@ -33,6 +33,14 @@ struct Expression {
   virtual void cleanup() { }
 };
 
+/// The standard tolerance type of approximate comparison operations.
+typedef double Tolerance;
+
+#ifndef EXPECT_TOLERANCE
+/// The standard tolerance of approximate comparison operations.
+#define EXPECT_TOLERANCE 1e-6
+#endif
+
 
 
 } // namespace Expressions
@@ -61,7 +69,7 @@ END_NAMESPACE_EXPECT
 ///   
 ///   TEST_CUSTOM_COMPARE(double, Within, Equal) {
 ///     double x = lhs - rhs;
-///     return x * x < tolerance * tolerance;
+///     return x * x <= tolerance * tolerance;
 ///   }
 ///   
 ///   TEST_CUSTOM_COMPARE(int, Exact, InclusiveRange) {
@@ -113,8 +121,8 @@ END_NAMESPACE_EXPECT
 ///   a tolerance of `1e-6` would fail.
 ///   The expressions `1.0 == 1.02` and `1.0 == 1.03` with a tolerance of `0.01`
 ///   would succeed and fail, respectively.
-///   The equation for approximate equality is `|x - y| < tol * |x + y|` and for
-///   approximately less is `x - y < tol * |x + y|` where `x` and `y` are the
+///   The equation for approximate equality is `|x - y| ≤ tol * |x + y|` and for
+///   approximately less is `x - y < -tol * |x + y|` where `x` and `y` are the
 ///   left-hand-side and right-hand-side comparison arguments, respectively,
 ///   and `tol` is the approximate comparison tolerance.
 ///   
@@ -125,8 +133,8 @@ END_NAMESPACE_EXPECT
 ///   tolerance of `0.1` would succeed while `0.0 == 1.15` would fail.
 ///   The expressions `1.0 == 1.02` and `1.0 == 1.03` with a tolerance of `0.01`
 ///   would succeed and fail, respectively.
-///   The equation for near equality is `|x - y| < tol * max(1, |x + y|)` and
-///   for nearly less is `x - y < tol * max(1, |x + y|)` where `x` and `y` are
+///   The equation for near equality is `|x - y| ≤ tol * max(1, |x + y|)` and
+///   for nearly less is `x - y < -tol * max(1, |x + y|)` where `x` and `y` are
 ///   the left-hand-side and right-hand-side comparison arguments, respectively,
 ///   and `tol` is the near comparison tolerance.
 ///   
@@ -136,9 +144,10 @@ END_NAMESPACE_EXPECT
 ///   tolerance of `0.1` would succeed while `0.0 == 1.15` would fail.
 ///   The expressions `1.0 == 1.05` and `1.0 == 1.15` with a tolerance of `0.1`
 ///   would succeed and fail, respectively.
-///   The equation for within equality is `|x - y| < tol` and for within less is
-///   `x - y < tol` where `x` and `y` are the left-hand-side and right-hand-side
-///   comparison arguments, respectively, and `tol` is the comparison tolerance.
+///   The equation for within equality is `|x - y| ≤ tol` and for within less is
+///   `x - y < -tol` where `x` and `y` are the left-hand-side and
+///   right-hand-side comparison arguments, respectively, and `tol` is the
+///   comparison tolerance.
 ///   
 ///   If you are using a custom comparison of a type in more than one file, make
 ///   sure to define the specialization in a shared header, for example,
