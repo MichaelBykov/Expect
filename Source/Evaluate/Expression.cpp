@@ -8,56 +8,56 @@
 //                                                                            //
 // ===--------------------------------------------------------------------=== //
 
-#include <Evaluate/Expression.h>
+#include <Evaluate/ExactExpression.h>
 
 
 
-TEST_CUSTOM_COMPARE(char *, Equal) {
+TEST_CUSTOM_COMPARE(char *, Exact, Equal) {
   return strcmp(lhs, rhs) == 0;
 }
 
-TEST_CUSTOM_COMPARE(char *, NotEqual) {
+TEST_CUSTOM_COMPARE(char *, Exact, NotEqual) {
   return strcmp(lhs, rhs) != 0;
 }
 
-TEST_CUSTOM_COMPARE(char *, Less) {
+TEST_CUSTOM_COMPARE(char *, Exact, Less) {
   return strcmp(lhs, rhs) < 0;
 }
 
-TEST_CUSTOM_COMPARE(char *, LessEqual) {
+TEST_CUSTOM_COMPARE(char *, Exact, LessEqual) {
   return strcmp(lhs, rhs) <= 0;
 }
 
-TEST_CUSTOM_COMPARE(char *, Greater) {
+TEST_CUSTOM_COMPARE(char *, Exact, Greater) {
   return strcmp(lhs, rhs) > 0;
 }
 
-TEST_CUSTOM_COMPARE(char *, GreaterEqual) {
+TEST_CUSTOM_COMPARE(char *, Exact, GreaterEqual) {
   return strcmp(lhs, rhs) >= 0;
 }
 
 
 
-TEST_CUSTOM_COMPARE(const char *, Equal) {
+TEST_CUSTOM_COMPARE(const char *, Exact, Equal) {
   return strcmp(lhs, rhs) == 0;
 }
 
-TEST_CUSTOM_COMPARE(const char *, NotEqual) {
+TEST_CUSTOM_COMPARE(const char *, Exact, NotEqual) {
   return strcmp(lhs, rhs) != 0;
 }
 
-TEST_CUSTOM_COMPARE(const char *, Less) {
+TEST_CUSTOM_COMPARE(const char *, Exact, Less) {
   return strcmp(lhs, rhs) < 0;
 }
 
-TEST_CUSTOM_COMPARE(const char *, LessEqual) {
+TEST_CUSTOM_COMPARE(const char *, Exact, LessEqual) {
   return strcmp(lhs, rhs) <= 0;
 }
 
-TEST_CUSTOM_COMPARE(const char *, Greater) {
+TEST_CUSTOM_COMPARE(const char *, Exact, Greater) {
   return strcmp(lhs, rhs) > 0;
 }
 
-TEST_CUSTOM_COMPARE(const char *, GreaterEqual) {
+TEST_CUSTOM_COMPARE(const char *, Exact, GreaterEqual) {
   return strcmp(lhs, rhs) >= 0;
 }

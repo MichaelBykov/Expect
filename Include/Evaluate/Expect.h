@@ -11,6 +11,8 @@
 #pragma once
 #include <Expect Common.h>
 #include "Expression.h"
+#include "ExactExpression.h"
+#include "MiscExpression.h"
 
 START_NAMESPACE_EXPECT
 
@@ -24,7 +26,7 @@ struct Expect {
   /// \returns
   ///   An expectation builder for the given value.
   template<typename T>
-  Expressions::Value<T> operator << (T other) {
+  ExactExpressions::Value<T> operator << (T other) {
     return { other };
   }
 };
@@ -47,10 +49,10 @@ struct ExpectException {
   ///   The expression for which to build expectations.
   /// \returns
   ///   An expectation builder for the given expression.
-  Expressions::ExceptionValue<T> operator << (
+  MiscExpressions::ExceptionValue<T> operator << (
     std::function<void()> expression
   ) {
-    return Expressions::ExceptionValue<T> { exception, expression };
+    return MiscExpressions::ExceptionValue<T> { exception, expression };
   }
 };
 
@@ -103,4 +105,3 @@ END_NAMESPACE_EXPECT
 #define ASSERT_EXCEPTION(exception) \
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, true), \
     NAMESPACE_EXPECT ExpectException<exception>(#exception) << [&]() -> void
-  
