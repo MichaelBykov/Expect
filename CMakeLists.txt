@@ -14,7 +14,7 @@ add_library(Expect
   Source/Global/toString.cpp
   Source/Test/Test.cpp
   Source/Suite/Suite.cpp
-  Source/Evaluate/Expression.cpp
+  Source/Expression/ExactExpression.cpp
   Source/Evaluate/Evaluate.cpp
   Source/Driver/TestState.cpp
   Source/Driver/Driver.cpp

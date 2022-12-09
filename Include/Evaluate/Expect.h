@@ -10,9 +10,9 @@
 
 #pragma once
 #include <Expect Common.h>
-#include "Expression.h"
-#include "ExactExpression.h"
-#include "MiscExpression.h"
+#include <Expression/Expression.h>
+#include <Expression/ExactExpression.h>
+#include <Expression/MiscExpression.h>
 
 START_NAMESPACE_EXPECT
 
