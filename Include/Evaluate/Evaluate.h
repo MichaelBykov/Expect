@@ -63,9 +63,12 @@ struct Evaluate {
     size_t lastErrorCount = environment.failures.size();
     if (!expression.evaluate()) {
       // Failure
-      std::string message = messagePrefix().append(expression.failMessage());
+      std::string message = messagePrefix();
       if (expression.message != nullptr)
-        message = message.append(" ").append(expression.message);
+        message = message.append(expression.message)
+          .append(" (").append(expression.failMessage()).append(")");
+      else
+        message = message.append(expression.failMessage());
       environment.failures.push_back(Failure { message });
       expression.cleanup();
       environment.success = false;
