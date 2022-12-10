@@ -17,6 +17,11 @@ START_NAMESPACE_EXPECT
 
 
 
+/// A failed assertion exception.
+struct TestFailedException {
+  
+};
+
 /// A test failure.
 struct Failure {
   /// The test failure message.

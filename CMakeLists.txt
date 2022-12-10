@@ -15,6 +15,7 @@ add_library(Expect
   Source/Test/Test.cpp
   Source/Suite/Suite.cpp
   Source/Expression/ExactExpression.cpp
+  Source/Expression/MiscExpression.cpp
   Source/Evaluate/Evaluate.cpp
   Source/Driver/TestState.cpp
   Source/Driver/Driver.cpp

@@ -17,11 +17,6 @@ START_NAMESPACE_EXPECT
 
 
 
-/// A failed assertion exception.
-struct TestFailedException {
-  
-};
-
 /// An assertion evaluator.
 struct Evaluate {
   /// The test environment.
@@ -64,6 +59,8 @@ struct Evaluate {
   ///   The expression to evaluate.
   template<typename Expression>
   void operator, (Expression expression) {
+    bool lastSuccess = environment.success;
+    size_t lastErrorCount = environment.failures.size();
     if (!expression.evaluate()) {
       // Failure
       std::string message = messagePrefix().append(expression.failMessage());
@@ -74,8 +71,13 @@ struct Evaluate {
       environment.success = false;
       if (stopOnFailure || environment.stopOnFailure)
         throw TestFailedException();
-    } else
+    } else {
+      // Reset the state in case it was messed up
+      environment.success = lastSuccess;
+      while (environment.failures.size() > lastErrorCount)
+        environment.failures.pop_back();
       expression.cleanup();
+    }
   }
 };
 

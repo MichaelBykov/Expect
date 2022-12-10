@@ -14,6 +14,14 @@ struct Foo {
   Foo(Bar *bar) : bar(bar) { }
 };
 
+#define EXPECT_TEST_FAIL(expression) \
+  EXPECT_EXCEPTION(NAMESPACE_EXPECT TestFailedException) { expression; } \
+    | "The test did not fail.";
+
+#define EXPECT_TEST_OKAY(expression) \
+  EXPECT_NO_EXCEPTION { expression; } \
+    | "The test did not succeed.";
+
 SUITE(Tests) {
   SHARE {
     int someValue;
@@ -35,7 +43,16 @@ SUITE(Tests) {
   int loopCount = 10;
   
   TEST(foo, "Example test.") {
-    EXPECT_WITHIN 1.0 < 0.1 | "foo" | 0.1;
+    EXPECT_TEST_FAIL(ASSERT_EXCEPTION(int) { throw ""; });
+    EXPECT_TEST_OKAY(ASSERT_EXCEPTION(const char *) { throw ""; });
+    
+    EXPECT_TEST_FAIL(ASSERT_ANY_EXCEPTION { });
+    EXPECT_TEST_OKAY(ASSERT_ANY_EXCEPTION { throw 3; });
+    
+    EXPECT_TEST_OKAY(ASSERT_NO_EXCEPTION { });
+    EXPECT_TEST_FAIL(ASSERT_NO_EXCEPTION { throw 3; });
+    
+    // EXPECT_WITHIN 1.0 < 0.1 | "foo" | 0.1;
     
     // EXPECT SHARED someValue == 4 | "Something's fishy here...";
     // for (int i = 0; i < loopCount; i++)

@@ -9,6 +9,7 @@
 // ===--------------------------------------------------------------------=== //
 
 #pragma once
+#include <Global/Environment.h>
 #include "Expression.h"
 
 START_NAMESPACE_EXPECT
@@ -16,14 +17,14 @@ namespace MiscExpressions {
 
 
 
-/// Expect that a an expression produces an exception.
+/// Expect that an expression produces an exception.
 template<typename T>
 struct ExceptionValue : Expressions::Expression {
   /// An exception expectation's value.
   struct Value {
     /// The name of the exception to expect.
     const char *exception;
-    /// The expression to evaluate for an expression.
+    /// The expression to evaluate for an exception.
     std::function<void()> expression;
     /// Whether or not the wrong exception was triggered.
     bool wrongTriggeredException = false;
@@ -56,7 +57,7 @@ struct ExceptionValue : Expressions::Expression {
         "The expression produced an exception that was not a(n) "
       ).append(value->exception).append(" exception.");
     else
-      return std::string("The expression did not produce any exception.");
+      return std::string("The expression did not produce an exception.");
   }
   
   /// Any cleanup that needs to be performed for the expression.
@@ -71,6 +72,54 @@ struct ExceptionValue : Expressions::Expression {
   };
 };
 
+/// Expect that an expression produces any exception.
+struct AnyExceptionValue : Expressions::Expression {
+  /// The expression to evaluate for an exception.
+  std::function<void()> expression;
+  
+  /// Create a new any exception expression.
+  AnyExceptionValue(std::function<void()> expression) :
+    expression(expression) { }
+  
+  /// Evaluate the expression with the set values.
+  bool evaluate();
+  
+  /// The message to report if the evaluation failed.
+  std::string failMessage() {
+    return std::string("The expression did not produce an exception.");
+  }
+  
+  /// Load a message into the expression.
+  AnyExceptionValue operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
+};
+
+/// Expect that an expression produces no exceptions.
+struct NoExceptionValue : Expressions::Expression {
+  /// The expression to evaluate for no exceptions.
+  std::function<void()> expression;
+  
+  /// Create a new no exception expression.
+  NoExceptionValue(std::function<void()> expression) :
+    expression(expression) { }
+  
+  /// Evaluate the expression with the set values.
+  bool evaluate();
+  
+  /// The message to report if the evaluation failed.
+  std::string failMessage() {
+    return std::string("The expression produced an exception.");
+  }
+  
+  /// Load a message into the expression.
+  NoExceptionValue operator | (const char *message) {
+    this->message = message;
+    return *this;
+  };
+};
+
 
 
 // Implement the default exception handler
@@ -80,6 +129,9 @@ bool ExceptionValue<T>::evaluate() {
     value->expression();
   } catch (T) {
     return true;
+  } catch (TestFailedException e) {
+    // Propagate the test failure
+    throw e;
   } catch (...) {
     // Note that the wrong exception was triggered
     value->wrongTriggeredException = true;
@@ -87,6 +139,10 @@ bool ExceptionValue<T>::evaluate() {
   }
   return false;
 }
+
+// Special case when expecting specifically a test failure
+template<>
+bool ExceptionValue<TestFailedException>::evaluate();
 
 
 
