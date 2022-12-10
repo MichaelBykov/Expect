@@ -52,6 +52,13 @@ SUITE(Tests) {
     EXPECT_TEST_OKAY(ASSERT_NO_EXCEPTION { });
     EXPECT_TEST_FAIL(ASSERT_NO_EXCEPTION { throw 3; });
     
+    // SECTION {
+    //   ASSERT false;
+    //   EXPECT false;
+    // };
+    
+    // EXPECT false;
+    
     // EXPECT_WITHIN 1.0 < 0.1 | "foo" | 0.1;
     
     // EXPECT SHARED someValue == 4 | "Something's fishy here...";
