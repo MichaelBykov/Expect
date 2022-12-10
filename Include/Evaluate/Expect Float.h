@@ -74,7 +74,7 @@ END_NAMESPACE_EXPECT
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
     NAMESPACE_EXPECT ExpectApprox() <<
 
-/// Define an assertion expression that aborts upon failure.
+/// Define an assertion expression that stops the test case upon failure.
 /// \remarks
 ///   Expectations and assertions can be set for any comparison.
 ///   For example, `ASSERT a == b`, `ASSERT a < b`, or `ASSERT a != b`.
@@ -98,7 +98,7 @@ END_NAMESPACE_EXPECT
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
     NAMESPACE_EXPECT ExpectNear() <<
 
-/// Define an assertion expression that aborts upon failure.
+/// Define an assertion expression that stops the test case upon failure.
 /// \remarks
 ///   Expectations and assertions can be set for any comparison.
 ///   For example, `ASSERT a == b`, `ASSERT a < b`, or `ASSERT a != b`.
@@ -122,7 +122,7 @@ END_NAMESPACE_EXPECT
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
     NAMESPACE_EXPECT ExpectWithin() <<
 
-/// Define an assertion expression that aborts upon failure.
+/// Define an assertion expression that stops the test case upon failure.
 /// \remarks
 ///   Expectations and assertions can be set for any comparison.
 ///   For example, `ASSERT a == b`, `ASSERT a < b`, or `ASSERT a != b`.

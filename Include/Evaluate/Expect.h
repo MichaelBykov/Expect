@@ -101,7 +101,7 @@ END_NAMESPACE_EXPECT
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
     NAMESPACE_EXPECT Expect() <<
 
-/// Define an assertion expression that aborts upon failure.
+/// Define an assertion expression that stops the test case upon failure.
 /// \remarks
 ///   Expectations and assertions can be set for any comparison.
 ///   For example, `ASSERT a == b`, `ASSERT a < b`, or `ASSERT a != b`.
@@ -124,7 +124,8 @@ END_NAMESPACE_EXPECT
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
     NAMESPACE_EXPECT ExpectException<exception>(#exception) << [&]() -> void
 
-/// Define an assertion expression for an exception that aborts upon failure.
+/// Define an assertion expression for an exception that stops the test case
+/// upon failure.
 /// \param exception
 ///   The type of exception to expect.
 /// \remarks
@@ -144,7 +145,8 @@ END_NAMESPACE_EXPECT
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
     NAMESPACE_EXPECT ExpectAnyException() << [&]() -> void
 
-/// Define an assertion expression for any exception that aborts upon failure.
+/// Define an assertion expression for any exception that stops the test case
+/// upon failure.
 /// \remarks
 ///   The exception expression should be enclosed in curly braces.
 ///   For example, `EXPECT_ANY_EXCEPTION { throw 3 };`
@@ -162,7 +164,8 @@ END_NAMESPACE_EXPECT
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
     NAMESPACE_EXPECT ExpectNoException() << [&]() -> void
 
-/// Define an assertion expression for no exceptions that aborts upon failure.
+/// Define an assertion expression for no exceptions that stops the test case
+/// upon failure.
 /// \remarks
 ///   The exception expression should be enclosed in curly braces.
 ///   For example, `EXPECT_NO_EXCEPTION { throw 3 };`

@@ -30,7 +30,7 @@ struct Failure {
 
 /// A complete testing environment.
 struct Environment {
-  /// Whether or not unit tests should abort upon a failed assertion.
+  /// Whether or not unit test cases should stop after a failed assertion.
   bool stopOnFailure = true;
   
   /// Whether or not the ran unit test was successful.

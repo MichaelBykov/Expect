@@ -28,7 +28,7 @@ struct Evaluate {
   /// The line in the file on which the assertion exists.
   int line;
   
-  /// Whether or not to abort upon assertion failure.
+  /// Whether or not to stop a test case upon assertion failure.
   bool stopOnFailure;
   
   /// Create an assertion evaluator.
@@ -39,7 +39,7 @@ struct Evaluate {
   /// \param[in] line
   ///   The line in the file on which the assertion begins.
   /// \param[in] stop
-  ///   Whether or not to abort upon assertion failure.
+  ///   Whether or not to stop a test case upon assertion failure.
   Evaluate(
     Environment &environment,
     const char  *file       ,
