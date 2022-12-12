@@ -48,7 +48,7 @@ struct Equal : Expressions::Expression {
   
   /// Load a message into the expression.
   Equal<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
 };
@@ -85,7 +85,7 @@ struct NotEqual : Expressions::Expression {
   
   /// Load a message into the expression.
   NotEqual<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
 };
@@ -125,7 +125,7 @@ struct InclusiveRange : Expressions::Expression {
   
   /// Load a message into the expression.
   InclusiveRange<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
 };
@@ -179,7 +179,7 @@ struct Range : Expressions::Expression {
   
   /// Load a message into the expression.
   Range<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
 };
@@ -219,7 +219,7 @@ struct ExclusiveRange : Expressions::Expression {
   
   /// Load a message into the expression.
   ExclusiveRange<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
 };
@@ -256,7 +256,7 @@ struct Less : Expressions::Expression {
   
   /// Load a message into the expression.
   Less<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
   
@@ -316,7 +316,7 @@ struct LessEqual : Expressions::Expression {
   
   /// Load a message into the expression.
   LessEqual<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
   
@@ -375,7 +375,7 @@ struct Greater : Expressions::Expression {
   
   /// Load a message into the expression.
   Greater<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
   
@@ -435,7 +435,7 @@ struct GreaterEqual : Expressions::Expression {
   
   /// Load a message into the expression.
   GreaterEqual<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
   
@@ -491,7 +491,7 @@ struct Value : Expressions::Expression {
   
   /// Load a message into the expression.
   Value<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
     return *this;
   };
   

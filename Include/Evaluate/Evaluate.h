@@ -64,7 +64,7 @@ struct Evaluate {
     if (!expression.evaluate()) {
       // Failure
       std::string message = messagePrefix();
-      if (expression.message != nullptr)
+      if (!expression.message.empty())
         message = message.append(expression.message)
           .append(" (").append(expression.failMessage()).append(")");
       else

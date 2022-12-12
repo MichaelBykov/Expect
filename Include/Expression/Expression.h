@@ -21,7 +21,7 @@ namespace Expressions {
 /// An expression that can be evaluated for validity.
 struct Expression {
   /// An optional message carried by the expression.
-  const char *message = nullptr;
+  std::string message = "";
   
   /// Evaluate the expression with the set values.
   virtual bool evaluate() = 0;
