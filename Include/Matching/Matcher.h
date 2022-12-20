@@ -281,24 +281,197 @@ XorMatcherExpression<T> &MatcherExpression<T>::operator ^(MatcherExpression<T> &
 
 
 
+struct MatcherStringBuilder {
+  std::string message;
+  
+  operator std::string() {
+    return message;
+  }
+  
+  MatcherStringBuilder &operator | (const char *message) {
+    this->message = this->message.append(message);
+    return *this;
+  }
+  
+  MatcherStringBuilder &operator | (std::string message) {
+    this->message = this->message.append(message);
+    return *this;
+  }
+  
+  template<typename T>
+  MatcherStringBuilder &operator | (T message) {
+    this->message = this->message.append(toString(message));
+    return *this;
+  }
+};
+
+
+
 namespace Matchers {
 
 
 
-// Numerical matchers
-template<typename T>
-MatcherExpression<T> &isEven() {
-  return *new ValueMatcherExpression<T>([=](T value) -> bool {
-    return value % 2 == 0;
-  });
-};
+#define MATCHER_MEMBERS_CONCAT_(lhs, rhs) lhs##rhs
+#define MATCHER_MEMBERS_CONCAT(lhs, rhs) MATCHER_MEMBERS_CONCAT_(lhs, rhs)
 
-template<typename T>
-MatcherExpression<T> &inRange(T lhs, T rhs) {
-  return *new ValueMatcherExpression<T>([=](T value) -> bool {
-    return lhs <= value && value <= rhs;
-  });
-};
+#define MATCHER_MEMBERS_COUNT_( \
+  __1, __2, __3, __4, __5, __6, __7, __8, __9, _10, \
+  _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, \
+  _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, \
+  _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, \
+  _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, \
+  N, ... \
+) N
+#define MATCHER_MEMBERS_COUNT(...) \
+  MATCHER_MEMBERS_COUNT_(__VA_ARGS__, \
+    50, 49, 48, 47, 46, 45, 44, 43, 42, 41, \
+    40, 39, 38, 37, 36, 35, 34, 33, 32, 31, \
+    30, 29, 28, 27, 26, 25, 24, 23, 22, 21, \
+    20, 19, 18, 17, 16, 15, 14, 13, 12, 11, \
+    10,  9,  8,  7,  6,  5,  4,  3,  2,  1 \
+  )
+
+#define IMPLEMENT_MATCHER_MEMBERS_1(...)
+#define IMPLEMENT_MATCHER_MEMBERS_2( type, name     ) type name;
+#define IMPLEMENT_MATCHER_MEMBERS_4( type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_2( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_6( type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_4( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_8( type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_6( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_10(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_8( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_12(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_10(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_14(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_12(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_16(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_14(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_18(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_16(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_20(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_18(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_22(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_20(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_24(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_22(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_26(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_24(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_28(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_26(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_30(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_28(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_32(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_30(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_34(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_32(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_36(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_34(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_38(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_36(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_40(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_38(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_42(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_40(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_44(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_42(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_46(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_44(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_48(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_46(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_MEMBERS_50(type, name, ...) type name; IMPLEMENT_MATCHER_MEMBERS_48(__VA_ARGS__)
+
+#define IMPLEMENT_MATCHER_UNPACK_1(...)
+#define IMPLEMENT_MATCHER_UNPACK_2( type, name     ) type name
+#define IMPLEMENT_MATCHER_UNPACK_4( type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_2( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_6( type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_4( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_8( type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_6( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_10(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_8( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_12(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_10(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_14(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_12(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_16(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_14(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_18(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_16(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_20(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_18(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_22(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_20(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_24(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_22(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_26(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_24(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_28(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_26(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_30(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_28(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_32(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_30(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_34(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_32(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_36(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_34(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_38(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_36(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_40(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_38(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_42(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_40(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_44(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_42(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_46(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_44(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_48(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_46(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_UNPACK_50(type, name, ...) type name, IMPLEMENT_MATCHER_UNPACK_48(__VA_ARGS__)
+
+#define IMPLEMENT_MATCHER_NAMES_1(...)
+#define IMPLEMENT_MATCHER_NAMES_2( type, name     ) name
+#define IMPLEMENT_MATCHER_NAMES_4( type, name, ...) name, IMPLEMENT_MATCHER_NAMES_2( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_6( type, name, ...) name, IMPLEMENT_MATCHER_NAMES_4( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_8( type, name, ...) name, IMPLEMENT_MATCHER_NAMES_6( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_10(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_8( __VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_12(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_10(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_14(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_12(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_16(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_14(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_18(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_16(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_20(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_18(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_22(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_20(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_24(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_22(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_26(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_24(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_28(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_26(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_30(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_28(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_32(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_30(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_34(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_32(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_36(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_34(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_38(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_36(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_40(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_38(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_42(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_40(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_44(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_42(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_46(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_44(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_48(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_46(__VA_ARGS__)
+#define IMPLEMENT_MATCHER_NAMES_50(type, name, ...) name, IMPLEMENT_MATCHER_NAMES_48(__VA_ARGS__)
+
+#define IMPLEMENT_MATCHER_MEMBERS(...) \
+  MATCHER_MEMBERS_CONCAT(IMPLEMENT_MATCHER_MEMBERS_, \
+    MATCHER_MEMBERS_COUNT(__VA_ARGS__))(__VA_ARGS__)
+
+#define IMPLEMENT_MATCHER_UNPACK(...) \
+  MATCHER_MEMBERS_CONCAT(IMPLEMENT_MATCHER_UNPACK_, \
+    MATCHER_MEMBERS_COUNT(__VA_ARGS__))(__VA_ARGS__)
+
+#define IMPLEMENT_MATCHER_NAMES(...) \
+  MATCHER_MEMBERS_CONCAT(IMPLEMENT_MATCHER_NAMES_, \
+    MATCHER_MEMBERS_COUNT(__VA_ARGS__))(__VA_ARGS__)
+
+
+
+#define DEFINE_MATCHER(name, ...) \
+  template<typename Any> \
+  struct _##name { \
+    IMPLEMENT_MATCHER_MEMBERS(__VA_ARGS__) \
+    bool evaluate(Any value); \
+    std::string message(Any value); \
+  }; \
+  template<typename Any> \
+ :: NAMESPACE_EXPECT ValueMatcherExpression<Any> &name(IMPLEMENT_MATCHER_UNPACK(__VA_ARGS__)) { \
+    return *new ::NAMESPACE_EXPECT ValueMatcherExpression<Any>([=](Any value) -> bool { \
+      _##name<Any> match = { IMPLEMENT_MATCHER_NAMES(__VA_ARGS__) }; \
+      bool result = match.evaluate(value); \
+      if (!result) \
+        ; \
+      return result; \
+    }); \
+  }
+
+#define IMPLEMENT_MATCHER(name, value, _message) \
+  template<typename Any> \
+  std::string _##name<Any>::message(Any value) { \
+    return (::NAMESPACE_EXPECT MatcherStringBuilder()) | _message; \
+  } \
+  template<typename Any> \
+  bool _##name<Any>::evaluate(Any value)
+
+#define SPECIALIZE_MATCHER(name, type, value) \
+  template<> \
+  bool _##name<type>::evaluate(type value)
+
+
+
+DEFINE_MATCHER(isEven)
+IMPLEMENT_MATCHER(isEven, value, value | " is is odd.") {
+  return value % 2 == 0;
+}
+
+DEFINE_MATCHER(inRange, Any, lhs, Any, rhs)
+IMPLEMENT_MATCHER(inRange, value, value | " is not in the range of " | lhs | ", " | rhs | ".") {
+  return lhs <= value && value <= rhs;
+}
+
+DEFINE_MATCHER(isNull)
+IMPLEMENT_MATCHER(isNull, value, "Address " | value | " is not null.") {
+  return value == nullptr;
+}
 
 
 
