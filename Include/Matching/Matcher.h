@@ -36,7 +36,11 @@ enum class MatcherExpressionType {
 };
 
 template<typename T>
-struct MatcherExpression {
+struct MatcherExpression;
+
+template<typename T>
+struct MatcherExpressionData {
+  size_t references = 1;
   std::string message = "";
   std::vector<MatcherExpression<T> *> right = { };
   bool hasRight = false;
@@ -44,11 +48,112 @@ struct MatcherExpression {
   
   MatcherExpressionType type;
   
-  virtual ~MatcherExpression<T>() = default;
+  union {
+    std::function<bool(T)> value;
+    MatcherExpression<T> *expression;
+    struct {
+      MatcherExpression<T> *lhs;
+      MatcherExpression<T> *rhs;
+    };
+  };
+  
+  MatcherExpressionData<T>(
+    std::function<bool(T)> value
+  ) : type(MatcherExpressionType::Value), value(value) { }
+  
+  MatcherExpressionData<T>(
+    MatcherExpression<T> *expression
+  ) : type(MatcherExpressionType::Not), expression(expression) { }
+  
+  MatcherExpressionData<T>(
+    MatcherExpressionType type,
+    MatcherExpression<T> *lhs ,
+    MatcherExpression<T> *rhs
+  ) : type(type), lhs(lhs), rhs(rhs) { }
+  
+  ~MatcherExpressionData<T>() {
+    switch (type) {
+    case MatcherExpressionType::Value:
+      value.~function<bool(T)>();
+      break;
+    
+    case MatcherExpressionType::Not:
+      expression->~MatcherExpression<T>();
+      break;
+    
+    case MatcherExpressionType::And:
+    case MatcherExpressionType::Or:
+    case MatcherExpressionType::Xor:
+      lhs->~MatcherExpression<T>();
+      rhs->~MatcherExpression<T>();
+      break;
+    }
+  }
+  
+  void retain() {
+    references++;
+  }
+  
+  void release() {
+    if (--references == 0)
+      delete this;
+  }
+};
+
+template<typename T>
+struct MatcherExpression {
+  MatcherExpressionData<T> *data;
+  
+protected:
+  MatcherExpression<T>(
+    MatcherExpressionData<T> *data
+  ) : data(data) { }
+public:
+  
+  MatcherExpression<T>() {
+    data = nullptr;
+  }
+  
+  MatcherExpression<T>(MatcherExpression<T> &other) {
+    data = other.data;
+    data->retain();
+  }
+  
+  MatcherExpression<T> &operator =(MatcherExpression<T> &other) {
+    if (data != nullptr)
+      data->release();
+    data = other.data;
+    data->retain();
+    return *this;
+  }
+  
+  virtual ~MatcherExpression<T>() {
+    if (data != nullptr)
+      data->release();
+    data = nullptr;
+  }
   
   virtual bool evaluate(T value) = 0;
   
-  virtual MatcherExpression<T> &copy() = 0;
+  std::string &message() {
+    return data->message;
+  }
+  
+  std::vector<MatcherExpression<T> *> &right() {
+    return data->right;
+  }
+  
+  bool hasRight() {
+    return data->hasRight;
+  }
+  
+  bool lastExpression() {
+    return data->lastExpression;
+  }
+  
+  MatcherExpressionType type() {
+    return data->type;
+  }
   
   NotMatcherExpression<T> &operator ! ();
   AndMatcherExpression<T> &operator &&(MatcherExpression<T> &other);
@@ -56,57 +161,41 @@ struct MatcherExpression {
   XorMatcherExpression<T> &operator ^ (MatcherExpression<T> &other);
   
   MatcherExpression<T> &operator | (MatcherExpression<T> &other) {
-    right.push_back(&other);
-    lastExpression = true;
-    hasRight = true;
+    data->right.push_back(&other);
+    data->lastExpression = true;
+    data->hasRight = true;
     return *this;
   }
   
   MatcherExpression<T> &operator | (const char *message) {
-    this->message = this->message.append(message);
-    lastExpression = false;
-    hasRight = true;
+    data->message = data->message.append(message);
+    data->lastExpression = false;
+    data->hasRight = true;
     return *this;
   }
 };
 
 template<typename T>
 struct ValueMatcherExpression : MatcherExpression<T> {
-  std::function<bool(T)> value;
-  
-  ValueMatcherExpression<T>(std::function<bool(T)> value) : value(value) {
-    this->type = MatcherExpressionType::Value;
-  }
+  ValueMatcherExpression<T>(std::function<bool(T)> value)
+    : MatcherExpression<T>(new MatcherExpressionData<T>(value)) { }
   
   bool evaluate(T value) {
-    return this->value(value);
-  }
-  
-  MatcherExpression<T> &copy() {
-    return *(MatcherExpression<T> *)new ValueMatcherExpression<T>(value);
+    return this->data->value(value);
   }
 };
 
 template<typename T>
 struct NotMatcherExpression : MatcherExpression<T> {
-  MatcherExpression<T> &value;
+  NotMatcherExpression<T>(MatcherExpression<T> &expression)
+    : MatcherExpression<T>(new MatcherExpressionData<T>(&expression)) { }
   
-  NotMatcherExpression<T>(MatcherExpression<T> &value) : value(value) {
-    this->type = MatcherExpressionType::Not;
-    this->message = this->message.append(value.message);
-    this->right = value.right;
-  }
-  
-  ~NotMatcherExpression<T>() {
-    delete &value;
+  MatcherExpression<T> &expression() {
+    return *this->data->expression;
   }
   
   bool evaluate(T value) {
-    return !this->value.evaluate(value);
-  }
-  
-  MatcherExpression<T> &copy() {
-    return *(MatcherExpression<T> *)new NotMatcherExpression<T>(value.copy());
+    return !this->data->expression->evaluate(value);
   }
 };
 
@@ -117,26 +206,21 @@ NotMatcherExpression<T> &MatcherExpression<T>::operator !() {
 
 template<typename T>
 struct AndMatcherExpression : MatcherExpression<T> {
-  MatcherExpression<T> &lhs;
-  MatcherExpression<T> &rhs;
-  
   AndMatcherExpression<T>(MatcherExpression<T> &lhs, MatcherExpression<T> &rhs)
-    : lhs(lhs), rhs(rhs) {
-    this->type = MatcherExpressionType::And;
-    this->message = this->message.append(lhs.message).append(rhs.message);
+    : MatcherExpression<T>(new MatcherExpressionData<T>(
+      MatcherExpressionType::And, &lhs, &rhs
+    )) { }
+  
+  MatcherExpression<T> &lhs() {
+    return *this->data->lhs;
   }
   
-  ~AndMatcherExpression<T>() {
-    delete &lhs;
-    delete &rhs;
+  MatcherExpression<T> &rhs() {
+    return *this->data->rhs;
   }
   
   bool evaluate(T value) {
-    return lhs.evaluate(value) && rhs.evaluate(value);
-  }
-  
-  MatcherExpression<T> &copy() {
-    return *(MatcherExpression<T> *)new AndMatcherExpression<T>(lhs.copy(), rhs.copy());
+    return this->data->lhs->evaluate(value) && this->data->rhs->evaluate(value);
   }
 };
 
@@ -147,26 +231,21 @@ AndMatcherExpression<T> &MatcherExpression<T>::operator &&(MatcherExpression<T> 
 
 template<typename T>
 struct OrMatcherExpression : MatcherExpression<T> {
-  MatcherExpression<T> &lhs;
-  MatcherExpression<T> &rhs;
-  
   OrMatcherExpression<T>(MatcherExpression<T> &lhs, MatcherExpression<T> &rhs)
-    : lhs(lhs), rhs(rhs) {
-    this->type = MatcherExpressionType::Or;
-    this->message = this->message.append(lhs.message).append(rhs.message);
+    : MatcherExpression<T>(new MatcherExpressionData<T>(
+      MatcherExpressionType::Or, &lhs, &rhs
+    )) { }
+  
+  MatcherExpression<T> &lhs() {
+    return *this->data->lhs;
   }
   
-  ~OrMatcherExpression<T>() {
-    delete &lhs;
-    delete &rhs;
+  MatcherExpression<T> &rhs() {
+    return *this->data->rhs;
   }
   
   bool evaluate(T value) {
-    return lhs.evaluate(value) || rhs.evaluate(value);
-  }
-  
-  MatcherExpression<T> &copy() {
-    return *(MatcherExpression<T> *)new OrMatcherExpression<T>(lhs.copy(), rhs.copy());
+    return this->data->lhs->evaluate(value) || this->data->rhs->evaluate(value);
   }
 };
 
@@ -177,26 +256,21 @@ OrMatcherExpression<T> &MatcherExpression<T>::operator ||(MatcherExpression<T> &
 
 template<typename T>
 struct XorMatcherExpression : MatcherExpression<T> {
-  MatcherExpression<T> &lhs;
-  MatcherExpression<T> &rhs;
-  
   XorMatcherExpression<T>(MatcherExpression<T> &lhs, MatcherExpression<T> &rhs)
-    : lhs(lhs), rhs(rhs) {
-    this->type = MatcherExpressionType::Xor;
-    this->message = this->message.append(lhs.message).append(rhs.message);
+    : MatcherExpression<T>(new MatcherExpressionData<T>(
+      MatcherExpressionType::Xor, &lhs, &rhs
+    )) { }
+  
+  MatcherExpression<T> &lhs() {
+    return *this->data->lhs;
   }
   
-  ~XorMatcherExpression<T>() {
-    delete &lhs;
-    delete &rhs;
+  MatcherExpression<T> &rhs() {
+    return *this->data->rhs;
   }
   
   bool evaluate(T value) {
-    return lhs.evaluate(value) ^ rhs.evaluate(value);
-  }
-  
-  MatcherExpression<T> &copy() {
-    return *(MatcherExpression<T> *)new XorMatcherExpression<T>(lhs.copy(), rhs.copy());
+    return this->data->lhs->evaluate(value) ^ this->data->rhs->evaluate(value);
   }
 };
 

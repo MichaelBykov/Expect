@@ -42,11 +42,6 @@ struct ExpectThatBuilder : Expressions::Expression {
     return toString(value).append(" did not match the set conditions.");
   }
   
-  void cleanup() {
-    for (MatcherExpression<T> *matcher : matchers)
-      delete matcher;
-  }
-  
   ExpectThatBuilder<T> operator | (MatcherExpression<T> &matcher) {
     this->matchers.push_back(&matcher);
     inExpression = true;
@@ -61,7 +56,7 @@ struct ExpectThatBuilder : Expressions::Expression {
   }
   
   ExpectThatBuilder<T> operator ||(MatcherExpression<T> &matcher) {
-    this->message = this->message.append(matcher.message);
+    this->message = this->message.append(matcher.message());
     if (!inExpression)
       throw "Improperly formatted match expression.";
     
@@ -118,19 +113,19 @@ struct ExpectThatBuilder : Expressions::Expression {
     stack.push(new Stack(matcher, nullptr, false));
     while (!stack.empty()) {
       Stack *top = stack.top();
-      if (!top->matcher.hasRight) {
+      if (!top->matcher.hasRight()) {
         stack.pop();
-        switch (top->matcher.type) {
+        switch (top->matcher.type()) {
         case MatcherExpressionType::And: {
           AndMatcherExpression<T> &matcher = (AndMatcherExpression<T> &)top->matcher;
-          stack.push(new Stack(matcher.rhs, new Stack(top), true ));
-          stack.push(new Stack(matcher.lhs, new Stack(top), false));
+          stack.push(new Stack(matcher.rhs(), new Stack(top), true ));
+          stack.push(new Stack(matcher.lhs(), new Stack(top), false));
         } break;
         
         case MatcherExpressionType::Or: {
           OrMatcherExpression<T> &matcher = (OrMatcherExpression<T> &)top->matcher;
-          stack.push(new Stack(matcher.rhs, new Stack(top), true ));
-          stack.push(new Stack(matcher.lhs, new Stack(top), false));
+          stack.push(new Stack(matcher.rhs(), new Stack(top), true ));
+          stack.push(new Stack(matcher.lhs(), new Stack(top), false));
         } break;
         
         default: break;
@@ -144,35 +139,33 @@ struct ExpectThatBuilder : Expressions::Expression {
           expression = expression->parent;
         
         MatcherExpression<T> *last = (MatcherExpression<T> *)matchers[matchers.size() - 1];
-        if (last->type == MatcherExpressionType::Or) {
+        if (last->type() == MatcherExpressionType::Or) {
           OrMatcherExpression<T> *lastOr = (OrMatcherExpression<T> *)last;
-          while (lastOr->rhs.type == MatcherExpressionType::Or)
-            lastOr = (OrMatcherExpression<T> *)&lastOr->rhs;
-          lastOr->rhs = *new OrMatcherExpression<T>(lastOr->rhs, expression->matcher.copy());
+          while (lastOr->rhs().type() == MatcherExpressionType::Or)
+            lastOr = (OrMatcherExpression<T> *)&lastOr->rhs();
+          lastOr->rhs() = *new OrMatcherExpression<T>(lastOr->rhs(), expression->matcher);
         } else {
           matchers.pop_back();
-          matchers.push_back(new OrMatcherExpression<T>(*last, expression->matcher.copy()));
+          matchers.push_back(new OrMatcherExpression<T>(*last, expression->matcher));
         }
         
-        for (MatcherExpression<T> *right : top->matcher.right)
+        for (MatcherExpression<T> *right : top->matcher.right())
           matchers.push_back(right);
-        inExpression = top->matcher.lastExpression;
+        inExpression = top->matcher.lastExpression();
         
         expression = expression->parent;
         while (expression != nullptr) {
           // All upper expressions should be lhs only, but just in case check
           if (!expression->rhs)
-            switch (expression->matcher.type) {
+            switch (expression->matcher.type()) {
             case MatcherExpressionType::And: {
               AndMatcherExpression<T> &matcher = (AndMatcherExpression<T> &)expression->matcher;
-              *this && matcher.rhs.copy();
-              delete &matcher;
+              *this && matcher.rhs();
             } break;
             
             case MatcherExpressionType::Or: {
               OrMatcherExpression<T> &matcher = (OrMatcherExpression<T> &)expression->matcher;
-              *this || matcher.rhs.copy();
-              delete &matcher;
+              *this || matcher.rhs();
             } break;
             
             default: break;
@@ -191,11 +184,11 @@ struct ExpectThatBuilder : Expressions::Expression {
     
     // No other divisions: add to hierarchy
     MatcherExpression<T> *last = matchers[matchers.size() - 1];
-    if (last->type == MatcherExpressionType::Or) {
+    if (last->type() == MatcherExpressionType::Or) {
       OrMatcherExpression<T> *lastOr = (OrMatcherExpression<T> *)last;
-      while (lastOr->rhs.type == MatcherExpressionType::Or)
-        lastOr = (OrMatcherExpression<T> *)&lastOr->rhs;
-      lastOr->rhs = *new OrMatcherExpression<T>(lastOr->rhs, matcher);
+      while (lastOr->rhs().type() == MatcherExpressionType::Or)
+        lastOr = (OrMatcherExpression<T> *)&lastOr->rhs();
+      lastOr->rhs() = *new OrMatcherExpression<T>(lastOr->rhs(), matcher);
     } else {
       matchers.pop_back();
       matchers.push_back(new OrMatcherExpression<T>(*last, matcher));
@@ -205,7 +198,7 @@ struct ExpectThatBuilder : Expressions::Expression {
   }
   
   ExpectThatBuilder<T> operator &&(MatcherExpression<T> &matcher) {
-    this->message = this->message.append(matcher.message);
+    this->message = this->message.append(matcher.message());
     if (!inExpression)
       throw "Improperly formatted match expression.";
     
@@ -244,12 +237,12 @@ struct ExpectThatBuilder : Expressions::Expression {
     stack.push(new Stack(matcher, nullptr, false));
     while (!stack.empty()) {
       Stack *top = stack.top();
-      if (!top->matcher.hasRight) {
+      if (!top->matcher.hasRight()) {
         stack.pop();
-        if (top->matcher.type == MatcherExpressionType::And) {
+        if (top->matcher.type() == MatcherExpressionType::And) {
           AndMatcherExpression<T> &matcher = (AndMatcherExpression<T> &)top->matcher;
-          stack.push(new Stack(matcher.rhs, new Stack(top), true ));
-          stack.push(new Stack(matcher.lhs, new Stack(top), false));
+          stack.push(new Stack(matcher.rhs(), new Stack(top), true ));
+          stack.push(new Stack(matcher.lhs(), new Stack(top), false));
         }
         top->release();
       } else {
@@ -259,27 +252,26 @@ struct ExpectThatBuilder : Expressions::Expression {
           expression = expression->parent;
         
         MatcherExpression<T> *last = (MatcherExpression<T> *)matchers[matchers.size() - 1];
-        if (last->type == MatcherExpressionType::And) {
+        if (last->type() == MatcherExpressionType::And) {
           AndMatcherExpression<T> *lastAnd = (AndMatcherExpression<T> *)last;
-          while (lastAnd->rhs.type == MatcherExpressionType::And)
-            lastAnd = (AndMatcherExpression<T> *)&lastAnd->rhs;
-          lastAnd->rhs = *new AndMatcherExpression<T>(lastAnd->rhs, expression->matcher.copy());
+          while (lastAnd->rhs().type() == MatcherExpressionType::And)
+            lastAnd = (AndMatcherExpression<T> *)&lastAnd->rhs();
+          lastAnd->rhs() = *new AndMatcherExpression<T>(lastAnd->rhs(), expression->matcher);
         } else {
           matchers.pop_back();
-          matchers.push_back(new AndMatcherExpression<T>(*last, expression->matcher.copy()));
+          matchers.push_back(new AndMatcherExpression<T>(*last, expression->matcher));
         }
         
-        for (MatcherExpression<T> *right : top->matcher.right)
+        for (MatcherExpression<T> *right : top->matcher.right())
           matchers.push_back(right);
-        inExpression = top->matcher.lastExpression;
+        inExpression = top->matcher.lastExpression();
         
         expression = expression->parent;
         while (expression != nullptr) {
           // All upper expressions should be lhs only, but just in case check
           if (!expression->rhs) {
             AndMatcherExpression<T> &matcher = (AndMatcherExpression<T> &)expression->matcher;
-            *this && matcher.rhs.copy();
-            delete &matcher;
+            *this && matcher.rhs();
           }
           
           expression = expression->parent;
@@ -295,11 +287,11 @@ struct ExpectThatBuilder : Expressions::Expression {
     
     // No other divisions: add to hierarchy
     MatcherExpression<T> *last = matchers[matchers.size() - 1];
-    if (last->type == MatcherExpressionType::And) {
+    if (last->type() == MatcherExpressionType::And) {
       AndMatcherExpression<T> *lastAnd = (AndMatcherExpression<T> *)last;
-      while (lastAnd->rhs.type == MatcherExpressionType::And)
-        lastAnd = (AndMatcherExpression<T> *)&lastAnd->rhs;
-      lastAnd->rhs = *new AndMatcherExpression<T>(lastAnd->rhs, matcher);
+      while (lastAnd->rhs().type() == MatcherExpressionType::And)
+        lastAnd = (AndMatcherExpression<T> *)&lastAnd->rhs();
+      lastAnd->rhs() = *new AndMatcherExpression<T>(lastAnd->rhs(), matcher);
     } else {
       matchers.pop_back();
       matchers.push_back(new AndMatcherExpression<T>(*last, matcher));
