@@ -43,6 +43,7 @@ struct ExpectThatBuilder : Expressions::Expression {
   }
   
   ExpectThatBuilder<T> operator | (MatcherExpression<T> &matcher) {
+    this->message = this->message.append(matcher.message());
     this->matchers.push_back(&matcher);
     inExpression = true;
     return *this;
@@ -55,8 +56,21 @@ struct ExpectThatBuilder : Expressions::Expression {
     return *this;
   }
   
+  ExpectThatBuilder<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    inExpression = false;
+    return *this;
+  }
+  
+  ExpectThatBuilder<T> operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
+    inExpression = false;
+    return *this;
+  }
+  
   ExpectThatBuilder<T> operator ||(MatcherExpression<T> &matcher) {
-    this->message = this->message.append(matcher.message());
+    if (!matcher.messageAccessed())
+      this->message = this->message.append(matcher.message());
     if (!inExpression)
       throw "Improperly formatted match expression.";
     
@@ -149,8 +163,11 @@ struct ExpectThatBuilder : Expressions::Expression {
           matchers.push_back(new OrMatcherExpression<T>(*last, expression->matcher));
         }
         
-        for (MatcherExpression<T> *right : top->matcher.right())
+        for (MatcherExpression<T> *right : top->matcher.right()) {
+          if (!right->messageAccessed())
+            message = message.append(right->message());
           matchers.push_back(right);
+        }
         inExpression = top->matcher.lastExpression();
         
         expression = expression->parent;
@@ -198,7 +215,8 @@ struct ExpectThatBuilder : Expressions::Expression {
   }
   
   ExpectThatBuilder<T> operator &&(MatcherExpression<T> &matcher) {
-    this->message = this->message.append(matcher.message());
+    if (!matcher.messageAccessed())
+      this->message = this->message.append(matcher.message());
     if (!inExpression)
       throw "Improperly formatted match expression.";
     
@@ -262,8 +280,11 @@ struct ExpectThatBuilder : Expressions::Expression {
           matchers.push_back(new AndMatcherExpression<T>(*last, expression->matcher));
         }
         
-        for (MatcherExpression<T> *right : top->matcher.right())
+        for (MatcherExpression<T> *right : top->matcher.right()) {
+          if (!right->messageAccessed())
+            message = message.append(right->message());
           matchers.push_back(right);
+        }
         inExpression = top->matcher.lastExpression();
         
         expression = expression->parent;

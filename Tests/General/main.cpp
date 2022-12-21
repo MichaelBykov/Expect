@@ -53,7 +53,9 @@ SUITE(Tests) {
     // EXPECT_TEST_OKAY(ASSERT_NO_EXCEPTION { });
     // EXPECT_TEST_FAIL(ASSERT_NO_EXCEPTION { throw 3; });
     
-    EXPECT_THAT 3 | inRange(0, 1) or not isEven<int>() and not inRange(-1, 1) | "Something's fishy. " | not isEven<int>() and inRange(-100, 0) | inRange(1, 3) and not isEven<int>() | isEven<int>() | "foo" | isEven<int>() or isEven<int>();
+    EXPECT false | MESSAGE "foo " << 3 << '.';
+    
+    EXPECT_THAT 3 | inRange(0, 1) or not isEven<int>() and not inRange(-1, 1) | MESSAGE "Something's fishy. " << 3 << " is fishy." | not isEven<int>() and inRange(-100, 0) | inRange(1, 3) and not isEven<int>() | isEven<int>() | "foo" | isEven<int>() or isEven<int>();
     
     EXPECT_THAT (int *)nullptr | isNull<int *>();
     

@@ -10,6 +10,7 @@
 
 #pragma once
 #include <Expect Common.h>
+#include <Global/StringBuilder.h>
 #include <functional>
 #include <vector>
 #include <string>
@@ -45,6 +46,7 @@ struct MatcherExpressionData {
   std::vector<MatcherExpression<T> *> right = { };
   bool hasRight = false;
   bool lastExpression = true;
+  bool messageAccessed = false;
   
   MatcherExpressionType type;
   
@@ -135,8 +137,24 @@ public:
   
   virtual bool evaluate(T value) = 0;
   
-  std::string &message() {
-    return data->message;
+  std::string message() {
+    data->messageAccessed = true;
+    switch (data->type) {
+    case MatcherExpressionType::Value:
+    case MatcherExpressionType::Not:
+      return data->message;
+    
+    case MatcherExpressionType::And:
+    case MatcherExpressionType::Or:
+    case MatcherExpressionType::Xor:
+      return data->lhs->message()
+        .append(data->message)
+        .append(data->rhs->message());
+    }
+  }
+  
+  bool messageAccessed() {
+    return data->messageAccessed;
   }
   
   std::vector<MatcherExpression<T> *> &right() {
@@ -168,6 +186,20 @@ public:
   }
   
   MatcherExpression<T> &operator | (const char *message) {
+    data->message = data->message.append(message);
+    data->lastExpression = false;
+    data->hasRight = true;
+    return *this;
+  }
+  
+  MatcherExpression<T> &operator | (std::string &message) {
+    data->message = data->message.append(message);
+    data->lastExpression = false;
+    data->hasRight = true;
+    return *this;
+  }
+  
+  MatcherExpression<T> &operator | (StringBuilder &message) {
     data->message = data->message.append(message);
     data->lastExpression = false;
     data->hasRight = true;
@@ -278,32 +310,6 @@ template<typename T>
 XorMatcherExpression<T> &MatcherExpression<T>::operator ^(MatcherExpression<T> &other) {
   return *new XorMatcherExpression<T>(*this, other);
 }
-
-
-
-struct MatcherStringBuilder {
-  std::string message;
-  
-  operator std::string() {
-    return message;
-  }
-  
-  MatcherStringBuilder &operator | (const char *message) {
-    this->message = this->message.append(message);
-    return *this;
-  }
-  
-  MatcherStringBuilder &operator | (std::string message) {
-    this->message = this->message.append(message);
-    return *this;
-  }
-  
-  template<typename T>
-  MatcherStringBuilder &operator | (T message) {
-    this->message = this->message.append(toString(message));
-    return *this;
-  }
-};
 
 
 
@@ -430,46 +436,46 @@ namespace Matchers {
   template<typename Any> \
   struct _##name { \
     IMPLEMENT_MATCHER_MEMBERS(__VA_ARGS__) \
-    bool evaluate(Any value); \
-    std::string message(Any value); \
+    bool __evaluate__(Any value); \
+    std::string __message__(Any value); \
   }; \
   template<typename Any> \
  :: NAMESPACE_EXPECT ValueMatcherExpression<Any> &name(IMPLEMENT_MATCHER_UNPACK(__VA_ARGS__)) { \
     return *new ::NAMESPACE_EXPECT ValueMatcherExpression<Any>([=](Any value) -> bool { \
       _##name<Any> match = { IMPLEMENT_MATCHER_NAMES(__VA_ARGS__) }; \
-      bool result = match.evaluate(value); \
+      bool result = match.__evaluate__(value); \
       if (!result) \
         ; \
       return result; \
     }); \
   }
 
-#define IMPLEMENT_MATCHER(name, value, _message) \
+#define IMPLEMENT_MATCHER(name, value, message) \
   template<typename Any> \
-  std::string _##name<Any>::message(Any value) { \
-    return (::NAMESPACE_EXPECT MatcherStringBuilder()) | _message; \
+  std::string _##name<Any>::__message__(Any value) { \
+    return ::NAMESPACE_EXPECT StringBuilder() << message; \
   } \
   template<typename Any> \
-  bool _##name<Any>::evaluate(Any value)
+  bool _##name<Any>::__evaluate__(Any value)
 
 #define SPECIALIZE_MATCHER(name, type, value) \
   template<> \
-  bool _##name<type>::evaluate(type value)
+  bool _##name<type>::__evaluate__(type value)
 
 
 
 DEFINE_MATCHER(isEven)
-IMPLEMENT_MATCHER(isEven, value, value | " is is odd.") {
+IMPLEMENT_MATCHER(isEven, value, value << " is is odd.") {
   return value % 2 == 0;
 }
 
 DEFINE_MATCHER(inRange, Any, lhs, Any, rhs)
-IMPLEMENT_MATCHER(inRange, value, value | " is not in the range of " | lhs | ", " | rhs | ".") {
+IMPLEMENT_MATCHER(inRange, value, value << " is not in the range of " << lhs << ", " << rhs << ".") {
   return lhs <= value && value <= rhs;
 }
 
 DEFINE_MATCHER(isNull)
-IMPLEMENT_MATCHER(isNull, value, "Address " | value | " is not null.") {
+IMPLEMENT_MATCHER(isNull, value, "Address " << value << " is not null.") {
   return value == nullptr;
 }
 

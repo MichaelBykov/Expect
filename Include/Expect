@@ -18,6 +18,8 @@
 #include "Expect Common.h"
 
 #include "Global/Environment.h"
+#include "Global/toString.h"
+#include "Global/StringBuilder.h"
 #include "Test/Test.h"
 #include "Suite/Suite.h"
 #include "Suite/Setup.h"

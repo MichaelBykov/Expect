@@ -10,6 +10,7 @@
 
 #pragma once
 #include <Global/Environment.h>
+#include <Global/StringBuilder.h>
 #include "Expression.h"
 
 START_NAMESPACE_EXPECT
@@ -70,6 +71,18 @@ struct ExceptionValue : Expressions::Expression {
     this->message = this->message.append(message);
     return *this;
   };
+  
+  /// Load a message into the expression.
+  ExceptionValue<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  ExceptionValue<T> operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
 };
 
 /// Expect that an expression produces any exception.
@@ -94,6 +107,18 @@ struct AnyExceptionValue : Expressions::Expression {
     this->message = this->message.append(message);
     return *this;
   };
+  
+  /// Load a message into the expression.
+  AnyExceptionValue operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  AnyExceptionValue operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
 };
 
 /// Expect that an expression produces no exceptions.
@@ -115,6 +140,18 @@ struct NoExceptionValue : Expressions::Expression {
   
   /// Load a message into the expression.
   NoExceptionValue operator | (const char *message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  NoExceptionValue operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  NoExceptionValue operator | (StringBuilder &message) {
     this->message = this->message.append(message);
     return *this;
   };

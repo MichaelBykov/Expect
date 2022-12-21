@@ -13,7 +13,8 @@
 
 
 TEST_STRINGIFY(char, value) {
-  return std::to_string(value);
+  char string[2] { value, 0 };
+  return string;
 }
 
 TEST_STRINGIFY(short, value) {

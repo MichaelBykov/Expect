@@ -9,6 +9,7 @@
 // ===--------------------------------------------------------------------=== //
 
 #pragma once
+#include <Global/StringBuilder.h>
 #include "Expression.h"
 
 START_NAMESPACE_EXPECT
@@ -51,6 +52,18 @@ struct Equal : Expressions::Expression {
     this->message = this->message.append(message);
     return *this;
   };
+  
+  /// Load a message into the expression.
+  Equal<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  Equal<T> operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
 };
 
 /// Expect that two values are within-approximately not equal.
@@ -85,6 +98,18 @@ struct NotEqual : Expressions::Expression {
   
   /// Load a message into the expression.
   NotEqual<T> operator | (const char *message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  NotEqual<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  NotEqual<T> operator | (StringBuilder &message) {
     this->message = this->message.append(message);
     return *this;
   };
@@ -125,6 +150,18 @@ struct InclusiveRange : Expressions::Expression {
   
   /// Load a message into the expression.
   InclusiveRange<T> operator | (const char *message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  InclusiveRange<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  InclusiveRange<T> operator | (StringBuilder &message) {
     this->message = this->message.append(message);
     return *this;
   };
@@ -182,6 +219,18 @@ struct Range : Expressions::Expression {
     this->message = this->message.append(message);
     return *this;
   };
+  
+  /// Load a message into the expression.
+  Range<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  Range<T> operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
 };
 
 /// Expect that a value is in an exclusive range.
@@ -222,6 +271,18 @@ struct ExclusiveRange : Expressions::Expression {
     this->message = this->message.append(message);
     return *this;
   };
+  
+  /// Load a message into the expression.
+  ExclusiveRange<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  ExclusiveRange<T> operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
 };
 
 /// Expect that one value is within-approximately less than another value.
@@ -256,6 +317,18 @@ struct Less : Expressions::Expression {
   
   /// Load a message into the expression.
   Less<T> operator | (const char *message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  Less<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  Less<T> operator | (StringBuilder &message) {
     this->message = this->message.append(message);
     return *this;
   };
@@ -320,6 +393,18 @@ struct LessEqual : Expressions::Expression {
     return *this;
   };
   
+  /// Load a message into the expression.
+  LessEqual<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  LessEqual<T> operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
   
   
   /// Expect that the loaded value is within-approximately within an inclusive,
@@ -375,6 +460,18 @@ struct Greater : Expressions::Expression {
   
   /// Load a message into the expression.
   Greater<T> operator | (const char *message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  Greater<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  Greater<T> operator | (StringBuilder &message) {
     this->message = this->message.append(message);
     return *this;
   };
@@ -439,6 +536,18 @@ struct GreaterEqual : Expressions::Expression {
     return *this;
   };
   
+  /// Load a message into the expression.
+  GreaterEqual<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  GreaterEqual<T> operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
   
   
   /// Expect that the loaded value is within-approximately within an inclusive,
@@ -491,6 +600,18 @@ struct Value : Expressions::Expression {
   
   /// Load a message into the expression.
   Value<T> operator | (const char *message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  Value<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  Value<T> operator | (StringBuilder &message) {
     this->message = this->message.append(message);
     return *this;
   };
