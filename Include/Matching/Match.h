@@ -24,6 +24,7 @@ struct ExpectThatBuilder : Expressions::Expression {
   T value;
   
   std::vector<MatcherExpression<T> *> matchers = { };
+  std::string failMessages = "";
   
   bool inExpression = false;
   
@@ -31,15 +32,24 @@ struct ExpectThatBuilder : Expressions::Expression {
   
   /// Evaluate the expression with the set values.
   bool evaluate() {
-    for (MatcherExpression<T> *matcher : matchers)
-      if (!matcher->evaluate(value))
-        return false;
-    return true;
+    bool success = true;
+    size_t count = 1;
+    for (MatcherExpression<T> *matcher : matchers) {
+      if (!matcher->evaluate(value)) {
+        failMessages.append(" Condition #").append(toString(count))
+          .append(" failed: ").append(matcher->failMessage());
+        success = false;
+      }
+      count++;
+    }
+    return success;
   }
   
   /// The message to report if the evaluation failed.
   std::string failMessage() {
-    return toString(value).append(" did not match the set conditions.");
+    return toString(value)
+      .append(" did not match the set conditions.")
+      .append(failMessages);
   }
   
   ExpectThatBuilder<T> operator | (MatcherExpression<T> &matcher) {
