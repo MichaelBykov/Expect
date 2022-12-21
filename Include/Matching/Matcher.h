@@ -354,8 +354,8 @@ struct XorMatcherExpression : MatcherExpression<T> {
     bool _lhs = this->data->lhs->evaluate(value);
     bool _rhs = this->data->rhs->evaluate(value);
     if (!_lhs && !_rhs) {
-      this->data->failMessage = this->data->lhs->failMessage
-        .append(" (XOR) ").append(this->data->rhs->failMessage);
+      this->data->failMessage = this->data->lhs->failMessage()
+        .append(" (XOR) ").append(this->data->rhs->failMessage());
       return false;
     } else if (_lhs && _rhs) {
       this->data->failMessage = std::string("(XOR: both failed.)");
@@ -369,6 +369,24 @@ template<typename T>
 XorMatcherExpression<T> &MatcherExpression<T>::operator ^(MatcherExpression<T> &other) {
   return *new XorMatcherExpression<T>(*this, other);
 }
+
+
+
+template<typename T>
+struct Matcher {
+  operator ValueMatcherExpression<T> &() {
+    return *new ValueMatcherExpression<T>(
+      [this](T value) { return this->evaluate(value); },
+      [this](T value) { return this->message(value, this->evaluate(value)); }
+    );
+  }
+  
+  virtual bool evaluate(T value) = 0;
+  
+  virtual std::string message(T value, bool succeeded) {
+    return "Failed.";
+  }
+};
 
 
 
@@ -529,7 +547,7 @@ namespace Matchers {
 
 
 DEFINE_MATCHER(isEven)
-IMPLEMENT_MATCHER(isEven, value, value << " is is odd.") {
+IMPLEMENT_MATCHER(isEven, value, value << " is odd.") {
   return value % 2 == 0;
 }
 
@@ -543,6 +561,132 @@ IMPLEMENT_MATCHER(isNull, value, "Address " << value << " is not null.") {
   return value == nullptr;
 }
 
+DEFINE_MATCHER(isSome)
+IMPLEMENT_MATCHER(isSome, value, "Address " << value << " is null.") {
+  return value != nullptr;
+}
+
+// TODO: Implement custom templated macro matchers and better stringification (including for NOT cases)
+
+// DEFINE_MATCHER(each, std::function<bool(Any)>, predicate)
+// IMPLEMENT_MATCHER(each, value, "A value did not match.") {
+//   for ()
+// }
+
+// template<typename Vector, typename Element>
+// struct each : ::NAMESPACE_EXPECT Matcher<T> {
+//   std::function<bool(Element)> predicate;
+  
+//   bool __evaluate__(Vector value, ::NAMESPACE_EXPECT StringBuilder &message) {
+    
+//   }
+// };
+
+// template<typename T>
+// struct inRange : ::NAMESPACE_EXPECT Matcher<T> {
+//   T lhs, rhs;
+  
+//   bool __evaluate__(T value, ::NAMESPACE_EXPECT StringBuilder &message) {
+//     if (lhs <= value && value <= rhs) {
+//       message << value << " is in the range of " << lhs << ", " << rhs << ".";
+//       return true;
+//     } else {
+//       message << value << " is not in the range of " << lhs << ", " << rhs << ".";
+//       return true;
+//     }
+//   }
+// };
+
+#define MATCHER(name, type) \
+  struct name : ::NAMESPACE_EXPECT Matcher<type>
+
+#define MATCHER_EVALUATE(value, message) \
+  bool __evaluate__(value, ::NAMESPACE_EXPECT StringBuilder &message)
+
+#define MATCHER_IMPLEMENT_EVALUATE(matcher, value, message) \
+  bool matcher::__evaluate__(value, ::NAMESPACE_EXPECT StringBuilder &message)
+
+#define IMPLEMENT_MATCHER3(name, type, matcher, ...) \
+  ::NAMESPACE_EXPECT ValueMatcherExpression<type> &name( \
+    IMPLEMENT_MATCHER_UNPACK(__VA_ARGS__) \
+  ) { \
+    return *new ::NAMESPACE_EXPECT ValueMatcherExpression<type>( \
+      [=](type __value__, std::string &__message__) -> bool { \
+        auto __match__ = (matcher) { IMPLEMENT_MATCHER_NAMES(__VA_ARGS__) }; \
+        return __match__.__evaluate__(__value__, __message__); \
+      } \
+    ); \
+  }
+
+template<typename T>
+MATCHER(inRange3, T) {
+  T lhs, rhs;
+  
+  inRange3<T>(T lhs, T rhs) : lhs(lhs), rhs(rhs) { }
+  
+  bool evaluate(T value) {
+    return lhs <= value && value <= rhs;
+  }
+  
+  std::string message(T value, bool succeeded) {
+    if (succeeded)
+      return MESSAGE value << " is in the range of " << lhs << ", " << rhs << ".";
+    else
+      return MESSAGE value << " is not in the range of " << lhs << ", " << rhs << ".";
+  }
+};
+
+template<typename T>
+MATCHER(isEven3, T) {
+  bool evaluate(T value) {
+    return value % 2 == 0;
+  }
+  
+  std::string message(T value, bool succeeded) {
+    if (succeeded)
+      return MESSAGE value << " is even.";
+    else
+      return MESSAGE value << " is not even.";
+  }
+};
+
+template<typename Collection, typename Element>
+MATCHER(each, Collection) {
+  std::function<bool(Element)> predicate;
+  
+  each<Collection, Element>(
+    std::function<bool(Element)> predicate
+  ) : predicate(predicate) { }
+  
+  bool evaluate(Collection value) {
+    for (Element &element : value)
+      if (!predicate(element))
+        return false;
+    return true;
+  }
+  
+  std::string message(Collection value, bool succeeded) {
+    if (succeeded)
+      return "All elements matched.";
+    else {
+      StringBuilder builder { };
+      builder << "Element(s) ";
+      size_t index = 0;
+      bool first = true;
+      for (Element &element : value) {
+        if (!predicate(element)) {
+          if (first)
+            first = false;
+          else
+            builder << ", ";
+          builder << index;
+        }
+        index++;
+      }
+      return builder << " did not match.";
+    }
+  }
+};
 
 
 

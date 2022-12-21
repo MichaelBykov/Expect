@@ -17,6 +17,7 @@
 
 #include "Expect Common.h"
 
+#include "Global/Iterate.h"
 #include "Global/Environment.h"
 #include "Global/toString.h"
 #include "Global/StringBuilder.h"
