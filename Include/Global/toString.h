@@ -87,30 +87,24 @@ END_NAMESPACE_EXPECT
 
 
 
-#define _TEST_STRINGIFY_GET_TYPE_3(type) type
+#define _TEST_STRINGIFY_GET_TYPE_2(type) type
 #define _TEST_STRINGIFY_GET_TYPE_EACH(type) type,
-#define _TEST_STRINGIFY_GENERIC_TYPE(...) _EXPECT_ITERATE_3( \
-  _EXPECT_ITERATE_PASS, _EXPECT_ITERATE_PASS, \
-  _TEST_STRINGIFY_GET_TYPE_3, _TEST_STRINGIFY_EACH, __VA_ARGS__)
-
-#define _TEST_STRINGIFY_GET_VALUE_2(value) value
-#define _TEST_STRINGIFY_GENERIC_VALUE(...) _EXPECT_ITERATE_2( \
+#define _TEST_STRINGIFY_GENERIC_TYPE(...) _EXPECT_ITERATE_2( \
   _EXPECT_ITERATE_PASS, \
-  _TEST_STRINGIFY_GET_VALUE_2, _EXPECT_ITERATE_PASS, __VA_ARGS__)
+  _TEST_STRINGIFY_GET_TYPE_2, _TEST_STRINGIFY_EACH, __VA_ARGS__)
 
-#define _TEST_STRINGIFY_GET_BODY_1(body) body
-#define _TEST_STRINGIFY_GENERIC_BODY(...) _EXPECT_ITERATE_1( \
-  _TEST_STRINGIFY_GET_BODY_1, _EXPECT_ITERATE_PASS, __VA_ARGS__)
+#define _TEST_STRINGIFY_GET_VALUE_1(value) value
+#define _TEST_STRINGIFY_GENERIC_VALUE(...) _EXPECT_ITERATE_1( \
+  _TEST_STRINGIFY_GET_VALUE_1, _EXPECT_ITERATE_PASS, __VA_ARGS__)
 
 #define TEST_STRINGIFY_GENERIC(...) \
-  struct NAMESPACE_EXPECT ToString< \
-    _TEST_STRINGIFY_GENERIC_TYPE(__VA_ARGS__) \
-  > { \
+  struct NAMESPACE_EXPECT \
+    ToString<_TEST_STRINGIFY_GENERIC_TYPE(__VA_ARGS__)> { \
     static std::string convert( \
       const _TEST_STRINGIFY_GENERIC_TYPE (__VA_ARGS__) \
             _TEST_STRINGIFY_GENERIC_VALUE(__VA_ARGS__) \
-    ) \
-            _TEST_STRINGIFY_GENERIC_BODY (__VA_ARGS__) \
+    )
+#define TEST_STRINGIFY_GENERIC_END \
   };
 
 
@@ -141,15 +135,37 @@ TEST_STRINGIFY(char *, value);
 
 /// Implement the standard template types
 template<typename T>
-TEST_STRINGIFY_GENERIC(std::vector<T>, vector, {
-  std::string string = "";
-  bool first = true;
-  for (T element : vector) {
-    if (first)
-      first = false;
-    else
-      string += ", ";
-    string += toString(element);
+TEST_STRINGIFY_GENERIC(std::vector<T>, vector) {
+  if (vector.empty())
+    return "{ }";
+  else if (vector.size() < 10) {
+    std::string string = "{ ";
+    bool first = true;
+    for (T element : vector) {
+      if (first)
+        first = false;
+      else
+        string += ", ";
+      string += toString(element);
+    }
+    return string + " }";
+  } else {
+    std::string string = "{ ";
+    size_t index = 0, start = 5, end = vector.size() - 3;
+    for (T element : vector) {
+      if (index < start) {
+        if (index > 0)
+          string += ", ";
+        string += toString(element);
+      } else if (index == start)
+        string += " ... ";
+      else if (index >= end) {
+        if (index > end)
+          string += ", ";
+        string += toString(element);
+      }
+      index++;
+    }
+    return string + " }";
   }
-  return string;
-})
+} TEST_STRINGIFY_GENERIC_END

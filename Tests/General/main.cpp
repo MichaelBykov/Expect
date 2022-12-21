@@ -57,7 +57,7 @@ SUITE(Tests) {
     
     EXPECT_THAT 3 | inRange3<int>(1, 2) | isEven3<int>() | isEven<int>() xor isEven<int>() | inRange(0, 1) or not isEven<int>() and not inRange(-1, 1) | MESSAGE "Something's fishy. " << 3 << " is fishy." | not isEven<int>() and inRange(-100, 0) | inRange(1, 3) and not isEven<int>() | isEven<int>() | "foo" | isEven<int>() or isEven<int>();
     
-    std::vector<int> vector = { 1, 2, 3, 4, 5, 6 };
+    std::vector<int> vector = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1 };
     EXPECT_THAT vector | each<std::vector<int>, int>([](int element) { return element % 2 == 0; });
     
     EXPECT_THAT (int *)nullptr | isNull<int *>();

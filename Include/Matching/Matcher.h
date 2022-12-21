@@ -671,15 +671,16 @@ MATCHER(each, Collection) {
     else {
       StringBuilder builder { };
       builder << "Element(s) ";
-      size_t index = 0;
-      bool first = true;
+      size_t index = 0, count = 0;
       for (Element &element : value) {
         if (!predicate(element)) {
-          if (first)
-            first = false;
-          else
+          if (count > 10) {
+            builder << " ...";
+            break;
+          } else if (count > 0)
             builder << ", ";
           builder << index;
+          count++;
         }
         index++;
       }
