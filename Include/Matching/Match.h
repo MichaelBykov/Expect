@@ -59,6 +59,14 @@ struct ExpectThatBuilder : Expressions::Expression {
     return *this;
   }
   
+  ExpectThatBuilder<T> operator | (MatcherExpression<T> &(*emptyMatcher)()) {
+    MatcherExpression<T> &matcher = emptyMatcher();
+    this->message = this->message.append(matcher.message());
+    this->matchers.push_back(&matcher);
+    inExpression = true;
+    return *this;
+  }
+  
   /// Load a message into the builder.
   ExpectThatBuilder<T> operator | (const char *message) {
     this->message = this->message.append(message);
@@ -224,6 +232,10 @@ struct ExpectThatBuilder : Expressions::Expression {
     return *this;
   }
   
+  ExpectThatBuilder<T> operator ||(MatcherExpression<T> &(*emptyMatcher)()) {
+    return *this || emptyMatcher();
+  }
+  
   ExpectThatBuilder<T> operator &&(MatcherExpression<T> &matcher) {
     if (!matcher.messageAccessed())
       this->message = this->message.append(matcher.message());
@@ -329,6 +341,10 @@ struct ExpectThatBuilder : Expressions::Expression {
     }
     
     return *this;
+  }
+  
+  ExpectThatBuilder<T> operator &&(MatcherExpression<T> &(*emptyMatcher)()) {
+    return *this && emptyMatcher();
   }
 };
 
