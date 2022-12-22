@@ -72,3 +72,11 @@ TEST_STRINGIFY(std::string &, string) {
 TEST_STRINGIFY(char *, string) {
   return std::string("\"").append(string).append("\"");
 }
+
+TEST_STRINGIFY(bool, value) {
+  return value ? "true" : "false";
+}
+
+TEST_STRINGIFY(nullptr_t, value) {
+  return "<null>";
+}

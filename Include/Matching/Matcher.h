@@ -43,7 +43,6 @@ template<typename T>
 struct MatcherExpressionData {
   size_t references = 1;
   std::string message = "";
-  std::string failMessage = "";
   std::vector<MatcherExpression<T> *> right = { };
   bool hasRight = false;
   bool lastExpression = true;
@@ -54,19 +53,25 @@ struct MatcherExpressionData {
   union {
     struct {
       std::function<bool(T)> value;
-      std::function<std::string(T)> explanation;
+      std::function<std::string(T, bool)> explanation;
       std::function<void()> cleanup;
+      bool success;
     };
-    MatcherExpression<T> *expression;
+    struct {
+      MatcherExpression<T> *expression;
+      bool expressionSuccess;
+    };
     struct {
       MatcherExpression<T> *lhs;
       MatcherExpression<T> *rhs;
+      bool lhsSuccess;
+      bool rhsSuccess;
     };
   };
   
   MatcherExpressionData<T>(
     std::function<bool(T)> value,
-    std::function<std::string(T)> explanation,
+    std::function<std::string(T, bool)> explanation,
     std::function<void()> cleanup
   ) : type(MatcherExpressionType::Value),
       value(value), explanation(explanation), cleanup(cleanup) { }
@@ -86,7 +91,7 @@ struct MatcherExpressionData {
     case MatcherExpressionType::Value:
       cleanup();
       value.~function<bool(T)>();
-      explanation.~function<std::string(T)>();
+      explanation.~function<std::string(T, bool)>();
       cleanup.~function<void()>();
       break;
     
@@ -148,6 +153,8 @@ public:
   
   virtual bool evaluate(T value) = 0;
   
+  virtual std::string failMessage(T value) = 0;
+  
   std::string message() {
     data->messageAccessed = true;
     switch (data->type) {
@@ -162,10 +169,6 @@ public:
         .append(data->message)
         .append(data->rhs->message());
     }
-  }
-  
-  std::string failMessage() {
-    return data->failMessage;
   }
   
   bool messageAccessed() {
@@ -238,17 +241,18 @@ template<typename T>
 struct ValueMatcherExpression : MatcherExpression<T> {
   ValueMatcherExpression<T>(
     std::function<bool(T)> value,
-    std::function<std::string(T)> explanation,
+    std::function<std::string(T, bool)> explanation,
     std::function<void()> cleanup
   ) : MatcherExpression<T>(new MatcherExpressionData<T>(
         value, explanation, cleanup
       )) { }
   
   bool evaluate(T value) {
-    bool success = this->data->value(value);
-    if (!success)
-      this->data->failMessage = this->data->explanation(value);
-    return success;
+    return this->data->success = this->data->value(value);
+  }
+  
+  std::string failMessage(T value) {
+    return this->data->explanation(value, this->data->success);
   }
 };
 
@@ -262,11 +266,13 @@ struct NotMatcherExpression : MatcherExpression<T> {
   }
   
   bool evaluate(T value) {
-    bool success = !this->data->expression->evaluate(value);
-    if (!success)
-      this->data->failMessage =
-        std::string("(NOT: result true.)");
-    return success;
+    return
+      this->data->expressionSuccess = !this->data->expression->evaluate(value);
+  }
+  
+  std::string failMessage(T value) {
+    return std::string("(NOT) ")
+      .append(this->data->expression->failMessage(value));
   }
 };
 
@@ -291,19 +297,26 @@ struct AndMatcherExpression : MatcherExpression<T> {
   }
   
   bool evaluate(T value) {
-    bool _lhs = this->data->lhs->evaluate(value);
-    if (!_lhs) {
-      this->data->failMessage =
-        this->data->lhs->failMessage().append(" (AND) ...");
+    this->data->lhsSuccess = this->data->lhs->evaluate(value);
+    if (!this->data->lhsSuccess)
       return false;
-    }
-    bool _rhs = this->data->rhs->evaluate(value);
-    if (!_rhs) {
-      this->data->failMessage =
-        std::string("... (AND) ").append(this->data->rhs->failMessage());
+    this->data->rhsSuccess = this->data->rhs->evaluate(value);
+    if (!this->data->rhsSuccess)
       return false;
-    }
     return true;
+  }
+  
+  std::string failMessage(T value) {
+    if (!this->data->lhsSuccess)
+      return this->data->lhs->failMessage(value).append(" (AND) ...");
+    else if (!this->data->rhsSuccess)
+      return std::string("... (AND) ")
+        .append(this->data->rhs->failMessage(value));
+    else
+      // NOT case
+    return this->data->lhs->failMessage(value)
+      .append(" (AND) ")
+      .append(this->data->rhs->failMessage(value));
   }
 };
 
@@ -333,24 +346,27 @@ struct OrMatcherExpression : MatcherExpression<T> {
   }
   
   bool evaluate(T value) {
-    bool _lhs = this->data->lhs->evaluate(value);
-    if (_lhs)
+    this->data->lhsSuccess = this->data->lhs->evaluate(value);
+    if (this->data->lhsSuccess)
       return true;
-    bool _rhs = this->data->rhs->evaluate(value);
-    if (!_rhs) {
-      if (!_lhs)
-        this->data->failMessage = this->data->lhs->failMessage()
-          .append(" (OR) ").append(this->data->rhs->failMessage());
-      else
-        this->data->failMessage =
-          std::string("... (OR) ").append(this->data->rhs->failMessage());
-      return false;
-    } else if (!_lhs) {
-      this->data->failMessage =
-        this->data->lhs->failMessage().append(" (OR) ...");
-      return false;
-    }
-    return true;
+    this->data->rhsSuccess = this->data->rhs->evaluate(value);
+    if (this->data->rhsSuccess)
+      return true;
+    return false;
+  }
+  
+  std::string failMessage(T value) {
+    if (this->data->lhsSuccess)
+      // NOT case
+      return this->data->lhs->failMessage(value).append(" (OR) ...");
+    else if (this->data->rhsSuccess)
+      // NOT case
+      return std::string("... (OR) ")
+        .append(this->data->rhs->failMessage(value));
+    else
+      return this->data->lhs->failMessage(value)
+        .append(" (OR) ")
+        .append(this->data->rhs->failMessage(value));
   }
 };
 
@@ -380,17 +396,15 @@ struct XorMatcherExpression : MatcherExpression<T> {
   }
   
   bool evaluate(T value) {
-    bool _lhs = this->data->lhs->evaluate(value);
-    bool _rhs = this->data->rhs->evaluate(value);
-    if (!_lhs && !_rhs) {
-      this->data->failMessage = this->data->lhs->failMessage()
-        .append(" (XOR) ").append(this->data->rhs->failMessage());
-      return false;
-    } else if (_lhs && _rhs) {
-      this->data->failMessage = std::string("(XOR: both failed.)");
-      return false;
-    }
-    return true;
+    this->data->lhsSuccess = this->data->lhs->evaluate(value);
+    this->data->rhsSuccess = this->data->rhs->evaluate(value);
+    return this->data->lhsSuccess ^ this->data->rhsSuccess;
+  }
+  
+  std::string failMessage(T value) {
+    return this->data->lhs->failMessage(value)
+      .append(" (XOR) ")
+      .append(this->data->rhs->failMessage(value));
   }
 };
 
@@ -411,7 +425,7 @@ struct Matcher {
   virtual bool evaluate(T value) = 0;
   
   virtual std::string message(T value, bool succeeded) {
-    return "Failed.";
+    return succeeded ? "Failed." : "Succeeded.";
   }
   
   
@@ -420,7 +434,7 @@ struct Matcher {
     Implementation *self = new Implementation(*(Implementation *)this);
     return *new ValueMatcherExpression<T>(
       [self](T value) { return self->evaluate(value); },
-      [self](T value) { return self->message(value, self->evaluate(value)); },
+      [self](T value, bool success) { return self->message(value, success); },
       [self]() { delete self; }
     );
   }

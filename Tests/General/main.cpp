@@ -61,7 +61,8 @@ SUITE(Tests) {
     EXPECT_THAT vector | not not each<std::vector<int>, int>([](int element) { return element % 2 == 0; }) | each<std::vector<int>>(1);
     EXPECT_THAT (int *)nullptr | isNull<int *>() | isNull<int *>() or isNull<int *>() | isNull;
     EXPECT_THAT vector | each<std::vector<int>>(1);
-    EXPECT_THAT nullptr | isNull | isNull<nullptr_t>() ^ isSome;
+    EXPECT_THAT (int *)0 | isSome | isNull<int *>() ^ isSome;
+    EXPECT_THAT nullptr | not isNull<nullptr_t>();
     
     
     // EXPECT_THAT, (((((builder << X | a) and (b | b)) and (c | c)) or ((d | f) and (g | f))) or h);

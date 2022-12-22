@@ -37,7 +37,7 @@ struct ExpectThatBuilder : Expressions::Expression {
     for (MatcherExpression<T> *matcher : matchers) {
       if (!matcher->evaluate(value)) {
         failMessages.append(" Condition #").append(toString(count))
-          .append(" failed: ").append(matcher->failMessage());
+          .append(" failed: ").append(matcher->failMessage(value));
         success = false;
       }
       count++;

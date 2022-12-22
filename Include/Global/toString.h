@@ -27,7 +27,9 @@ struct ToString {
       // Display the pointer itself
       std::strcpy(string, "<0x");
       index = 3;
-      address = (uint64_t)value;
+      address = *(uint64_t *)&value;
+      if (address == 0)
+        return "<null>";
     } else {
       // Display a pointer to the given type
       std::strcpy(string, "<value at 0x");
@@ -130,6 +132,10 @@ TEST_STRINGIFY(long double, value);
 
 TEST_STRINGIFY(std::string &, value);
 TEST_STRINGIFY(char *, value);
+
+TEST_STRINGIFY(bool, value);
+
+TEST_STRINGIFY(nullptr_t, value);
 
 
 
