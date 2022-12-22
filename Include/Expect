@@ -35,6 +35,7 @@
 #include "Evaluate/Evaluate.h"
 #include "Evaluate/Section.h"
 #include "Matching/Matcher.h"
+#include "Matching/Matchers.h"
 #include "Matching/Match.h"
 #include "Driver/TestState.h"
 #include "Driver/Driver.h"
