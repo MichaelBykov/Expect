@@ -13,7 +13,8 @@
 
 
 TEST_STRINGIFY(char, value) {
-  return std::to_string(value);
+  char string[2] { value, 0 };
+  return string;
 }
 
 TEST_STRINGIFY(short, value) {
@@ -70,4 +71,12 @@ TEST_STRINGIFY(std::string &, string) {
 
 TEST_STRINGIFY(char *, string) {
   return std::string("\"").append(string).append("\"");
+}
+
+TEST_STRINGIFY(bool, value) {
+  return value ? "true" : "false";
+}
+
+TEST_STRINGIFY(nullptr_t, value) {
+  return "<null>";
 }

@@ -17,7 +17,10 @@
 
 #include "Expect Common.h"
 
+#include "Global/Iterate.h"
 #include "Global/Environment.h"
+#include "Global/toString.h"
+#include "Global/StringBuilder.h"
 #include "Test/Test.h"
 #include "Suite/Suite.h"
 #include "Suite/Setup.h"
@@ -31,6 +34,9 @@
 #include "Evaluate/Expect Float.h"
 #include "Evaluate/Evaluate.h"
 #include "Evaluate/Section.h"
+#include "Matching/Matcher.h"
+#include "Matching/Matchers.h"
+#include "Matching/Match.h"
 #include "Driver/TestState.h"
 #include "Driver/Driver.h"
 #include "Driver/CommandLineDriver.h"

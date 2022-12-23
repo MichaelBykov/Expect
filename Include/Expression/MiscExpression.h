@@ -10,6 +10,7 @@
 
 #pragma once
 #include <Global/Environment.h>
+#include <Global/StringBuilder.h>
 #include "Expression.h"
 
 START_NAMESPACE_EXPECT
@@ -67,7 +68,19 @@ struct ExceptionValue : Expressions::Expression {
   
   /// Load a message into the expression.
   ExceptionValue<T> operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  ExceptionValue<T> operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  ExceptionValue<T> operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
     return *this;
   };
 };
@@ -91,7 +104,19 @@ struct AnyExceptionValue : Expressions::Expression {
   
   /// Load a message into the expression.
   AnyExceptionValue operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  AnyExceptionValue operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  AnyExceptionValue operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
     return *this;
   };
 };
@@ -115,7 +140,19 @@ struct NoExceptionValue : Expressions::Expression {
   
   /// Load a message into the expression.
   NoExceptionValue operator | (const char *message) {
-    this->message = message;
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  NoExceptionValue operator | (std::string &message) {
+    this->message = this->message.append(message);
+    return *this;
+  };
+  
+  /// Load a message into the expression.
+  NoExceptionValue operator | (StringBuilder &message) {
+    this->message = this->message.append(message);
     return *this;
   };
 };

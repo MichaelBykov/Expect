@@ -18,6 +18,7 @@ add_library(Expect
   Source/Expression/MiscExpression.cpp
   Source/Evaluate/Evaluate.cpp
   Source/Evaluate/Section.cpp
+  Source/Matching/Matchers.cpp
   Source/Driver/TestState.cpp
   Source/Driver/Driver.cpp
   Source/Driver/CommandLineDriver.cpp
