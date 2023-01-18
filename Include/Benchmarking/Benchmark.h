@@ -31,6 +31,10 @@ struct Benchmark {
     : environment(environment), line(line) { }
   
   bool operator()() {
+    if (iterations == 0 && !environment.success)
+      // Preconditions failed: do not benchmark
+      return false;
+    
     if (iterations < 16 || totalTime <= 1000000000 && iterations < 1024) {
       // Continue iterating
       start = std::chrono::steady_clock::now();

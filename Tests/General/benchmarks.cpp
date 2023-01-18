@@ -10,4 +10,10 @@ SUITE(Benchmarks) {
     int x = 0;
     BENCHMARK x += 3;
   };
+  
+  TEST(preconditions, "Test precondition checking.", benchmark) {
+    // EXPECT false;
+    
+    BENCHMARK std::this_thread::sleep_for(std::chrono::nanoseconds(10000000));
+  };
 }
