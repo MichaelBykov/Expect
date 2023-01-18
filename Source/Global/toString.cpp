@@ -65,6 +65,10 @@ TEST_STRINGIFY(long double, value) {
   return std::to_string(value);
 }
 
+TEST_STRINGIFY(std::string, string) {
+  return std::string("\"").append(string).append("\"");
+}
+
 TEST_STRINGIFY(std::string &, string) {
   return std::string("\"").append(string).append("\"");
 }

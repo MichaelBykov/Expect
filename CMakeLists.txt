@@ -10,7 +10,6 @@ enable_testing()
 include_directories(Include)
 
 add_library(Expect
-  Source/Expect.cpp
   Source/Global/toString.cpp
   Source/Test/Test.cpp
   Source/Suite/Suite.cpp

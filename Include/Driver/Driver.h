@@ -53,5 +53,5 @@ END_NAMESPACE_EXPECT
 ///   The name of the generated report variable.
 /// \sa Expect::Report
 #define RUN_ENABLED_TESTS(environment, state) \
-  NAMESPACE_EXPECT RunTests(environment) << \
-    [&](NAMESPACE_EXPECT RunState &state) -> void
+  ::NAMESPACE_EXPECT RunTests(environment) << \
+    [&](::NAMESPACE_EXPECT RunState &state) -> void

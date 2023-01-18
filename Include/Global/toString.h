@@ -130,6 +130,7 @@ TEST_STRINGIFY(float      , value);
 TEST_STRINGIFY(double     , value);
 TEST_STRINGIFY(long double, value);
 
+TEST_STRINGIFY(std::string, value);
 TEST_STRINGIFY(std::string &, value);
 TEST_STRINGIFY(char *, value);
 

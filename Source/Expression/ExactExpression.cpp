@@ -12,6 +12,20 @@
 
 
 
+TEST_CUSTOM_COMPARE(bool          , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(char          , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(short         , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(int           , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(long          , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(unsigned char , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(unsigned short, Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(unsigned int  , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(unsigned long , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(float         , Exact, Value) { return value; }
+TEST_CUSTOM_COMPARE(double        , Exact, Value) { return value; }
+
+
+
 TEST_CUSTOM_COMPARE(char *, Exact, Equal) {
   return strcmp(lhs, rhs) == 0;
 }

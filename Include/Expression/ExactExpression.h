@@ -578,7 +578,8 @@ struct Value : Expressions::Expression {
 // Implement all of the default comparisons
 template<typename T>
 bool Value<T>::evaluate() {
-  return value;
+  // TODO create an actual exception.
+  throw "Not implemented exception.";
 }
 
 template<typename T>
@@ -645,6 +646,19 @@ bool ExclusiveRange<T>::evaluate() {
 END_NAMESPACE_EXPECT
 
 
+
+// Implement standard value conversions
+TEST_CUSTOM_COMPARE(bool          , Exact, Value);
+TEST_CUSTOM_COMPARE(char          , Exact, Value);
+TEST_CUSTOM_COMPARE(short         , Exact, Value);
+TEST_CUSTOM_COMPARE(int           , Exact, Value);
+TEST_CUSTOM_COMPARE(long          , Exact, Value);
+TEST_CUSTOM_COMPARE(unsigned char , Exact, Value);
+TEST_CUSTOM_COMPARE(unsigned short, Exact, Value);
+TEST_CUSTOM_COMPARE(unsigned int  , Exact, Value);
+TEST_CUSTOM_COMPARE(unsigned long , Exact, Value);
+TEST_CUSTOM_COMPARE(float         , Exact, Value);
+TEST_CUSTOM_COMPARE(double        , Exact, Value);
 
 // Implement custom comparison of C strings
 TEST_CUSTOM_COMPARE(char *, Exact, Equal);
