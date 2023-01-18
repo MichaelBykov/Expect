@@ -148,7 +148,25 @@ int NAMESPACE_EXPECT runCommandLineTests(
     } break;
     
     case RunState::State::TestSuccess: {
+      TestSuccess &success = (TestSuccess &)state;
       printf("success.\n");
+      for (BenchmarkResult &benchmark : success.benchmarks) {
+        printf(
+          "    Benchmark results on line %d:\n"
+          "        Iterations: %zu\n"
+          "        Total time: %lld (ns)\n"
+          "         Mean time: %lld (ns)\n"
+          "      Distribution: min -[Q1 - median - Q3]- max\n"
+          "        %lld -[%lld - %lld - %lld]- %lld (ns)\n"
+        ,
+          benchmark.line,
+          benchmark.iterations,
+          benchmark.totalTime,
+          benchmark.meanTime,
+          benchmark.minTime, benchmark.q1Time, benchmark.medianTime,
+            benchmark.q3Time, benchmark.maxTime
+        );
+      }
     } break;
     
     case RunState::State::TestFailed: {

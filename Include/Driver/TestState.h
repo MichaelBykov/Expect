@@ -62,7 +62,9 @@ struct RunningTest : RunState {
 struct TestSuccess : RunState {
   Test &test;
   
-  TestSuccess(Test &test);
+  std::vector<BenchmarkResult> &benchmarks;
+  
+  TestSuccess(Test &test, std::vector<BenchmarkResult> &benchmarks);
   
   std::string message();
 };
