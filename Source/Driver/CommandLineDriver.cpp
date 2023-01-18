@@ -46,7 +46,7 @@ void displayHelp(const char *executable) {
   if (!tags.empty()) {
     printf("\nTags:\n");
     for (const char *tag : tags) {
-      printf("  !%s\n", tag);
+      printf("  #%s\n", tag);
     }
   }
 }
@@ -80,7 +80,7 @@ int NAMESPACE_EXPECT runCommandLineTests(
       strcmp(argv[i], "--stop") == 0
     ) {
       environment.stopOnFailure = true;
-    } else if (argv[i][0] == '!') {
+    } else if (argv[i][0] == '#') {
       // Tag
       bool found = false;
       for (Suite *suite : suites())
