@@ -24,10 +24,30 @@ void displayHelp(const char *executable) {
     "\n"
     "Test Suites:\n"
   , executable);
+  std::vector<const char *> tags = { };
   for (NAMESPACE_EXPECT Suite *suite : NAMESPACE_EXPECT suites()) {
     printf("  %s    Enable all tests in the suite.\n", suite->name);
-    for (NAMESPACE_EXPECT Test &test : suite->tests)
-      printf("  %s    %s\n", test.name, test.description);
+    for (NAMESPACE_EXPECT Test &test : suite->tests) {
+      printf("    %s    %s", test.name, test.description);
+      for (const char *tag : test.tags) {
+        bool exists = false;
+        for (const char *existingTag : tags)
+          if (strcmp(existingTag, tag) == 0) {
+            exists = true;
+            break;
+          }
+        if (!exists)
+          tags.push_back(tag);
+        printf(" (%s)", tag);
+      }
+      printf("\n");
+    }
+  }
+  if (!tags.empty()) {
+    printf("\nTags:\n");
+    for (const char *tag : tags) {
+      printf("  !%s\n", tag);
+    }
   }
 }
 
@@ -60,14 +80,36 @@ int NAMESPACE_EXPECT runCommandLineTests(
       strcmp(argv[i], "--stop") == 0
     ) {
       environment.stopOnFailure = true;
+    } else if (argv[i][0] == '!') {
+      // Tag
+      bool found = false;
+      for (Suite *suite : suites())
+        for (Test &test : suite->tests)
+          for (const char *tag : test.tags)
+            if (strcmp(tag, argv[i] + 1) == 0) {
+              test.enabled = true;
+              found = true;
+            }
+      if (!found) {
+        printf("Unknown tag '%s'.\nUse '--help' for help.\n", argv[i]);
+        return 1;
+      }
     } else {
       // Test suites
       bool found = false;
       for (Suite *suite : suites())
         if (strcmp(argv[i], suite->name) == 0) {
-          // Enable all tests in the suite
-          for (Test &test : suite->tests)
-            test.enabled = true;
+          // Enable all tests in the suite not marked 'benchmark' or 'skip'
+          for (Test &test : suite->tests) {
+            bool skip = false;
+            for (const char *tag : test.tags)
+              if (strcmp(tag, "benchmark") == 0 || strcmp(tag, "skip") == 0) {
+                skip = true;
+                break;
+              }
+            if (!skip)
+              test.enabled = true;
+          }
           found = true;
           break;
         } else {

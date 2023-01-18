@@ -28,7 +28,7 @@ add_library(AutoExpect
 )
 target_link_libraries(AutoExpect Expect)
 
-add_executable(TestsGeneral Tests/General/main.cpp)
+add_executable(TestsGeneral Tests/General/main.cpp Tests/General/benchmarks.cpp)
 target_link_libraries(TestsGeneral AutoExpect)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

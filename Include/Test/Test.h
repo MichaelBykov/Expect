@@ -11,6 +11,7 @@
 #pragma once
 #include <Expect Common.h>
 #include <Global/Environment.h>
+#include <Global/Iterate.h>
 #include <vector>
 #include <functional>
 
@@ -32,10 +33,13 @@ struct Test {
     ///   The name of the unit test.
     /// \param[in] description
     ///   A description of the unit test.
+    /// \param[in] tags
+    ///   A set of tags associated with the unit test.
     Add(
       std::vector<Test> *tests      ,
       const char        *name       ,
-      const char        *description
+      const char        *description,
+      std::vector<const char *> tags
     );
     
     /// Add a test driver to the unit test case.
@@ -57,6 +61,9 @@ struct Test {
   
   /// Whether or not the unit test should be ran.
   bool enabled;
+  
+  /// The test tags.
+  std::vector<const char *> tags;
 };
 
 
@@ -70,6 +77,9 @@ END_NAMESPACE_EXPECT
 ///   The name of the test case.
 /// \param description
 ///   A description of the unit test used when displaying help.
+/// \param ...
+///   A list of all of the tags associated with the test case.
+///   Specially handled tags are `benchmark`, and `skip`.
 /// \remarks
 ///   The body of the test case should be terminated by a semicolon.
 ///   Example:
@@ -80,6 +90,7 @@ END_NAMESPACE_EXPECT
 ///   ```
 ///   All test cases should be enclosed in a test suite.
 /// \sa SUITE(name)
-#define TEST(name, description) \
-  NAMESPACE_EXPECT Test::Add(&tests, #name, description), \
+#define TEST(name, description, ...) \
+  NAMESPACE_EXPECT Test::Add(&tests, #name, description, \
+    { _EXPECT_STRINGIFY_ARGS(__VA_ARGS__) }), \
     [=](NAMESPACE_EXPECT Environment &__environment) -> void
