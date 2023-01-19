@@ -145,6 +145,7 @@ int NAMESPACE_EXPECT runCommandLineTests(
     case RunState::State::RunningTest: {
       RunningTest &test = (RunningTest &)state;
       printf("  Running test %s (%zu/%zu) ... ", test.test.name, test.index, test.count);
+      fflush(stdout);
     } break;
     
     case RunState::State::TestSuccess: {
