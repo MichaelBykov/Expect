@@ -92,8 +92,6 @@ struct ExpectThatBuilder : Expressions::Expression {
     if (!inExpression)
       throw "Improperly formatted match expression.";
     
-    // TODO: Unpack the tree
-    
     // builder | [expression *this] || [expression matcher]
     // X | ... || d && a | b | c && (d || g) | f
     // X | ... || ((d &&0 a | b | c) &&1 (d ||2 g) | f)
@@ -241,8 +239,6 @@ struct ExpectThatBuilder : Expressions::Expression {
       this->message = this->message.append(matcher.message());
     if (!inExpression)
       throw "Improperly formatted match expression.";
-    
-    // TODO: Unpack the tree
     
     // Find the first right expression
     struct Stack {

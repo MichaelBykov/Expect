@@ -578,8 +578,8 @@ struct Value : Expressions::Expression {
 // Implement all of the default comparisons
 template<typename T>
 bool Value<T>::evaluate() {
-  // TODO create an actual exception.
-  throw "Not implemented exception.";
+  struct NotImplemented { };
+  throw  NotImplemented { };
 }
 
 template<typename T>

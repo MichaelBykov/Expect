@@ -26,16 +26,12 @@ struct RunState {
   };
   
   State state;
-  
-  virtual std::string message() = 0;
 };
 
 struct RunningSuite : RunState {
   Suite &suite;
   
   RunningSuite(Suite &suite);
-  
-  std::string message();
 };
 
 struct FinishedSuite : RunState {
@@ -44,8 +40,6 @@ struct FinishedSuite : RunState {
   size_t count;
   
   FinishedSuite(Suite &suite, size_t successful, size_t count);
-  
-  std::string message();
 };
 
 struct RunningTest : RunState {
@@ -55,8 +49,6 @@ struct RunningTest : RunState {
   size_t count;
   
   RunningTest(Suite &suite, Test &test, size_t index, size_t count);
-  
-  std::string message();
 };
 
 struct TestSuccess : RunState {
@@ -65,8 +57,6 @@ struct TestSuccess : RunState {
   std::vector<BenchmarkResult> &benchmarks;
   
   TestSuccess(Test &test, std::vector<BenchmarkResult> &benchmarks);
-  
-  std::string message();
 };
 
 struct TestFailed : RunState {
@@ -75,8 +65,6 @@ struct TestFailed : RunState {
   std::vector<Failure> &failures;
   
   TestFailed(Test &test, std::vector<Failure> &failures);
-  
-  std::string message();
 };
 
 

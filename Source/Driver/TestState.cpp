@@ -18,11 +18,6 @@ NAMESPACE_EXPECT RunningSuite::RunningSuite(
   state = State::RunningSuite;
 }
 
-std::string NAMESPACE_EXPECT RunningSuite::message() {
-  // TODO: Finish
-  return "";
-}
-
 
 
 NAMESPACE_EXPECT FinishedSuite::FinishedSuite(
@@ -31,11 +26,6 @@ NAMESPACE_EXPECT FinishedSuite::FinishedSuite(
   size_t count
 ) : suite(suite), successful(successful), count(count) {
   state = State::FinishedSuite;
-}
-
-std::string NAMESPACE_EXPECT FinishedSuite::message() {
-  // TODO: Finish
-  return "";
 }
 
 
@@ -49,11 +39,6 @@ NAMESPACE_EXPECT RunningTest::RunningTest(
   state = State::RunningTest;
 }
 
-std::string NAMESPACE_EXPECT RunningTest::message() {
-  // TODO: Finish
-  return "";
-}
-
 
 
 NAMESPACE_EXPECT TestSuccess::TestSuccess(
@@ -63,11 +48,6 @@ NAMESPACE_EXPECT TestSuccess::TestSuccess(
   state = State::TestSuccess;
 }
 
-std::string NAMESPACE_EXPECT TestSuccess::message() {
-  // TODO: Finish
-  return "";
-}
-
 
 
 NAMESPACE_EXPECT TestFailed::TestFailed(
@@ -75,9 +55,4 @@ NAMESPACE_EXPECT TestFailed::TestFailed(
   std::vector<Failure> &failures
 ) : test(test), failures(failures) {
   state = State::TestFailed;
-}
-
-std::string NAMESPACE_EXPECT TestFailed::message() {
-  // TODO: Finish
-  return "";
 }
