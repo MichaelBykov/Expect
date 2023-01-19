@@ -46,7 +46,7 @@ void displayHelp(const char *executable) {
   if (!tags.empty()) {
     printf("\nTags:\n");
     for (const char *tag : tags) {
-      printf("  !%s\n", tag);
+      printf("  #%s\n", tag);
     }
   }
 }
@@ -80,7 +80,7 @@ int NAMESPACE_EXPECT runCommandLineTests(
       strcmp(argv[i], "--stop") == 0
     ) {
       environment.stopOnFailure = true;
-    } else if (argv[i][0] == '!') {
+    } else if (argv[i][0] == '#') {
       // Tag
       bool found = false;
       for (Suite *suite : suites())
@@ -145,10 +145,29 @@ int NAMESPACE_EXPECT runCommandLineTests(
     case RunState::State::RunningTest: {
       RunningTest &test = (RunningTest &)state;
       printf("  Running test %s (%zu/%zu) ... ", test.test.name, test.index, test.count);
+      fflush(stdout);
     } break;
     
     case RunState::State::TestSuccess: {
+      TestSuccess &success = (TestSuccess &)state;
       printf("success.\n");
+      for (BenchmarkResult &benchmark : success.benchmarks) {
+        printf(
+          "    Benchmark results on line %d:\n"
+          "        Iterations: %zu\n"
+          "        Total time: %lld (ns)\n"
+          "         Mean time: %lld (ns)\n"
+          "      Distribution: min -[Q1 - median - Q3]- max\n"
+          "        %lld -[%lld - %lld - %lld]- %lld (ns)\n"
+        ,
+          benchmark.line,
+          benchmark.iterations,
+          benchmark.totalTime,
+          benchmark.meanTime,
+          benchmark.minTime, benchmark.q1Time, benchmark.medianTime,
+            benchmark.q3Time, benchmark.maxTime
+        );
+      }
     } break;
     
     case RunState::State::TestFailed: {

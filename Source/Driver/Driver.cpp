@@ -73,7 +73,7 @@ NAMESPACE_EXPECT Report NAMESPACE_EXPECT runTests(
           } catch (TestFailedException) { }
           if (environment.success) {
             if (state != nullptr) {
-              TestSuccess _state(test);
+              TestSuccess _state(test, environment.benchmarks);
               state(_state);
             }
             successful++;
@@ -85,6 +85,7 @@ NAMESPACE_EXPECT Report NAMESPACE_EXPECT runTests(
           }
           environment.success = true;
           environment.failures.clear();
+          environment.benchmarks.clear();
         }
       totalCount += count;
       totalSuccessful += successful;

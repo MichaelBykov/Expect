@@ -37,6 +37,7 @@
 #include "Matching/Matcher.h"
 #include "Matching/Matchers.h"
 #include "Matching/Match.h"
+#include "Benchmarking/Benchmark.h"
 #include "Driver/TestState.h"
 #include "Driver/Driver.h"
 #include "Driver/CommandLineDriver.h"

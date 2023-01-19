@@ -78,13 +78,16 @@ END_NAMESPACE_EXPECT
 /// \param description
 ///   A description of the unit test used when displaying help.
 /// \param ...
+///   Optional.
 ///   A list of all of the tags associated with the test case.
-///   Specially handled tags are `benchmark`, and `skip`.
+///   Specially handled tags are `benchmark`, and `skip` which prevent the test
+///   case from being run in aggregate tests, such as when an entire test suite
+///   is specified to be tested.
 /// \remarks
 ///   The body of the test case should be terminated by a semicolon.
 ///   Example:
 ///   ```
-///   TEST(MyTest, "Test the `myTest` function.") {
+///   TEST(my test, "Test the `myTest()` function.") {
 ///     ...
 ///   };
 ///   ```

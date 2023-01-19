@@ -16,6 +16,7 @@
 #include "Evaluate/Evaluate.cpp"
 #include "Evaluate/Section.cpp"
 #include "Matching/Matchers.cpp"
+#include "Benchmarking/Benchmark.cpp"
 #include "Driver/TestState.cpp"
 #include "Driver/Driver.cpp"
 #include "Driver/CommandLineDriver.cpp"

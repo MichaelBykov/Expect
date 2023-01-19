@@ -18,6 +18,7 @@ add_library(Expect
   Source/Evaluate/Evaluate.cpp
   Source/Evaluate/Section.cpp
   Source/Matching/Matchers.cpp
+  Source/Benchmarking/Benchmark.cpp
   Source/Driver/TestState.cpp
   Source/Driver/Driver.cpp
   Source/Driver/CommandLineDriver.cpp

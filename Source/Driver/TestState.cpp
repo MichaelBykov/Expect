@@ -57,8 +57,9 @@ std::string NAMESPACE_EXPECT RunningTest::message() {
 
 
 NAMESPACE_EXPECT TestSuccess::TestSuccess(
-  Test &test
-) : test(test) {
+  Test                         &test      ,
+  std::vector<BenchmarkResult> &benchmarks
+) : test(test), benchmarks(benchmarks) {
   state = State::TestSuccess;
 }
 
