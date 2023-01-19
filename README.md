@@ -24,7 +24,6 @@ readable, and easy-to-write unit test cases for your code.
 
 
 ## Examples
----
 
 A simple unit test case:
 ``` C++
@@ -127,6 +126,8 @@ For example, if you tag benchmarks with the `benchmark` tag and want to run all 
 ## Documentation
 
 The [Documentation](Documentation) folder contains thorough documentation for the entire Expect library.
+
+A walkthrough of using the unit testing library can be found in [Documentation/Tutorial](Documentation/Tutorial).
 
 A general reference for the Expect library can be found in [Documentation/Reference](Documentation/Reference).
 
