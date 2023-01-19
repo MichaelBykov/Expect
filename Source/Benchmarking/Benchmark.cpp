@@ -10,8 +10,10 @@
 
 #include <Benchmarking/Benchmark.h>
 
-NAMESPACE_EXPECT Benchmark::Benchmark(Environment &environment, int line)
-    : environment(environment), line(line) { }
+NAMESPACE_EXPECT Benchmark::Benchmark(
+  Environment &environment,
+  const int    line
+) : environment(environment), line(line) { }
 
 bool NAMESPACE_EXPECT Benchmark::operator()() {
   if (iterations == 0 && !environment.success)
@@ -24,7 +26,14 @@ bool NAMESPACE_EXPECT Benchmark::operator()() {
     return true;
   } else {
     // Sufficient iterations reached
+    
+    // Record how long each iteration took
+    std::vector<long long> iterationTimes = times;
+    
+    // Sort times for computation
     std::sort(times.begin(), times.end());
+    
+    // Compute results
     size_t half = times.size() / 2;
     size_t quarter = times.size() / 4;
     BenchmarkResult result {
@@ -37,13 +46,19 @@ bool NAMESPACE_EXPECT Benchmark::operator()() {
           .maxTime = times[times.size() - 1],
           .q1Time = times[quarter],
           .q3Time = times[times.size() - 1 - quarter],
+      iterationTimes
     };
+    
+    // Record results
     environment.benchmarks.push_back(result);
+    
+    // No need to continue iterating, the benchmarking is done
     return false;
   }
 }
 
 void NAMESPACE_EXPECT Benchmark::operator++(int) {
+  // Record the time that the iteration took
   auto end = std::chrono::steady_clock::now();
   auto elapsed =
     std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);

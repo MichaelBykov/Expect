@@ -44,12 +44,14 @@ struct BenchmarkResult {
   long long minTime;
   /// The maximum time that a benchmark cycle took, in nanoseconds.
   long long maxTime;
-  /// The first quartile of the time time that a benchmark cycle took,
+  /// The first quartile of the time that a benchmark cycle took,
   /// in nanoseconds.
   long long q1Time;
-  /// The third quartile of the time time that a benchmark cycle took,
+  /// The third quartile of the time that a benchmark cycle took,
   /// in nanoseconds.
   long long q3Time;
+  /// The execution times of each iteration, in nanoseconds.
+  std::vector<long long> times;
 };
 
 /// A complete testing environment.
