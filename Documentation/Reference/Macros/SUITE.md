@@ -122,9 +122,6 @@ SUITE(Sharing) {
   };
 }
 ```
-Note that setup and teardown code can be declared in any order including before
-and after test cases, but shared variables must be declared before they are
-used.
 
 ## See Also
 

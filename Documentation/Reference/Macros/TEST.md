@@ -94,7 +94,7 @@ SUITE(Tags) {
 }
 ```
 
-The below example includes sections and a non-linear flow:
+The below example includes sections and a non-linear flow.
 ``` C++
 SUITE(Tests) {
   TEST(my test, "Run a non-straight-forward test.") {
