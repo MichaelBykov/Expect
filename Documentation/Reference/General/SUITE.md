@@ -6,9 +6,10 @@
 - [Parameters and Contents](#Parameters-and-Contents)
 - [Usage](#Usage)
 - [Examples](#Examples)
+- [See Also](#See-Also)
 
 ## Availability
-since 1.0.0
+Since 1.0.0
 
 ## Syntax
 ``` C++
@@ -28,6 +29,8 @@ SUITE([name]) {
 
 ## Usage
 
+Creates and registers a test suite to run test cases.
+
 Test suites can include any of the following in their `[contents]` area:
 - Unit test cases in the form:
   ``` C++
@@ -36,7 +39,7 @@ Test suites can include any of the following in their `[contents]` area:
   };
   ```
   More information about test cases can be found under the
-  [TEST reference article](TEST.md).
+  [`TEST` reference article](TEST.md).
 - Shared constants can be declared inside a test suite by simply declaring them
   as a variable before using them inside test cases, setup, tear down, or shared
   variables.
@@ -47,7 +50,7 @@ Test suites can include any of the following in their `[contents]` area:
   };
   ```
   More information about shared variables can be found under the
-  [SHARED reference article](SHARED.md).
+  [`SHARED` reference article](SHARED.md).
 - setup or teardown code by using the `SETUP` and `TEARDOWN` macros,
   respectively,
   ``` C++
@@ -59,8 +62,8 @@ Test suites can include any of the following in their `[contents]` area:
   };
   ```
   More information about setup and teardown code can be found under the
-  [SETUP reference article](SETUP.md) and
-  [TEARDOWN reference article](TEARDOWN.md).
+  [`SETUP` reference article](SETUP.md) and
+  [`TEARDOWN` reference article](TEARDOWN.md).
 
 The contents of a test suite is executed as a standard code block meaning that
 arbitrary statements can be used inside of it including, for example,
@@ -122,3 +125,20 @@ SUITE(Sharing) {
 Note that setup and teardown code can be declared in any order including before
 and after test cases, but shared variables must be declared before they are
 used.
+
+## See Also
+
+- [`TEST` macro](TEST.md)
+  - Define unit test cases inside a test suite.
+- [`SHARE` macro](SHARE.md)
+  - Share common variables throughout a test suite.
+- [`SETUP` macro](SETUP.md)
+  - Define setup code for a test suite.
+- [`TEARDOWN` macro](TEARDOWN.md)
+  - Define teardown code for a test suite.
+- [`Suite` class](Suite.md)
+  - Configure and manage a test suite instance.
+- [`suites` global variable](suites.md)
+  - Manage all instances instances of test suites in the program.
+- [Setting up and configuring a test suite tutorial](../Tutorials/Intro/TestSuite.md)
+  - Learn to setup and configure a test suite.
