@@ -136,9 +136,9 @@ used.
   - Define setup code for a test suite.
 - [`TEARDOWN` macro](TEARDOWN.md)
   - Define teardown code for a test suite.
-- [`Suite` class](Suite.md)
+- [`Suite` class](../Types/Suite.md)
   - Configure and manage a test suite instance.
-- [`suites` global variable](suites.md)
+- [`suites` global variable](../Variables/suites.md)
   - Manage all instances instances of test suites in the program.
-- [Setting up and configuring a test suite tutorial](../Tutorials/Intro/TestSuite.md)
+- [Setting up and configuring a test suite tutorial](../../Tutorials/Intro/TestSuite.md)
   - Learn to setup and configure a test suite.

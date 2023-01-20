@@ -44,7 +44,7 @@ The following are test control structures that can be used in test cases:
 - Assertion macros, including `EXPECT`, `ASSERT`, `EXPECT_THAT`,
   `EXPECT_APPROX`, `EXPECT_EXCEPTION`, etc.
   A complete list of assertion macros can be found in the
-  [Assertions article](Assertions.md).
+  [Assertions article](../Assertions).
 - Section macros in the form:
   ``` C++
   SECTION {
@@ -67,7 +67,7 @@ The following are test control structures that can be used in test cases:
 ## Examples
 
 The below example demonstrates a simple test suite with a single test case and
-a single assertion ([`EXPECT`](Assertions/EXPECT.md)).
+a single assertion ([`EXPECT`](../Assertions/EXPECT.md)).
 ``` C++
 SUITE(MyTestSuite) {
   TEST(a test case, "A description.") {
@@ -127,14 +127,14 @@ SUITE(Tests) {
 
 - [`SUITE` macro](SUITE.md)
   - Declare a test suite in which test cases can be declared.
-- [Assertions](Assertions.md)
+- [Assertions](../Assertions)
   - A list of all the different assertion macros that can be used inside of test
     cases.
 - [`SECTION` macro](SECTION.md)
   - Define subsections of a test case.
 - [`BENCHMARK` macro](BENCHMARK.md)
   - Run a micro benchmark inside a test case.
-- [`Test` class](Test.md)
+- [`Test` class](../Types/Test.md)
   - Configure and manage a test case instance.
-- [Creating a test case tutorial](../Tutorials/Intro/TestCase.md)
+- [Creating a test case tutorial](../../Tutorials/Intro/TestCase.md)
   - Learn to setup and run a test case.
