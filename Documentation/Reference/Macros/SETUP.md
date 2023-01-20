@@ -1,4 +1,4 @@
-# `SHARED` macro
+# `SETUP` macro
 
 ## Jump to...
 - [Availability](#Availability)
@@ -13,24 +13,37 @@ Since 1.0.0
 
 ## Syntax
 ``` C++
-SHARED [variable];
+SETUP {
+  [contents]
+};
 ```
 
 ## Parameters and Contents
-- `[variable]` : The shared variable to access.
+- `[contents]` : The setup code for the test suite, including initializing
+  shared variables.
 
 ## Usage
 
-Access a shared variable first defined in a [`SHARE`](SHARE.md) block.
+Setup a test suite.
 
-Note that parentheses are not required for accessing submembers, so the
-statement `SHARED message.length()` is valid if `std::string message` was
-shared, for instance.
+The `SETUP` block is run once before the test cases of a test suite are ran.
+If no tests are selected to be run in a test suite with a `SETUP` block, the
+`SETUP` block won't be run.
+
+It is typical, although not required, for a [`TEARDOWN`](TEARDOWN.md) block to
+accompany a `SETUP` block to perform any cleanup necessary once the test suite
+has finished running.
+
+Note that a `SETUP` block must be accompanied by a [`SHARE`](SHARE.md) block
+before it.
+
+Only one `SETUP` block can be declared in a test suite.
+Instead of declaring two `SETUP` blocks in a test suite, merge them together.
 
 ## Examples
 
-The below example demonstrates how to access a shared variable throughout a test
-suite.
+The below example includes setup and teardown code in addition to a shared
+variable.
 ``` C++
 SUITE(Sharing) {
   SHARE {
@@ -41,6 +54,9 @@ SUITE(Sharing) {
   };
   
   SETUP {
+    // Shared variables are accessed by prefixing
+    // `SHARED` before their name
+    // (parenthesis are not required)
     SHARED connection = connect("somewhere");
   };
   
@@ -64,6 +80,10 @@ SUITE(Sharing) {
 
 - [`SHARE` macro](SHARE.md)
   - Share a set of variables in a test suite.
+- [`SHARED` macro](SHARED.md)
+  - Access a shared variable.
+- [`TEARDOWN` macro](TEARDOWN.md)
+  - Define teardown code for a test suite.
 - [`SUITE` macro](SUITE.md)
   - Define a test suite.
 - [Setting up and configuring a test suite tutorial](../../Tutorials/Intro/TestSuite.md)
