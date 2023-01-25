@@ -136,5 +136,5 @@ SUITE(Tests) {
   - Run a micro benchmark inside a test case.
 - [`Test` class](../Types/Test.md)
   - Configure and manage a test case instance.
-- [Creating a test case tutorial](../../Tutorials/Intro/TestCase.md)
+- [Creating a test case tutorial](../../Tutorials/Test-Case.md)
   - Learn to setup and run a test case.

@@ -58,5 +58,5 @@ SUITE(Benchmark) {
   - Define a test case.
 - [`BenchmarkResult` class](../Types/BenchmarkResult.md)
   - Handle the result of a micro benchmark.
-- [Creating a micro benchmark tutorial](../../Tutorials/Intro/Benchmark.md)
+- [Creating a micro benchmark tutorial](../../Tutorials/Benchmarking.md)
   - Learn to setup and run a micro benchmark.

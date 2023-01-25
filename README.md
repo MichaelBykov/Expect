@@ -123,15 +123,17 @@ Entire test suites can be ran by specifying the suite names when running the com
 If you tag any test cases, all test cases corresponding with that tag can be ran by specifying the tag name and prefixing it with a `#`.
 For example, if you tag benchmarks with the `benchmark` tag and want to run all benchmarks, include `#benchmark` when running your unit tests using the command line driver.
 
+A more detailed quick start can be found in [Documentation/Tutorials/Quick Start](Documentation/Tutorials/Quick-Start.md).
+
 ## Documentation
 
 The [Documentation](Documentation) folder contains thorough documentation for the entire Expect library.
 
-A walkthrough of using the unit testing library can be found in [Documentation/Tutorial](Documentation/Tutorial).
+A set of walkthroughs of using the unit testing library can be found in [Documentation/Tutorials](Documentation/Tutorials).
 
 A general reference for the Expect library can be found in [Documentation/Reference](Documentation/Reference).
 
-An overview of building can be found under [Documentation/Building](Documentation/Building.md) and running Expect under [Documentation/Running](Documentation/Running.md).
+An overview of building can be found under [Documentation/Tutorials/Building](Documentation/Tutorials/Building.md) and running Expect under [Documentation/Tutorials/Running](Documentation/Tutorials/Running.md).
 
 ## Expect
 

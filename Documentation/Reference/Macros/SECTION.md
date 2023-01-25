@@ -71,5 +71,5 @@ SUITE(Sections) {
     cases and sections.
 - [`TEST` macro](TEST.md)
   - Define a test case.
-- [Creating a test case tutorial](../../Tutorials/Intro/TestCase.md)
+- [Creating a test case tutorial](../../Tutorials/Test-Case.md)
   - Learn to setup and run a test case.

@@ -137,5 +137,5 @@ SUITE(Sharing) {
   - Configure and manage a test suite instance.
 - [`suites` global variable](../Variables/suites.md)
   - Manage all instances instances of test suites in the program.
-- [Setting up and configuring a test suite tutorial](../../Tutorials/Intro/TestSuite.md)
+- [Setting up and configuring a test suite tutorial](../../Tutorials/Test-Suite.md)
   - Learn to setup and configure a test suite.

@@ -95,5 +95,5 @@ SUITE(Sharing) {
   - Define teardown code for a test suite.
 - [`SUITE` macro](SUITE.md)
   - Define a test suite.
-- [Setting up and configuring a test suite tutorial](../../Tutorials/Intro/TestSuite.md)
+- [Setting up and configuring a test suite tutorial](../../Tutorials/Test-Suite.md)
   - Learn to setup and configure a test suite, including sharing variables.
