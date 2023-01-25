@@ -63,7 +63,7 @@
   - Expect that no exception is thrown.
 
 ## Matchers
-- [`EXPECT_THAT` macro](Matchers/EXPECT_THAT.md) / [`EXPECT_THAT` macro](Matchers/EXPECT_THAT.md)
+- [`EXPECT_THAT` macro](Matchers/EXPECT_THAT.md) / [`ASSERT_THAT` macro](Matchers/ASSERT_THAT.md)
   - Expect that a value matches a set of matchers.
 - [`MATCHER` macro](Matchers/MATCHER.md)
   - Define a custom matcher.
