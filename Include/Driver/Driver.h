@@ -19,13 +19,24 @@ START_NAMESPACE_EXPECT
 
 
 
+/// The result of a test run.
 struct Report {
+  /// Whether or not the test run was successful.
   bool isSuccessful;
   
+  /// Create a report from the number of successful tests out of total tests.
+  /// \param[in] successful
+  ///   The number of successful test cases in the test run.
+  /// \param[in] total
+  ///   The number of total test cases in the test run.
   Report(size_t successful, size_t total);
   
+  /// The total number of test cases in the test run.
   size_t total;
+  /// The number of test cases in the test run that passed all assertion checks.
   size_t totalSuccessful;
+  /// The number of test cases in the test run that failed at least one
+  /// assertion check.
   size_t totalFailed;
 };
 
