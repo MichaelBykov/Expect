@@ -13,18 +13,17 @@ Since 1.0.0
 
 ## Syntax
 ``` C++
-EXPECT_NO_EXCEPTION([type]) { [expression...] };
+EXPECT_NO_EXCEPTION { [expression...] };
 
-EXPECT_NO_EXCEPTION([type]) { [expression...] } | [message];
+EXPECT_NO_EXCEPTION { [expression...] } | [message];
 
-ASSERT_NO_EXCEPTION([type]) { [expression...] };
+ASSERT_NO_EXCEPTION { [expression...] };
 
-ASSERT_NO_EXCEPTION([type]) { [expression...] } | [message];
+ASSERT_NO_EXCEPTION { [expression...] } | [message];
 ```
 
 ## Parameters and Contents
 
-- `[type]` : The type of exception that should be produced.
 - `[expression...]` : The expression(s) to evaluate for the assertion.
 - `[message]` : An optional custom failure message for the assertion.
 
