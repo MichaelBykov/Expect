@@ -61,17 +61,22 @@ TEST_STRINGIFY_GENERIC(std::vector<T> &, vector) {
     // only describe the first five
     std::string description =
       MESSAGE "(" << vector.size() << ") { " << vector[0];
+    
+    // Describe the elements
     for (int i = 1; i < 5; i++)
       description += MESSAGE ", " << vector[i];
-    description += MESSAGE ", ... }";
+    
     return description + ", ... }";
   }
   else {
     // Vector of 1-5 elements
     std::string description =
       MESSAGE "(" << vector.size() << ") { " << vector[0];
+    
+    // Describe the elements
     for (int i = 1; i < vector.size(); i++)
       description += MESSAGE ", " << vector[i];
+    
     return description + " }";
   }
 } TEST_STRINGIFY_GENERIC_END
