@@ -15,15 +15,6 @@ Access the results of a micro benchmark run in a test case.
 
 ## Members
 
-- `name` - `const char *` : The name of the test case.
-- `description` - `const char *` : A description of the test case.
-- `tags` - `std::vector<const char *>` : A list of all of the test case's tags.
-- `enabled` - `bool` : Whether or not the test case is enabled for running in
-  the next test run.
-  Defaults to `false`.
-- `test` - `(`[`Environment`](Environment.md)` &) -> void` : The driver for the
-  test case.
-
 - `line` - `int` : The line number of the benchmark that was run.
 - `iterations` - `size_t` : The total number of iterations that occurred.
 - `totalTime` - `long long` : The total elapsed time of the benchmark.
