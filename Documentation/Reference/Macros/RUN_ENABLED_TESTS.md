@@ -142,4 +142,4 @@ Report report = RUN_ENABLED_TESTS(environment, state) {
 - [Building Expect Tutorial](../../Tutorials/Building.md)
   - A guide to the various ways of building Expect.
 - [Custom Drivers Tutorial](../../Tutorials/Custom-Drivers.md)
-  - A guided walthrough of creating a custom test driver.
+  - A guided walkthrough of creating a custom test driver.

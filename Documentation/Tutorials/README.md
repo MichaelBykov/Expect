@@ -7,7 +7,7 @@
 - [Running](Running.md)
   - A guide to the various ways of running Expect.
 - [Creating a Test Suite](Test-Suite.md)
-  - A walkthorugh of creating and configuring a test suite.
+  - A walkthrough of creating and configuring a test suite.
 - [Creating a Test Case](Test-Case.md)
   - A walkthrough of setting up a test case.
 - [Using Assertions](Using-Assertions.md)
@@ -24,4 +24,4 @@
 - [Custom Matchers](Custom-Matchers.md)
   - A guided walkthrough of creating your own matchers and using them.
 - [Custom Drivers](Custom-Drivers.md)
-  - A guided walthrough of creating a custom test driver.
+  - A guided walkthrough of creating a custom test driver.

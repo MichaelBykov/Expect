@@ -16,6 +16,8 @@
   - The result of a micro benchmark run.
 
 ## Drivers
+- [`Environment` class](Environment.md)
+  - The test environment in which test runs are performed.
 - [`Report` class](Report.md)
   - A report of all of the evaluated test cases.
 - [`RunState` class](RunState.md)

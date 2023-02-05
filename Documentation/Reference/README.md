@@ -115,6 +115,8 @@
   - Run the standard command line test driver.
 - [`RUN_ENABLED_TESTS` macro](Macros/RUN_ENABLED_TESTS.md)
   - Run all enabled unit test cases.
+- [`Environment` class](Types/Environment.md)
+  - The test environment in which test runs are performed.
 - [`Report` class](Types/Report.md)
   - A report of all of the evaluated test cases.
 - [`RunState` class](Types/RunState.md)
