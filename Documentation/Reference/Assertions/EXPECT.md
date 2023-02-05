@@ -34,14 +34,14 @@ Define an assertion expression.
 `ASSERT` is fatal and will stop the test case case from continuing to run.
 
 Expectations can be set for any comparison, for example,
-`EXPECT a == b`, `EXPECT a < b`, and `EXPECT a != b` are all valid and.
-Expectations can also accept range expressions in the form
+`EXPECT a == b`, `EXPECT a < b`, and `EXPECT a != b` are all valid.
+Expectations can also accept range expressions in the form of
 `lower < value < upper`, where `lower` is the lower bound, `upper` is the upper
 bound, and `value` is the value being tested.
 Range expressions can be formed by any combination of `<` and `<=`, for example,
 `EXPECT 1 < 2 <= 3`, `EXPECT 0 <= 0 < 1`, or `EXPECT 1 <= 1 <= 1`.
 Range expressions can be built for any type that has the appropriate comparison
-operators `<`, `<=` as used in the range expression.
+operators `<`, `<=`, as used in the range expression.
 Expectations can also be set for an expression that evaluates to a boolean,
 for example, `EXPECT isTrue()` or `EXPECT !someValue` are valid.
 
@@ -49,7 +49,7 @@ All arguments in an expression will be extracted and displayed upon an assertion
 failure.
 For a binary expression (`==`, `!=`, `<`, `>`, `<=`, `>=`), the left-hand-side
 and right-hand-side of the expression will be displayed, for instance,
-`EXPECT 2 == 3` will produce the error message, `2 is not equal to 3`.
+`EXPECT 2 == 3` will produce the error message, `2 is not equal to 3.`.
 For a range expression, the bounds and the tested value will all be displayed,
 for instance, `EXPECT 2 < 0 < 5` will produce the error message
 `0 is not in the range of 2, 5 (exclusive).`.
@@ -66,48 +66,24 @@ For instance, `EXPECT false | "hello" | MESSAGE " " | "world!";` will display
 
 ## Examples
 
-The below example includes various valid expressions
+The below example includes various valid assertions.
 ``` C++
-SUITE(Sharing) {
-  SHARE {
-    // The below variable is shared between all
-    // test cases the setup and teardown code
-    // over the life of the test suite
-    Connection connection;
-  };
+TEST(my assertion test, "Test the EXPECT and ASSERT macros") {
+  ASSERT canContinue(); // Will stop the unit test upon false
   
-  SETUP {
-    // Shared variables are accessed by prefixing
-    // `SHARED` before their name
-    // (parenthesis are not required)
-    SHARED connection = connect("somewhere");
-  };
+  int x = foo();
   
-  TEARDOWN {
-    SHARED connection.end();
-  };
+  EXPECT x; // Expect that x is non-zero, will continue upon failure
   
-  TEST(response foo, "Test for a `foo` response.") {
-    Response r = SHARED connection.get("foo");
-    EXPECT r.status == Response::Status::foo;
-  };
+  EXPECT x == 3;
   
-  TEST(response baz, "Test for a `baz` response.") {
-    Response r = SHARED connection.get("baz");
-    EXPECT r.status == Response::Status::baz;
-  };
-}
+  ASSERT 100 > x;
+  
+  EXPECT 0 <= x < 10 | MESSAGE x << " is not a single digit.";
+};
 ```
 
 ## See Also
 
-- [`SHARE` macro](SHARE.md)
-  - Share a set of variables in a test suite.
-- [`SHARED` macro](SHARED.md)
-  - Access a shared variable.
-- [`TEARDOWN` macro](TEARDOWN.md)
-  - Define teardown code for a test suite.
-- [`SUITE` macro](SUITE.md)
-  - Define a test suite.
-- [Setting up and configuring a test suite tutorial](../../Tutorials/Test-Suite.md)
-  - Learn to setup and configure a test suite, including sharing variables.
+- [Using Assertions](../../Tutorials/Using-Assertions.md)
+  - A guided walkthrough of using all the different assertions.
