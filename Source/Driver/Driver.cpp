@@ -92,8 +92,8 @@ NAMESPACE_EXPECT Report NAMESPACE_EXPECT runTests(
       
       // Teardown the suite
       if (suite->teardown != nullptr) {
-        suite->teardown->teardown();
-        suite->teardown->cleanup();
+        suite->teardown();
+        suite->cleanup();
       }
       
       // Report

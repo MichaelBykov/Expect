@@ -27,8 +27,11 @@ struct Suite {
   /// The test suite setup function
   std::function<void()> setup = nullptr;
   
+  /// The test suite cleanup function.
+  std::function<void()> cleanup = nullptr;
+  
   /// The test suite teardown function
-  Teardown *teardown = nullptr;
+  std::function<void()> teardown = nullptr;
   
   /// The name of the test suite.
   const char *name;

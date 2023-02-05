@@ -64,40 +64,8 @@
 /// \sa SHARED
 #define SETUP \
   __Shared *shared = new __Shared(); \
+  this->cleanup = [=]() { delete shared; }; \
   this->setup = [=]() -> void
-
-
-
-START_NAMESPACE_EXPECT
-
-
-
-/// A set of functions to teardown a test suite.
-struct Teardown {
-  /// The user-defined teardown function.
-  std::function<void()> teardown;
-  
-  /// The library-defined teardown code to be run after the user defined
-  /// teardown function, `teardown`.
-  std::function<void()> cleanup;
-  
-  /// Create a teardown helper by passing the library-defined teardown code.
-  Teardown(std::function<void()> cleanup) : cleanup(cleanup) { }
-  
-  /// Add user-defined teardown code to the teardown helper.
-  /// \param[in] teardown
-  ///   The user-defined teardown code.
-  /// \returns
-  ///   A full teardown helper object for storage in a test suite.
-  Teardown *operator << (std::function<void()> teardown) {
-    this->teardown = teardown;
-    return new Teardown(*this);
-  }
-};
-
-
-
-END_NAMESPACE_EXPECT
 
 
 
@@ -121,5 +89,4 @@ END_NAMESPACE_EXPECT
 ///   ```
 /// \sa SUITE(name)
 #define TEARDOWN \
-  this->teardown = NAMESPACE_EXPECT Teardown([=]() { delete shared; }) << \
-    [=]() -> void
+  this->teardown = [=]() -> void
