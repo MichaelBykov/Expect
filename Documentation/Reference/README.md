@@ -47,23 +47,23 @@
   - The result of a micro benchmark run.
 
 ## Assertions
-- [`EXPECT` macro](Assertions/EXPECT.md) / [`ASSERT` macro](Assertions/ASSERT.md)
+- [`EXPECT` macro](Assertions/EXPECT.md) / [`ASSERT` macro](Assertions/EXPECT.md)
   - Expect a general condition.
-- [`EXPECT_APPROX` macro](Assertions/EXPECT_APPROX.md) / [`ASSERT_APPROX` macro](Assertions/ASSERT_APPROX.md)
+- [`EXPECT_APPROX` macro](Assertions/EXPECT_APPROX.md) / [`ASSERT_APPROX` macro](Assertions/EXPECT_APPROX.md)
   - Expect that number(s) are approximately within each epsilon of each other.
-- [`EXPECT_NEAR` macro](Assertions/EXPECT_NEAR.md) / [`ASSERT_NEAR` macro](Assertions/ASSERT_NEAR.md)
+- [`EXPECT_NEAR` macro](Assertions/EXPECT_NEAR.md) / [`ASSERT_NEAR` macro](Assertions/EXPECT_NEAR.md)
   - Expect that number(s) are nearly within each epsilon of each other.
-- [`EXPECT_WITHIN` macro](Assertions/EXPECT_WITHIN.md) / [`ASSERT_WITHIN` macro](Assertions/ASSERT_WITHIN.md)
+- [`EXPECT_WITHIN` macro](Assertions/EXPECT_WITHIN.md) / [`ASSERT_WITHIN` macro](Assertions/EXPECT_WITHIN.md)
   - Expect that number(s) are within each epsilon of each other.
-- [`EXPECT_EXCEPTION` macro](Assertions/EXPECT_EXCEPTION.md) / [`ASSERT_EXCEPTION` macro](Assertions/ASSERT_EXCEPTION.md)
+- [`EXPECT_EXCEPTION` macro](Assertions/EXPECT_EXCEPTION.md) / [`ASSERT_EXCEPTION` macro](Assertions/EXPECT_EXCEPTION.md)
   - Expect a specific exception to be thrown.
-- [`EXPECT_ANY_EXCEPTION` macro](Assertions/EXPECT_ANY_EXCEPTION.md) / [`ASSERT_ANY_EXCEPTION` macro](Assertions/ASSERT_ANY_EXCEPTION.md)
+- [`EXPECT_ANY_EXCEPTION` macro](Assertions/EXPECT_ANY_EXCEPTION.md) / [`ASSERT_ANY_EXCEPTION` macro](Assertions/EXPECT_ANY_EXCEPTION.md)
   - Expect any exception to be thrown.
-- [`EXPECT_NO_EXCEPTION` macro](Assertions/EXPECT_NO_EXCEPTION.md) / [`ASSERT_NO_EXCEPTION` macro](Assertions/ASSERT_NO_EXCEPTION.md)
+- [`EXPECT_NO_EXCEPTION` macro](Assertions/EXPECT_NO_EXCEPTION.md) / [`ASSERT_NO_EXCEPTION` macro](Assertions/EXPECT_NO_EXCEPTION.md)
   - Expect that no exception is thrown.
 
 ## Matchers
-- [`EXPECT_THAT` macro](Matchers/EXPECT_THAT.md) / [`ASSERT_THAT` macro](Matchers/ASSERT_THAT.md)
+- [`EXPECT_THAT` macro](Matchers/EXPECT_THAT.md) / [`ASSERT_THAT` macro](Matchers/EXPECT_THAT.md)
   - Expect that a value matches a set of matchers.
 - [`MATCHER` macro](Matchers/MATCHER.md)
   - Define a custom matcher.
