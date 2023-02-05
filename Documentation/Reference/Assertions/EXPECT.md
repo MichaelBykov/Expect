@@ -23,7 +23,9 @@ ASSERT [expression] | [message];
 ```
 
 ## Parameters and Contents
-- `[expression]` : The expression to evaluate
+
+- `[expression]` : The expression to evaluate for the assertion.
+- `[message]` : An optional custom failure message for the assertion.
 
 ## Usage
 
@@ -68,7 +70,7 @@ For instance, `EXPECT false | "hello" | MESSAGE " " | "world!";` will display
 
 The below example includes various valid assertions.
 ``` C++
-TEST(my assertion test, "Test the EXPECT and ASSERT macros") {
+TEST(my assertion test, "Test the EXPECT and ASSERT macros.") {
   ASSERT canContinue(); // Will stop the unit test upon false
   
   int x = foo();
