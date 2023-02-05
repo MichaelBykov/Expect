@@ -1,4 +1,4 @@
-# `Environment` class
+# `Report` class
 
 ## Jump to...
 - [Availability](#Availability)
