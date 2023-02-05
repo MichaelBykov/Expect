@@ -16,7 +16,8 @@ Manage an instance of a test suite.
 ## Members
 
 - `name` - `const char *` : The name of the test suite.
-- `tests` - `std::vector<Test>` : A list of all test cases in the test suite.
+- `tests` - `std::vector<`[`Test`](Test.md)`>` : A list of all test cases
+   in the test suite.
 - `setup` - `() -> void` : The setup function of the test suite.
   Called before any test cases are run.
   Defaults to `nullptr`.
