@@ -16,7 +16,7 @@ Since 1.0.0
 TEST_CUSTOM_COMPARE([type], [mode], [comparison]);
 
 TEST_CUSTOM_COMPARE([type], [mode], [comparison]) {
-  [contents]
+  [implementation]
 }
 ```
 

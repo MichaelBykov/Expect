@@ -99,6 +99,24 @@ END_NAMESPACE_EXPECT
 #define _TEST_STRINGIFY_GENERIC_VALUE(...) _EXPECT_ITERATE_1( \
   _TEST_STRINGIFY_GET_VALUE_1, _EXPECT_ITERATE_PASS, __VA_ARGS__)
 
+
+/// Define a stringification of a template type used in testing.
+/// \param type
+///   The type for which to define a string conversion.
+/// \param name
+///   The name to use for the stringified function.
+/// \remarks
+///   The stringifitaction should end with a `TEST_STRINGIFY_GENERIC_END`
+///   statement.
+///   
+///   Example usage:
+///   ```
+///   template<typename T>
+///   TEST_STRINGIFY_GENERIC(std::vector<T> &, vector) {
+///     ...
+///     return description;
+///   } TEST_STRINGIFY_GENERIC_END
+///   ```
 #define TEST_STRINGIFY_GENERIC(...) \
   struct NAMESPACE_EXPECT \
     ToString<_TEST_STRINGIFY_GENERIC_TYPE(__VA_ARGS__)> { \
@@ -106,6 +124,16 @@ END_NAMESPACE_EXPECT
       const _TEST_STRINGIFY_GENERIC_TYPE (__VA_ARGS__) \
             _TEST_STRINGIFY_GENERIC_VALUE(__VA_ARGS__) \
     )
+
+/// End a `TEST_STRINGIFY_GENERIC` statement.
+/// \remarks
+///   Example usage:
+///   ```
+///   template<...>
+///   TEST_STRINGIFY_GENERIC(...) {
+///     ...
+///   } TEST_STRINGIFY_GENERIC_END
+///   ```
 #define TEST_STRINGIFY_GENERIC_END \
   };
 

@@ -24,7 +24,8 @@ MESSAGE [item1] << [item2] << [...] << [itemN]
 
 ## Usage
 
-The message macro is used to compose custom error messages for assertion macros.
+The message macro is used to compose custom messages from values of various
+types.
 
 It is composed of string and/or non-string items separated by the stream
 insertion operator `<<`.
@@ -55,9 +56,9 @@ TEST(messages, "Demonstrate the MESSAGE macro through a loop.") {
 ## See Also
 
 - [`TEST_STRINGIFY` macro](TEST_STRINGIFY.md)
-  - Share a set of variables in a test suite.
+  - Define a custom string description for a type.
 - [`TEST_STRINGIFY_GENERIC` macro](TEST_STRINGIFY_GENERIC.md)
-  - Access a shared variable.
+  - Define a custom string description for a template type.
 - [Assertions](../Assertions)
   - A list of all the different assertion macros, all of which accept custom
     messages.
