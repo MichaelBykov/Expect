@@ -64,7 +64,7 @@ TEST_STRINGIFY_GENERIC(std::vector<T> &, vector) {
     for (int i = 1; i < 5; i++)
       description += MESSAGE ", " << vector[i];
     description += MESSAGE ", ... }";
-    return description + (MESSAGE ", ... }");
+    return description + ", ... }";
   }
   else {
     // Vector of 1-5 elements
@@ -72,7 +72,7 @@ TEST_STRINGIFY_GENERIC(std::vector<T> &, vector) {
       MESSAGE "(" << vector.size() << ") { " << vector[0];
     for (int i = 1; i < vector.size(); i++)
       description += MESSAGE ", " << vector[i];
-    return description + (MESSAGE " }");
+    return description + " }";
   }
 } TEST_STRINGIFY_GENERIC_END
 
