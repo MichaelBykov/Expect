@@ -18,6 +18,8 @@
 ## Drivers
 - [`Environment` class](Environment.md)
   - The test environment in which test runs are performed.
+- [`Failure` class](Types/Failure.md)
+  - The reported result of an assertion failure.
 - [`Report` class](Report.md)
   - A report of all of the evaluated test cases.
 - [`RunState` class](RunState.md)

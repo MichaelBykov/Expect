@@ -11,7 +11,7 @@ Since 1.0.0
 
 ## Usage
 
-Access the results of a micro benchmark run in a test case.
+Access the results of a micro benchmark run.
 
 ## Members
 

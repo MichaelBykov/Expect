@@ -22,9 +22,9 @@ struct TestFailedException {
   
 };
 
-/// A test failure.
+/// An assertion failure.
 struct Failure {
-  /// The test failure message.
+  /// The assertion failure message.
   std::string message;
 };
 
