@@ -41,12 +41,14 @@ run.
 
 Behavior and syntax is the same as the `EXPECT` and `ASSERT` macros except that
 all comparison uses the following formulas:
-- `x == y` : |x - y| ≤ tol
-- `x != y` : |x - y| > tol
-- `x < y` : x - y < -tol
-- `x <= y` : x - y ≤ tol
-- `x > y` : x - y > tol
-- `x >= y` : x - y ≥ -tol
+
+- `x == y` : `|x - y| ≤ tol`
+- `x != y` : `|x - y| > tol`
+- `x < y` : `x - y < -tol`
+- `x <= y` : `x - y ≤ tol`
+- `x > y` : `x - y > tol`
+- `x >= y` : `x - y ≥ -tol`
+
 where `tol` is the set comparison tolerance.
 
 The type which you are comparing should have a conversion from a single double
