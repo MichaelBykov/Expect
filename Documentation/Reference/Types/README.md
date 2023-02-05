@@ -8,8 +8,6 @@
 ## Suites and Setup
 - [`Suite` class](Suite.md)
   - Configure and manage a test suite instance.
-- [`Teardown` class](Teardown.md)
-  - Configure and manage a test suite instance.
 
 ## Test Cases
 - [`Test` class](Test.md)

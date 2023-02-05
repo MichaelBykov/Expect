@@ -80,6 +80,8 @@
 ///       Foo foo;
 ///     };
 ///     
+///     SHARED ...
+///     
 ///     TEARDOWN {
 ///       SHARED foo.cleanup();
 ///     };
