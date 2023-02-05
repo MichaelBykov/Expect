@@ -127,6 +127,10 @@ Report report = RUN_ENABLED_TESTS(environment, state) {
 
 ## See Also
 
+- [`RunState` class](../Types/RunState.md)
+  - The state of an in-progress test run.
+- [`Report` class](../Types/Report.md)
+  - A report of all of the evaluated test cases.
 - [`Suite` class](../Types/Suite.md)
   - Configure and manage a test suite instance, including accessing all of its
     test cases.
@@ -135,10 +139,6 @@ Report report = RUN_ENABLED_TESTS(environment, state) {
 - [`Test` class](../Types/Test.md)
   - Configure and manage a test case instance, including enabling it to be
     run with a custom test driver.
-- [`Report` class](../Types/Report.md)
-  - A report of all of the evaluated test cases.
-- [`RunState` class](../Types/RunState.md)
-  - The state of an in-progress test run.
 - [Building Expect Tutorial](../../Tutorials/Building.md)
   - A guide to the various ways of building Expect.
 - [Custom Drivers Tutorial](../../Tutorials/Custom-Drivers.md)
