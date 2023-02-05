@@ -21,7 +21,7 @@ Access the state of an in-progress test run.
 
 ## Members
 
-- `state` - `State` : The state tag.
+- `state` - [`State`](RunState.State.md) : The state tag.
 
 ## Subtypes
 

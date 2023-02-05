@@ -21,7 +21,7 @@ Access the state of a test suite that is beginning to be run.
 
 ## Members
 
-- `state` - `State` : The state tag.
+- `state` - [`State`](RunState.State.md) : The state tag.
   Will always be set to [`State::RunningSuite`](RunState.State.md).
 
 - `suite` - [`Suite &`](Suite.md) : The test suite that is being run.

@@ -21,7 +21,7 @@ Access the state of a test suite has finished running.
 
 ## Members
 
-- `state` - `State` : The state tag.
+- `state` - [`State`](RunState.State.md) : The state tag.
   Will always be set to [`State::FinishedSuite`](RunState.State.md).
 
 - `suite` - [`Suite &`](Suite.md) : The test suite that finished running.

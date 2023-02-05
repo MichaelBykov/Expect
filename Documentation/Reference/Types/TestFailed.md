@@ -21,7 +21,7 @@ Access the state of a test case succeeded in running.
 
 ## Members
 
-- `state` - `State` : The state tag.
+- `state` - [`State`](RunState.State.md) : The state tag.
   Will always be set to [`State::TestFailed`](RunState.State.md).
 
 - `test` - [`Test &`](Test.md) : The test case that failed.
