@@ -66,7 +66,7 @@ SUITE(Tests) {
     
     
     std::vector<int> vector = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1 };
-    EXPECT_THAT vector | has<std::vector<int>>(1, 5) | not has<std::vector<int>>(1, 15) | not contains<std::vector<int>>(1) | contains<std::vector<int>>(20);
+    EXPECT_THAT vector | "fail" | has<std::vector<int>>(1, 5) | not has<std::vector<int>>(1, 15) | not contains<std::vector<int>>(1) | contains<std::vector<int>>(20);
     
     struct Base { virtual ~Base() = default; };
     struct Sub : Base { };
@@ -80,6 +80,8 @@ SUITE(Tests) {
     EXPECT_THAT 0.0 / 0.0 | isNonNaN;
     EXPECT_THAT 0.0 / 0.0 | isFinite;
     EXPECT_THAT 0.0 / 0.0 | isInfinite;
+    
+    EXPECT_THAT 0.0 / 0.0 | (isNaN<double>() and isFinite);
     
     EXPECT_THAT "foo" | not beginsWith("fo");
     EXPECT_THAT "foo" | not endsWith("oo");

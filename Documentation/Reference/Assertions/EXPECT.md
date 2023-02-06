@@ -35,8 +35,9 @@ Define an assertion expression.
 
 `ASSERT` is fatal and will stop the test case case from continuing to run.
 
-Expectations can be set for any comparison, for example,
-`EXPECT a == b`, `EXPECT a < b`, and `EXPECT a != b` are all valid.
+Expectations can be set for any comparison expression or any expression that
+evaluates to a boolean value. For example, `EXPECT isTrue()`,
+`EXPECT !someValue`, `EXPECT a == b`, and `EXPECT a < b` are all valid.
 Expectations can also accept range expressions in the form of
 `lower < value < upper`, where `lower` is the lower bound, `upper` is the upper
 bound, and `value` is the value being tested.
@@ -44,8 +45,6 @@ Range expressions can be formed by any combination of `<` and `<=`, for example,
 `EXPECT 1 < 2 <= 3`, `EXPECT 0 <= 0 < 1`, or `EXPECT 1 <= 1 <= 1`.
 Range expressions can be built for any type that has the appropriate comparison
 operators `<`, `<=`, as used in the range expression.
-Expectations can also be set for an expression that evaluates to a boolean,
-for example, `EXPECT isTrue()` or `EXPECT !someValue` are valid.
 
 All arguments in an expression will be extracted and displayed upon an assertion
 failure.

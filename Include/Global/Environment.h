@@ -56,8 +56,8 @@ struct BenchmarkResult {
 
 /// A complete testing environment.
 struct Environment {
-  /// Whether or not unit test cases should stop after a failed assertion.
-  bool stopOnFailure = true;
+  /// Whether or not unit test cases should stop after any failed assertion.
+  bool stopOnFailure = false;
   
   /// Whether or not the ran unit test was successful.
   bool success = true;

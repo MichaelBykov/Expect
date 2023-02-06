@@ -15,9 +15,9 @@ Configure the test environment in which test runs are performed.
 
 ## Members
 
-- `stopOnFailure` - `bool` : Whether or not unit test cases should stop after a
-  failed assertion.
-  Defaults to `true`.
+- `stopOnFailure` - `bool` : Whether or not unit test cases should stop after
+  any failed assertion.
+  Defaults to `false`.
 - `success` - `bool` : Whether or not the just ran unit test was successful.
   Managed by the test driver.
 - `failures` - `std::vector<`[`Failure`](Failure.md)`>` : A list of all failures

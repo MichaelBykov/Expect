@@ -18,6 +18,30 @@ namespace Matchers {
 
 
 
+MATCHER(IsBoolValue, bool, IsBoolValue) {
+  bool value;
+  
+  IsBoolValue(bool value) : value(value) { }
+  
+  bool evaluate(bool value) {
+    return this->value == value;
+  }
+  
+  std::string message(bool value, bool succeeded) {
+    if (value) {
+      return succeeded ? "Value is true." : "Value is false.";
+    } else {
+      return succeeded ? "Value is false." : "Value is true.";
+    }
+  }
+};
+
+static MATCHER_RESULT(bool) isTrue = IsBoolValue(true);
+
+static MATCHER_RESULT(bool) isFalse = IsBoolValue(false);
+
+
+
 template<typename T, typename Type>
 MATCHER(IsA, T, IsA<T, Type>) {
   bool evaluate(T value) {
