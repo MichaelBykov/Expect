@@ -16,7 +16,6 @@
 - [Matchers](Matchers)
 - [Types](Types)
 - [Variables](Variables)
-- [Functions](Functions)
 
 ## Suites and Setup
 - [`SUITE` macro](Macros/SUITE.md)
