@@ -36,8 +36,10 @@ MATCHER(IsBoolValue, bool, IsBoolValue) {
   }
 };
 
+/// Check that a boolean is true.
 static MATCHER_RESULT(bool) isTrue = IsBoolValue(true);
 
+/// Check that a boolean is false.
 static MATCHER_RESULT(bool) isFalse = IsBoolValue(false);
 
 
@@ -55,11 +57,21 @@ MATCHER(IsA, T, IsA<T, Type>) {
   }
 };
 
+/// Check that a pointer to a base type is an instance of a subtype.
+/// \tparam T
+///   The base type pointer.
+/// \tparam Type
+///   The subtype (not a pointer).
 template<typename T, typename Type>
 MATCHER_RESULT(T) isA() {
   return IsA<T, Type>();
 }
 
+/// Check that a pointer to a base type is an instance of a subtype.
+/// \tparam T
+///   The base type pointer.
+/// \tparam Type
+///   The subtype (not a pointer).
 template<typename T, typename Type>
 MATCHER_RESULT(T) isAn() {
   return IsA<T, Type>();
@@ -79,6 +91,9 @@ MATCHER(IsNull, T, IsNull<T>) {
   }
 };
 
+/// Check that a pointer is null.
+/// \tparam T
+///   The type of the pointer.
 template<typename T>
 MATCHER_RESULT(T) isNull() {
   return IsNull<T>();
@@ -96,6 +111,9 @@ MATCHER(IsSome, T, IsSome<T>) {
   }
 };
 
+/// Check that a pointer is non-null.
+/// \tparam T
+///   The type of the pointer.
 template<typename T>
 MATCHER_RESULT(T) isSome() {
   return IsSome<T>();
@@ -117,6 +135,9 @@ MATCHER(IsNaN, T, IsNaN<T>) {
   }
 };
 
+/// Check that a floating-point is not-a-number.
+/// \tparam T
+///   The type of the floating-point.
 template<typename T>
 MATCHER_RESULT(T) isNaN() {
   return IsNaN<T>();
@@ -136,6 +157,9 @@ MATCHER(IsNonNaN, T, IsNonNaN<T>) {
   }
 };
 
+/// Check that a floating-point is not-not-a-number.
+/// \tparam T
+///   The type of the floating-point.
 template<typename T>
 MATCHER_RESULT(T) isNonNaN() {
   return IsNonNaN<T>();
@@ -155,6 +179,9 @@ MATCHER(IsFinite, T, IsFinite<T>) {
   }
 };
 
+/// Check that a floating-point is finite.
+/// \tparam T
+///   The type of the floating-point.
 template<typename T>
 MATCHER_RESULT(T) isFinite() {
   return IsFinite<T>();
@@ -174,6 +201,9 @@ MATCHER(IsInfinite, T, IsInfinite<T>) {
   }
 };
 
+/// Check that a floating-point is infinite.
+/// \tparam T
+///   The type of the floating-point.
 template<typename T>
 MATCHER_RESULT(T) isInfinite() {
   return IsInfinite<T>();
@@ -219,11 +249,26 @@ MATCHER(Each, Collection, Each<Collection, Element>) {
   }
 };
 
+/// Check that each element of a collection matches a predicate.
+/// \tparam T
+///   The type of the collection.
+/// \tparam Element
+///   The type of the element in the collection.
+/// \param predicate
+///   The predicate for which every element in the given collection should
+///   match.
 template<typename T, typename Element>
 MATCHER_RESULT(T) each(std::function<bool(Element)> predicate) {
   return Each<T, Element> { predicate };
 }
 
+/// Check that each element of a collection matches a set value.
+/// \tparam T
+///   The type of the collection.
+/// \tparam Element
+///   The type of the element in the collection.
+/// \param element
+///   The value that should match every element in the collection.
 template<typename T, typename Element>
 MATCHER_RESULT(T) each(Element element) {
   return Each<T, Element> { [element](Element other) {
@@ -264,11 +309,29 @@ MATCHER(Has, Collection, Has<Collection, Element>) {
   }
 };
 
+/// Check that a collection matches a predicate a specific number of times.
+/// \tparam T
+///   The type of the collection.
+/// \tparam Element
+///   The type of the element in the collection.
+/// \param predicate
+///   The predicate that should be matched `count` times in the collection.
+/// \param count
+///   The number of times the predicate should match in the collection.
 template<typename T, typename Element>
 MATCHER_RESULT(T) has(std::function<bool(Element)> predicate, size_t count) {
   return Has<T, Element> { predicate, count };
 }
 
+/// Check that a collection has a specific number of a specific element.
+/// \tparam T
+///   The type of the collection.
+/// \tparam Element
+///   The type of the element in the collection.
+/// \param element
+///   The element that should be matched `count` times in the collection.
+/// \param count
+///   The number of times the element should be found in the collection.
 template<typename T, typename Element>
 MATCHER_RESULT(T) has(Element element, size_t count) {
   return Has<T, Element> { [element](Element other) {
@@ -309,11 +372,25 @@ MATCHER(Contains, Collection, Contains<Collection, Element>) {
   }
 };
 
+/// Check that a collection matches a predicate at least once.
+/// \tparam T
+///   The type of the collection.
+/// \tparam Element
+///   The type of the element in the collection.
+/// \param predicate
+///   The predicate that should be matched at least once in the collection.
 template<typename T, typename Element>
 MATCHER_RESULT(T) contains(std::function<bool(Element)> predicate) {
   return Contains<T, Element> { predicate };
 }
 
+/// Check that a collection has at least one of the given element.
+/// \tparam T
+///   The type of the collection.
+/// \tparam Element
+///   The type of the element in the collection.
+/// \param element
+///   The element that should be matched at least once in the collection.
 template<typename T, typename Element>
 MATCHER_RESULT(T) contains(Element element) {
   return Contains<T, Element> { [element](Element other) {
@@ -345,6 +422,11 @@ bool BeginsWith<const char *>::evaluate(const char *value);
 template<>
 bool BeginsWith<std::string>::evaluate(std::string value);
 
+/// Check that a string begins with a given substring.
+/// \tparam T
+///   The type of the string.
+/// \param substring
+///   The substring that should be matched at the beginning of the string.
 template<typename T>
 MATCHER_RESULT(T) beginsWith(T substring) {
   return BeginsWith<T>(substring);
@@ -372,6 +454,11 @@ bool EndsWith<const char *>::evaluate(const char *value);
 template<>
 bool EndsWith<std::string>::evaluate(std::string value);
 
+/// Check that a string ends with a given substring.
+/// \tparam T
+///   The type of the string.
+/// \param substring
+///   The substring that should be matched at the end of the string.
 template<typename T>
 MATCHER_RESULT(T) endsWith(T substring) {
   return EndsWith<T>(substring);
@@ -380,12 +467,18 @@ MATCHER_RESULT(T) endsWith(T substring) {
 template<>
 struct Contains<const char *, const char *>;
 
+/// Check that a string contains a given substring.
+/// \param substring
+///   The substring to check for in the string.
 template<>
 MATCHER_RESULT(const char *) contains<const char *, const char *>(const char *substring);
 
 template<>
 struct Contains<std::string, std::string>;
 
+/// Check that a string contains a given substring.
+/// \param substring
+///   The substring to check for in the string.
 template<>
 MATCHER_RESULT(std::string) contains<std::string, std::string>(std::string substring);
 
@@ -396,5 +489,6 @@ END_NAMESPACE_EXPECT
 
 
 
+/// Use the standard Expect matchers.
 #define USE_EXPECT_MATCHING \
   using namespace NAMESPACE_EXPECT Matchers;
