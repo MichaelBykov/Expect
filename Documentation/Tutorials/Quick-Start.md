@@ -90,8 +90,9 @@ add_library(AutoExpect ${EXPECT_DIR}/Source/AutoExpect.cpp)
 where `${EXPECT_DIR}` is the location of your Expect installation.
 
 If you downloaded Expect directly through CMake using `FetchContent`, you can
-skip the all of the above and simply use `Expect::AutoExpect` when linking, as
-discussed below.
+skip the all of the above and simply use `AutoExpect` when linking, as discussed
+below.
+The include directories will automatically be handled for you.
 
 Now that you have Expect built, you need to create a test executable for the
 unit tests that you are going to write.
@@ -109,9 +110,6 @@ In CMake you would have the below:
 add_executable(MyTests test/test.cpp)
 target_link_libraries(MyTests AutoExpect)
 ```
-(As mentioned above, if you downloaded Expect through CMake by using
-`FetchContent`, you can use `Expect::AutoExpect` instead of `AutoExpect` and
-CMake will do the rest for you.)
 
 If you want to test a library you already have, make sure to link it to
 `MyTests` too.

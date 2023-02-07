@@ -4,11 +4,11 @@ set(CMAKE_CXX_STANDARD 11)
 
 
 
-include_directories(Include)
-
 add_library(Expect Source/Expect.cpp)
+target_include_directories(Expect PUBLIC Include)
 
 add_library(AutoExpect Source/AutoExpect.cpp)
+target_include_directories(AutoExpect PUBLIC Include)
 
 
 
