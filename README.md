@@ -13,15 +13,17 @@ readable, and easy-to-write unit test cases for your code.
 ## Features
 
 - Intuitive syntax
-  - Assertions expressions can be written as they normally would be without using a variety of different macros, maintaining readability and ease of writing
+  - Assertions expressions can be written as they normally would be without
+    using a variety of different macros, maintaining readability and ease of
+    writing
 - Matchers
   - Form compound statements that can be used to evaluate a value
 - A variety of floating-point comparison utilities
-- Customizable variable descriptions, comparators, matchers, failure messages, and output handlers
+- Customizable variable descriptions, comparators, matchers, failure messages,
+  output handlers, and test drivers
 - Fatal and non-fatal assertions
 - Micro benchmarking
 - Just one header file to include, and one source file to build
-
 
 ## Examples
 
@@ -113,34 +115,51 @@ SUITE(SomeBenchmarks) {
 
 ## Quick Start
 
-After cloning the repository include the `Include/Expect` header file in your test file(s).
-Build the `Source/Expect.cpp` file if you want to use your own test driver or build the `Source/AutoExpect.cpp` file if you want to use the built-in command-line driver with your unit test files.
+After cloning the repository include the `Include/Expect` header file in your
+test file(s).
+Build the `Source/Expect.cpp` file if you want to use your own test driver or
+build the `Source/AutoExpect.cpp` file if you want to use the built-in
+command-line driver with your unit test files.
 
 Done!
 Now you can start writing and executing unit tests and benchmarks.
 
-Entire test suites can be ran by specifying the suite names when running the command line driver, or individual tests can be ran by specifying the test case names.
-If you tag any test cases, all test cases corresponding with that tag can be ran by specifying the tag name and prefixing it with a `#`.
-For example, if you tag benchmarks with the `benchmark` tag and want to run all benchmarks, include `#benchmark` when running your unit tests using the command line driver.
+Entire test suites can be ran by specifying the suite names when running the
+command line driver, or individual tests can be ran by specifying the test case
+names.
+If you tag any test cases, all test cases corresponding with that tag can be run
+by specifying the tag name and prefixing it with a `#`.
+For example, if you tag benchmarks with the `benchmark` tag and want to run all
+benchmarks, include `#benchmark` when running your unit tests using the
+command line driver.
 
-A more detailed quick start can be found in [Documentation/Tutorials/Quick Start](Documentation/Tutorials/Quick-Start.md).
+A more detailed quick start can be found in
+[Documentation/Tutorials/Quick Start](Documentation/Tutorials/Quick-Start.md).
 
 ## Documentation
 
-The [Documentation](Documentation) folder contains thorough documentation for the entire Expect library.
+The [Documentation](Documentation) folder contains thorough documentation for
+the entire Expect library.
 
-A set of walkthroughs of using the unit testing library can be found in [Documentation/Tutorials](Documentation/Tutorials).
+A set of walkthroughs of using the unit testing library can be found in
+[Documentation/Tutorials](Documentation/Tutorials).
 
-A general reference for the Expect library can be found in [Documentation/Reference](Documentation/Reference).
+A general reference for the Expect library can be found in
+[Documentation/Reference](Documentation/Reference).
 
-An overview of building can be found under [Documentation/Tutorials/Building](Documentation/Tutorials/Building.md) and running Expect under [Documentation/Tutorials/Running](Documentation/Tutorials/Running.md).
+An overview of building can be found under
+[Documentation/Tutorials/Building](Documentation/Tutorials/Building.md)
+and running Expect under
+[Documentation/Tutorials/Running](Documentation/Tutorials/Running.md).
 
 ## Expect
 
 © 2023 Michael Bykov
 
-The Expect library is published under an MIT license that can be found in [LICENSE](LICENSE).
+The Expect library is published under an MIT license that can be found in
+[LICENSE](LICENSE).
 
-Issues and feature requests can be submitted under the [issues tab](https://github.com/MichaelBykov/Expect/issues) of this repository.
+Issues and feature requests can be submitted under the
+[issues tab](https://github.com/MichaelBykov/Expect/issues) of this repository.
 
 Contributions are welcome, accepted, and encouraged.

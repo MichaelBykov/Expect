@@ -8,6 +8,7 @@ A guide to the various ways of building Expect.
 - [See Also](#See-Also)
 
 ## Overview
+
 Expect, like many C++ programs, is composed of a collection of C++ header and
 source files.
 
@@ -26,7 +27,7 @@ build and use the Expect unit testing library.
 command-line test driver, meaning you do not need to add a `main` function in
 your testing code, Expect handles it for you.
 
-# Building
+## Building
 
 Building the Expect library requires taking the appropriate amalgamated source
 file and building it as a dynamic library using your existing build system.
