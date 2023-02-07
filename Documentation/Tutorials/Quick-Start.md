@@ -69,6 +69,8 @@ This will allow your project to be directly synced with Expect.
 
 Once you have Expect installed, it's time to build it.
 Using the build system of your choice, build Expect from inside your project.
+Make sure your build system is set to build C++ using the C++11 standard or
+newer.
 
 The first step in building Expect requires you to add the main Expect `Include`
 directory to your project's include directories.
