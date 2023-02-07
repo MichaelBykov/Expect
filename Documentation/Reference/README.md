@@ -71,6 +71,10 @@
   - Get the result of a custom matcher.
 - [`USE_EXPECT_MATCHING` macro](Matchers/USE_EXPECT_MATCHING.md)
   - Use default matchers.
+- [`isTrue` matcher](Matchers/isTrue.md)
+  - The true-value matcher.
+- [`isFalse` matcher](Matchers/isFalse.md)
+  - The false-value matcher.
 - [`isA` matcher](Matchers/isA.md) / [`isAn` matcher](Matchers/isA.md)
   - The default type-matching matcher.
 - [`isNull` matcher](Matchers/isNull.md)

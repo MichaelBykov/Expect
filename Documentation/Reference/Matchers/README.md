@@ -15,6 +15,10 @@
   - Use default matchers.
 
 ## Matchers
+- [`isTrue` matcher](isTrue.md)
+  - The true-value matcher.
+- [`isFalse` matcher](isFalse.md)
+  - The false-value matcher.
 - [`isA` matcher](isA.md) / [`isAn` matcher](isA.md)
   - The default type-matching matcher.
 - [`isNull` matcher](isNull.md)
