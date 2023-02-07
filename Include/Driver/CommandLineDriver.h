@@ -26,5 +26,10 @@ END_NAMESPACE_EXPECT
 
 
 
+/// Run the default command line test driver for Expect.
+/// \param argc
+///   The standard `argc` command line argument (command line argument count).
+/// \param argv
+///   The standard `argv` command line argument (command line argument vector).
 #define RUN_COMMAND_LINE_TESTS(argc, argv) \
   NAMESPACE_EXPECT runCommandLineTests(argc, argv)

@@ -18,14 +18,19 @@ START_NAMESPACE_EXPECT
 
 
 
-///
+/// An expectation builder for a matcher assertion.
 template<typename T>
 struct ExpectThatBuilder : Expressions::Expression {
+  /// The value to match.
   T value;
   
+  /// The matcher expressions.
   std::vector<MatcherExpression<T> *> matchers = { };
+  /// The final composed failure message.
   std::string failMessages = "";
   
+  /// A flag to check if the builder is currently in an expression.
+  /// Used for expression validation.
   bool inExpression = false;
   
   ExpectThatBuilder<T>(T value) : value(value) { }
@@ -363,10 +368,18 @@ END_NAMESPACE_EXPECT
 
 
 
+/// Match a value to a set of expectations.
+/// \remarks
+///   Only a single value should be used for matching, all other expressions
+///   passed to the expectation, using vertical bars (`|`), should be matchers.
 #define EXPECT_THAT \
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, false), \
     NAMESPACE_EXPECT ExpectThat() <<
 
+/// Match a value to a set of expectations, stopping the test case upon failure.
+/// \remarks
+///   Only a single value should be used for matching, all other expressions
+///   passed to the expectation, using vertical bars (`|`), should be matchers.
 #define ASSERT_THAT \
   NAMESPACE_EXPECT Evaluate(__environment, __FILE__, __LINE__, true), \
     NAMESPACE_EXPECT ExpectThat() <<

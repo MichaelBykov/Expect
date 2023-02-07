@@ -502,13 +502,37 @@ END_NAMESPACE_EXPECT
 
 
 
+/// Create a custom matcher.
+/// \param name
+///   The name of the matcher.
+/// \param type
+///   The type that the matcher matches for.
+/// \param ...
+///   The full type of the custom matcher, including template arguments.
+/// \remarks
+///   A custom matcher should have a `bool evaluate(type value)` method and
+///   can optionally define a custom
+///   `std::string message(type value, bool succeeded)` method.
 #define MATCHER(name, type, ...) \
   struct name : ::NAMESPACE_EXPECT Matcher<type, __VA_ARGS__>
 
+/// The result of a matcher type.
+/// \param type
+///   The type that the matcher matches for.
+/// \remarks
+///   Should be used to instantiate a matcher.
+///   For example,
+///   ```
+///   template<typename T>
+///   MATCHER_RESULT(T) isZero() {
+///     return IsZero<T>();
+///   }
+///   ```
 #define MATCHER_RESULT(type) \
   ::NAMESPACE_EXPECT MatcherExpression<type> &
 
 
 
+/// Use the standard Expect matchers.
 #define USE_EXPECT_MATCHING \
   using namespace NAMESPACE_EXPECT Matchers;

@@ -677,38 +677,38 @@ template<typename T>
 bool Equal<T>::evaluate() {
   T x = lhs - rhs; if (x < 0) x = -x;
   T y = lhs + rhs; if (y < 0) y = -y;
-  return x <= tolerance * y;
+  return x <= T(tolerance) * y;
 }
 
 template<typename T>
 bool NotEqual<T>::evaluate() {
   T x = lhs - rhs; if (x < 0) x = -x;
   T y = lhs + rhs; if (y < 0) y = -y;
-  return x > tolerance * y;
+  return x > T(tolerance) * y;
 }
 
 template<typename T>
 bool Less<T>::evaluate() {
   T y = lhs + rhs; if (y < 0) y = -y;
-  return lhs - rhs < -tolerance * y;
+  return lhs - rhs < T(-tolerance) * y;
 }
 
 template<typename T>
 bool LessEqual<T>::evaluate() {
   T y = lhs + rhs; if (y < 0) y = -y;
-  return lhs - rhs <= tolerance * y;
+  return lhs - rhs <= T(tolerance) * y;
 }
 
 template<typename T>
 bool Greater<T>::evaluate() {
   T y = lhs + rhs; if (y < 0) y = -y;
-  return lhs - rhs > tolerance * y;
+  return lhs - rhs > T(tolerance) * y;
 }
 
 template<typename T>
 bool GreaterEqual<T>::evaluate() {
   T y = lhs + rhs; if (y < 0) y = -y;
-  return lhs - rhs >= -tolerance * y;
+  return lhs - rhs >= T(-tolerance) * y;
 }
 
 template<typename T>
