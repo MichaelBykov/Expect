@@ -40,12 +40,12 @@ bool NAMESPACE_EXPECT Benchmark::operator()() {
       line,
       iterations,
       totalTime,
-        .meanTime = totalTime / (long long)iterations,
-      .medianTime = times[half],
-          .minTime = times[0],
-          .maxTime = times[times.size() - 1],
-          .q1Time = times[quarter],
-          .q3Time = times[times.size() - 1 - quarter],
+      totalTime / (long long)iterations, // meanTime
+      times[half], // medianTime
+      times[0], // minTime
+      times[times.size() - 1], // maxTime
+      times[quarter], // q1Time
+      times[times.size() - 1 - quarter], // q3Time
       iterationTimes
     };
     

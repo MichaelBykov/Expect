@@ -10,6 +10,9 @@
 
 #pragma once
 
+// For Visual Studio
+#define _CRT_SECURE_NO_WARNINGS
+
 #define START_NAMESPACE_EXPECT \
   namespace Expect {
 

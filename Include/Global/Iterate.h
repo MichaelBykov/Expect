@@ -24,14 +24,15 @@
   _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, \
   N, ... \
 ) N
+#define _EXPECT_COUNT_PASS(n) n
 #define _EXPECT_COUNT(...) \
-  _EXPECT_COUNT_(__VA_ARGS__, \
+  _EXPECT_COUNT_PASS(_EXPECT_COUNT_(__VA_ARGS__, \
     50, 49, 48, 47, 46, 45, 44, 43, 42, 41, \
     40, 39, 38, 37, 36, 35, 34, 33, 32, 31, \
     30, 29, 28, 27, 26, 25, 24, 23, 22, 21, \
     20, 19, 18, 17, 16, 15, 14, 13, 12, 11, \
     10,  9,  8,  7,  6,  5,  4,  3,  2,  1 \
-  )
+  ))
 
 
 
@@ -87,8 +88,10 @@
 #define _EXPECT_FOR_EACH_50(_1, _2, _3, _4, _5, each, arg, ...) each(arg) _EXPECT_FOR_EACH_49(_1, _2, _3, _4, _5, each, __VA_ARGS__)
 
 #define _EXPECT_ITERATE_IMP(_1, _2, _3, _4, _5, each, ...) \
-  _EXPECT_CONCAT(_EXPECT_FOR_EACH_, _EXPECT_COUNT(__VA_ARGS__)) \
-  (_1, _2, _3, _4, _5, each, __VA_ARGS__)
+  _EXPECT_COUNT_PASS(_EXPECT_COUNT_PASS(_EXPECT_COUNT_PASS( \
+    _EXPECT_CONCAT(_EXPECT_FOR_EACH_, _EXPECT_COUNT(__VA_ARGS__)) \
+    (_1, _2, _3, _4, _5, each, __VA_ARGS__) \
+  )))
 
 #define _EXPECT_ITERATE_5(_1, _2, _3, _4, _5, each, ...) \
   _EXPECT_ITERATE_IMP(_1, _2, _3, _4, _5, each, __VA_ARGS__)
@@ -171,8 +174,10 @@
 
 
 #define _EXPECT_SWITCH_IMP(_1, _2, _3, _4, _5, others, ...) \
-  _EXPECT_CONCAT(_EXPECT_SWITCH_IMP_, _EXPECT_COUNT(__VA_ARGS__)) \
-  (_1, _2, _3, _4, _5, others, __VA_ARGS__)
+  _EXPECT_COUNT_PASS(_EXPECT_COUNT_PASS(_EXPECT_COUNT_PASS( \
+    _EXPECT_CONCAT(_EXPECT_SWITCH_IMP_, _EXPECT_COUNT(__VA_ARGS__)) \
+    (_1, _2, _3, _4, _5, others, __VA_ARGS__) \
+  )))
 
 #define _EXPECT_SWITCH_5(_1, _2, _3, _4, _5, others, ...) \
   _EXPECT_SWITCH_IMP(_1, _2, _3, _4, _5, others, __VA_ARGS__)

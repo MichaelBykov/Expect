@@ -12,6 +12,7 @@
 #include <Expect Common.h>
 #include <Global/Iterate.h>
 #include <string>
+#include <vector>
 
 START_NAMESPACE_EXPECT
 
