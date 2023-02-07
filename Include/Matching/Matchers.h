@@ -157,7 +157,7 @@ MATCHER(IsNonNaN, T, IsNonNaN<T>) {
   }
 };
 
-/// Check that a floating-point is not-not-a-number.
+/// Check that a floating-point is not not-a-number.
 /// \tparam T
 ///   The type of the floating-point.
 template<typename T>

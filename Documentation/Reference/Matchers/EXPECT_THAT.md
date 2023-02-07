@@ -50,6 +50,8 @@ For instance, in the previous expression, if `vector` has the value
 There are a variety of built-in matchers and custom ones can easily be defined
 using the [`MATCHER` macro](MATCHER.md).
 Some of the common default matchers you can use are listed below:
+- [`isTrue`](isTrue.md) - Check that a value is true.
+- [`isFalse`](isFalse.md) - Check that a value is false.
 - [`isA`](isA.md) / [`isAn`](isAn.md) - Check that a pointer to a value is a
   specific type.
 - [`isNull`](isNull.md) - Check that a pointer is null.
