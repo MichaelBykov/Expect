@@ -52,7 +52,7 @@ include(FetchContent)
 FetchContent_Declare(
   Expect
   GIT_REPOSITORY https://github.com/MichaelBykov/Expect.git
-  GIT_TAG 1.0.0 # The version of Expect you want to use
+  GIT_TAG v1.0.0 # The version of Expect you want to use
 )
 FetchContent_MakeAvailable(Expect)
 ```
